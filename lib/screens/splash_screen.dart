@@ -47,7 +47,7 @@ class SplashScreen extends StatelessWidget {
               margin: const EdgeInsets.only(top: 80),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 135, 203, 198),
+                  color: const Color.fromARGB(255, 219, 231, 116),
                   borderRadius: BorderRadius.circular(30)),
               child: const Text(
                 "Daftar",
@@ -71,10 +71,10 @@ class SplashScreen extends StatelessWidget {
               margin: const EdgeInsets.only(top: 20),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 219, 231, 116),
+                  color: const Color.fromARGB(255, 135, 203, 198),
                   borderRadius: BorderRadius.circular(30)),
               child: const Text(
-                "Login",
+                "Masuk",
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
