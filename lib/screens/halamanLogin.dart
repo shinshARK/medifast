@@ -54,7 +54,7 @@ class _HalamanLoginState extends State<HalamanLogin> {
     },
   );
 
-  await Future.delayed(const Duration(seconds: 10)); // Ubah durasi sesuai kebutuhan Anda
+  await Future.delayed(const Duration(seconds: 1)); // Ubah durasi sesuai kebutuhan Anda
 
   // ignore: use_build_context_synchronously
   Navigator.of(context).pushAndRemoveUntil(

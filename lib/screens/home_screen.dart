@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import "package:flutter_feather_icons/flutter_feather_icons.dart";
 import 'package:rumah_sakit/screens/notifikasi_blur.dart';
+import 'package:rumah_sakit/screens/riwayatTransaksi.dart';
+import 'package:rumah_sakit/components/bottomNavigasiBar.dart';
+
 import 'dart:async';
 
 //home_screen
@@ -24,7 +27,6 @@ class _home_screenState extends State<home_screen> {
     super.initState();
     _controller = ScrollController();
     _timer = Timer.periodic(const Duration(seconds: 8), (Timer t) {
-      print(_controller.offset);
       if(_controller.offset > 740 && _tujuan == true){
         _tujuan = false;
       }
@@ -62,7 +64,7 @@ class _home_screenState extends State<home_screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: _bottomNavigasiBar(),
+      bottomNavigationBar: BottomNavigasiBar(),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -117,79 +119,7 @@ class _home_screenState extends State<home_screen> {
       ),
     );
   }
-
-  // ignore: non_constant_identifier_names
-  var menu_icon = [
-    Icons.home,
-    Icons.calendar_month,
-    Icons.person,
-    Icons.format_list_bulleted,
-    Icons.account_circle_outlined
-  ];
-
-  // ignore: non_constant_identifier_names
-  var menu_label = ["Beranda", "Riwayat", "Doktor", "Artikel", "Profil"];
-  final int _selectedIndex = 0;
-
-  BottomNavigationBar _bottomNavigasiBar() {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.white,
-      
-      unselectedItemColor: Colors.black,
-      showUnselectedLabels: true,
-      items: menu_icon
-          .asMap()
-          .entries
-          .map((e) => BottomNavigationBarItem(
-                icon: GestureDetector(
-                  onTap: (){
-                    
-                  },
-                  child: Container(
-                    width: 70,
-                    height: 70,
-                    decoration: BoxDecoration(
-                      color: _selectedIndex == e.key
-                          ? const Color.fromARGB(255, 135, 203, 198)
-                          : null, // Warna latar belakang saat item dipilih
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: _selectedIndex ==
-                              e.key // Menambahkan efek bayangan saat item dipilih
-                          ? [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.25),
-                                blurRadius: 4.9,
-                                offset:
-                                    const Offset(0, 0), // changes position of shadow
-                              ),
-                            ]
-                          : null,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(e.value,size: 40,), // Mengubah ukuran ikon
-                        Text(
-                          menu_label[e.key],
-                          style: TextStyle(
-                              color: _selectedIndex == e.key
-                                  ? Colors.white
-                                  : Colors.black,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 8),
-                              textAlign: TextAlign.center,
-                        ), // Menambahkan label ke dalam Container
-                      ],
-                    ),
-                  ),
-                ),
-                label: '', // Menghapus label dari BottomNavigationBarItem
-              ))
-          .toList(),
-    );
-  }
-
+  
   // ignore: non_constant_identifier_names
   GestureDetector _artikel_populer() {
     return GestureDetector(

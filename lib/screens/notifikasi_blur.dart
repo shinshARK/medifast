@@ -5,14 +5,15 @@ import 'package:flutter/material.dart';
 //import 'package:google_fonts/google_fonts.dart';
 //import "package:flutter_feather_icons/flutter_feather_icons.dart";
 import 'package:rumah_sakit/screens/home_screen.dart';
-
+DateTime waktuSekarang = DateTime.now();
+String waktuSekarangString = waktuSekarang.toString();
 // ignore: non_constant_identifier_names
 var data_notifikasi = [
   [
     "1",
     "Resep digital sudah dapat kamu lihat pada halaman\nRiwayat Transaksi",
     "0",
-    "2024-03-04 05:00:00.857"
+    waktuSekarangString
   ],
   [
     "2",
@@ -214,7 +215,7 @@ class notifikasi_blur extends StatelessWidget {
   }
 }
 
-DateTime waktuSekarang = DateTime.now();
+
 
 // ignore: non_constant_identifier_names
 String cek_estimasi_waktu(String tanggalWaktuString) {
