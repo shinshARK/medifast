@@ -410,10 +410,13 @@ class _HalamanRegistrasiState extends State<HalamanRegistrasi> {
 
   Container _title() {
     return Container(
-      margin: const EdgeInsets.only(left: 20),
+      width: 370,
+      margin: const EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.all(8.0),
+      //margin: const EdgeInsets.only(left: 20),
       alignment: Alignment.centerLeft,
       child: const Text(
-        "Daftar\nAkun",
+        "Buat\nAkun",
         style:
             TextStyle(fontSize: 40, fontWeight: FontWeight.w700, height: 1.0),
       ),
