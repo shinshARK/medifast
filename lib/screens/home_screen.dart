@@ -164,7 +164,7 @@ class _home_screenState extends State<home_screen> {
       ),
     );
   }
-
+  
   // ignore: non_constant_identifier_names
   Row _artikel_fitur() {
     return Row(
@@ -179,6 +179,7 @@ class _home_screenState extends State<home_screen> {
           padding: const EdgeInsets.only(bottom: 20), // Padding di semua sisi
           child: TextButton(
               onPressed: () {
+                
                 // Aksi ketika tombol ditekan
               },
               style: TextButton.styleFrom(
@@ -230,6 +231,7 @@ class _home_screenState extends State<home_screen> {
               children: [
                 IconButton(
                   onPressed: () {
+                    
                     showDialog(
                         context: context,
                         builder: (context) => const notifikasi_blur());

@@ -1,9 +1,5 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-//import 'package:flutter/widgets.dart';
-
-//import 'package:google_fonts/google_fonts.dart';
-//import "package:flutter_feather_icons/flutter_feather_icons.dart";
 import 'package:rumah_sakit/screens/home_screen.dart';
 DateTime waktuSekarang = DateTime.now();
 String waktuSekarangString = waktuSekarang.toString();
@@ -13,37 +9,43 @@ var data_notifikasi = [
     "1",
     "Resep digital sudah dapat kamu lihat pada halaman\nRiwayat Transaksi",
     "0",
-    waktuSekarangString
+    waktuSekarangString,
+    ""
   ],
   [
     "2",
     "Jangan lupa untuk minum Obat Paracetamol 2 x 3\nSesudah Makan!",
     "1",
-    "2024-03-04 02:00:00.857"
+    "2024-03-08 20:00:00.857",
+    ""
   ],
   [
     "3",
     "Jangan lupa untuk minum Obat Paracetamol 2 x 3\nSesudah Makan!",
     "1",
-    "2024-03-04 02:00:00.857"
+    "2024-03-09 02:00:00.857",
+    ""
   ],
   [
     "1",
     "Resep digital sudah dapat kamu lihat pada halaman\nRiwayat Transaksi",
     "0",
-    "2024-03-04 05:00:00.857"
+    "2024-03-04 05:00:00.857",
+    ""
   ],
   [
     "2",
     "Jangan lupa untuk minum Obat Paracetamol 2 x 3\nSesudah Makan!",
     "1",
-    "2024-03-04 02:00:00.857"
+    "2024-03-04 02:00:00.857",
+    ""
   ],
   [
     "3",
     "Jangan lupa untuk minum Obat Paracetamol 2 x 3\nSesudah Makan!",
     "1",
-    "2024-03-04 02:00:00.857"
+    "2024-03-04 02:00:00.857",
+    ""
   ]
 ];
 // ignore: non_constant_identifier_names
@@ -52,9 +54,68 @@ var icon_notification = [
   Icons.calendar_month
 ];
 
+
 // ignore: camel_case_types
-class notifikasi_blur extends StatelessWidget {
+class notifikasi_blur extends StatefulWidget {
   const notifikasi_blur({super.key});
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _notifikasi_blurState createState() => _notifikasi_blurState();
+}
+
+// ignore: camel_case_types
+class _notifikasi_blurState extends State<notifikasi_blur> {
+
+
+  
+  // ignore: non_constant_identifier_names
+String cek_estimasi_waktu(String tanggalWaktuString) {
+
+  
+  
+  if (cek_hari(tanggalWaktuString) == 0) {
+    DateTime tanggalWaktu = DateTime.parse(tanggalWaktuString);
+    int jam2 = tanggalWaktu.hour;
+    int menit2 = tanggalWaktu.minute;
+    int detik2 = tanggalWaktu.second;
+    int jam1 = waktuSekarang.hour;
+    int menit1 = waktuSekarang.minute;
+    int detik1 = waktuSekarang.second;
+
+    if (jam1 - jam2 != 0) {
+      return "${jam1 - jam2}h";
+    } else if (menit1 - menit2 != 0) {
+      return "${menit1 - menit2}m";
+    } else {
+      return "${detik1 - detik2}d";
+    }
+  }
+
+  return "";
+}
+
+// ignore: non_constant_identifier_names
+int cek_data(int range){
+  int cek = 0;
+  for(int i = 0;i < data_notifikasi.length;i++){
+    if(cek_hari(data_notifikasi[i][3]) == range){
+      cek++;
+    }
+  }
+  return cek;
+}
+
+// ignore: non_constant_identifier_names
+List<int> posisi_data(int range){
+  List<int> data = [];
+  for(int i = 0;i < data_notifikasi.length;i++){
+    if(cek_hari(data_notifikasi[i][3]) == range){
+      data.add(i);
+    }
+  }
+  return data;
+}
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +125,7 @@ class notifikasi_blur extends StatelessWidget {
       ),
       body: Stack(
         children: <Widget>[
-          home_screen(), // Konten pertama
+          const home_screen(), // Konten pertama
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
             child: Container(
@@ -78,19 +139,58 @@ class notifikasi_blur extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                Column(
-                  children: List.generate(data_notifikasi.length, (index) {
-                    return _katagori(index, "hari ini", 0);
+                cek_data(0) > 0 ? Column(
+                  
+                  children:  List.generate(posisi_data(0).length,(index) {
+
+                    return _katagori(posisi_data(0)[index], "hari ini", 0,index);
                   }),
+                ) : const SizedBox(
+                  height: 0.01,
                 ),
-                const SizedBox(
+                cek_data(0) > 0 ? const SizedBox(
                   height: 10,
+                ) : const SizedBox(
+                  height: 0.01,
                 ),
-                Column(
-                  children: List.generate(data_notifikasi.length, (index) {
-                    return _katagori(index, "kemarin", 1);
+                cek_data(1) > 0 ? Column(
+                  
+                  children:  List.generate(posisi_data(1).length,(index) {
+
+                    return _katagori(posisi_data(1)[index], "Kemarin", 1,index);
                   }),
+                ) : const SizedBox(
+                  height: 0.01,
                 ),
+                cek_data(1) > 0 ? const SizedBox(
+                  height: 10,
+                ) : const SizedBox(
+                  height: 0.01,
+                ),
+                cek_data(2) > 0 ? Column(
+                  
+                  children:  List.generate(posisi_data(2).length,(index) {
+
+                    return _katagori(posisi_data(2)[index], "minggu ini", 2,index);
+                  }),
+                ) : const SizedBox(
+                  height: 0.01,
+                ),
+                cek_data(2) > 0 ? const SizedBox(
+                  height: 10,
+                ) : const SizedBox(
+                  height: 0.01,
+                ),
+                cek_data(3) > 0 ? Column(
+                  
+                  children:  List.generate(posisi_data(3).length,(index) {
+
+                    return _katagori(posisi_data(3)[index], "more", 3,index);
+                  }),
+                ) : const SizedBox(
+                  height: 0.01,
+                ),
+                
               ],
             ),
           ),
@@ -98,29 +198,37 @@ class notifikasi_blur extends StatelessWidget {
       ),
     );
   }
-
-  Column _katagori(int index, String judulKatagori, int cek) {
+  // ignore: prefer_final_fields
+  List<bool> _tampilkanContainer = [false, false, false, false, false];
+  Column _katagori(int index, String judulKatagori, int cek,int posisi) {
     return Column(
       children: [
         Container(
-          alignment: index == 0 ? Alignment.topLeft : null,
-          margin: index == 0
+          alignment: posisi == 0 ? Alignment.topLeft : null,
+          margin: posisi == 0
               ? const EdgeInsetsDirectional.only(start: 20, bottom: 10)
               : null,
-          child: index == 0
-              ? Text(
-                  judulKatagori,
-                  style: const TextStyle(
-                      color: Color.fromARGB(255, 133, 133, 133), fontSize: 16),
-                )
-              : cek_hari(data_notifikasi[index][3]) == cek
+          child: posisi == 0
+              ?  GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _tampilkanContainer[cek] = !_tampilkanContainer[cek];
+                  });
+                },
+                child: Text(
+                    judulKatagori,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 133, 133, 133), fontSize: 16),
+                  ),
+              )
+              : cek_hari(data_notifikasi[index][3]) == cek && _tampilkanContainer[cek]
                   ? const SizedBox(
                       height: 20,
                     )
                   : null,
         ),
         cek_hari(data_notifikasi[index][3]) == cek
-            ? Stack(
+            ? _tampilkanContainer[cek] ? Stack(
                 children: [
                   Container(
                     width: 364,
@@ -208,37 +316,14 @@ class notifikasi_blur extends StatelessWidget {
                     ),
                   )
                 ],
-              )
-            : const SizedBox.shrink(),
+              ) 
+            : const SizedBox(height: 0.1) : const SizedBox(height: 0.1),
       ],
     );
   }
+  
 }
 
-
-
-// ignore: non_constant_identifier_names
-String cek_estimasi_waktu(String tanggalWaktuString) {
-  if (cek_hari(tanggalWaktuString) == 0) {
-    DateTime tanggalWaktu = DateTime.parse(tanggalWaktuString);
-    int jam2 = tanggalWaktu.hour;
-    int menit2 = tanggalWaktu.minute;
-    int detik2 = tanggalWaktu.second;
-    int jam1 = waktuSekarang.hour;
-    int menit1 = waktuSekarang.minute;
-    int detik1 = waktuSekarang.second;
-
-    if (jam1 - jam2 != 0) {
-      return "${jam1 - jam2}h";
-    } else if (menit1 - menit2 != 0) {
-      return "${menit1 - menit2}m";
-    } else {
-      return "${detik1 - detik2}d";
-    }
-  }
-
-  return "";
-}
 
 // ignore: non_constant_identifier_names
 String cek_waktu() {
@@ -259,8 +344,17 @@ DateTime epoch = DateTime.fromMillisecondsSinceEpoch(0);
 // ignore: non_constant_identifier_names
 int cek_hari(String tanggalWaktuString) {
   DateTime tanggalWaktu = DateTime.parse(tanggalWaktuString);
+  DateTime waktuSekarang = DateTime.now();
 
-  int jumlahHari1 = waktuSekarang.difference(epoch).inDays;
-  int jumlahHari2 = tanggalWaktu.difference(epoch).inDays;
-  return jumlahHari1 - jumlahHari2;
+  int selisihHari = waktuSekarang.difference(tanggalWaktu).inDays;
+
+  if (selisihHari == 0) {
+    return 0;
+  } else if (selisihHari == 1) {
+    return 1;
+  } else if (selisihHari < 7) {
+    return 2;
+  } else {
+    return 3;
+  }
 }
