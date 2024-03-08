@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rumah_sakit/screens/notifikasi_blur.dart';
 import 'package:rumah_sakit/components/bottomNavigasiBar.dart';
+import 'package:rumah_sakit/components/highlight.dart';
 import 'dart:async';
 
 
@@ -91,11 +92,12 @@ class _home_screenState extends State<home_screen> {
             const SizedBox(
               height: 5,
             ),
-            _fitur_2(),
+             
+            const highlight(inputan: 1, logo: 'Handshake.png', kalimat: 'Jadwal Janji'),
             const SizedBox(
-              height: 5,
+              height: 20,
             ),
-            _fitur_3(),
+             const highlight(inputan: 1, logo: 'IdentificationBadge.png', kalimat: 'Pangilan Dokter\nke Rumah'),
             _artikel_fitur(),
             Container(
               height: 172,
@@ -189,119 +191,6 @@ class _home_screenState extends State<home_screen> {
                     fontWeight: FontWeight.w500,
                     fontSize: 16),
               )),
-        ),
-      ],
-    );
-  }
-
-  Stack _fitur_3() {
-    return Stack(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-              top: 13.0, bottom: 13.0, left: 28), // Padding atas dan bawah
-          child: TextButton(
-            onPressed: () {
-              // Aksi ketika tombol ditekan
-            },
-            style: TextButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              backgroundColor: const Color.fromARGB(
-                  255, 219, 231, 116), // Warna latar belakang tombol
-              minimumSize: const Size(296.0, 78.0), // Ukuran minimum tombol
-            ),
-            child: const Padding(
-              padding:
-                  EdgeInsets.only(left: 65.0), // Padding untuk bagian kiri teks
-              child: Text(
-                'Pangilan Dokter\nke Rumah',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            
-            // Aksi ketika Container diklik
-          },
-          child: Container(
-            width: 102, // Lebar
-            height: 102, // Tinggi
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 135, 203, 198), // Warna latar belakang
-              shape: BoxShape.circle,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 20.0, bottom: 20.0, left: 20, right: 20),
-              child: Image.asset(
-                'assets/images/handshake.png', // Path ke gambar di assets
-                fit: BoxFit
-                    .cover, // Cara gambar disesuaikan dengan ukuran yang ditentukan
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Stack _fitur_2() {
-    return Stack(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-              top: 13.0, bottom: 13.0, left: 28), // Padding atas dan bawah
-          child: TextButton(
-            onPressed: () {
-              // Aksi ketika tombol ditekan
-            },
-            style: TextButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              backgroundColor: const Color.fromARGB(
-                  255, 219, 231, 116), // Warna latar belakang tombol
-              minimumSize: const Size(296.0, 78.0), // Ukuran minimum tombol
-            ),
-            child: const Padding(
-              padding:
-                  EdgeInsets.only(left: 65.0), // Padding untuk bagian kiri teks
-              child: Text('Jadwal Janji',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 20)),
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            
-            // Aksi ketika Container diklik
-          },
-          child: Container(
-            width: 102, // Lebar
-            height: 102, // Tinggi
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 135, 203, 198), // Warna latar belakang
-              shape: BoxShape.circle,
-            ),
-            child: const ClipOval(
-              child: Icon(
-                Icons.assignment_ind, // Ikon verifikasi user
-                size: 48.0, // Ukuran ikon
-                color: Colors.black, // Warna ikon
-              ),
-            ),
-          ),
         ),
       ],
     );
