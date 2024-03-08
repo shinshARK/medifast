@@ -60,7 +60,7 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigasiBar(),
+      bottomNavigationBar: BottomNavigasiBar(context, inputan: 1),
       appBar: AppBar(
         title: const Text(
           'Riwayat Transaksi',

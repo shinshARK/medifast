@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import "package:flutter_feather_icons/flutter_feather_icons.dart";
 import 'package:rumah_sakit/screens/notifikasi_blur.dart';
-import 'package:rumah_sakit/screens/riwayatTransaksi.dart';
 import 'package:rumah_sakit/components/bottomNavigasiBar.dart';
-
 import 'dart:async';
 
-//home_screen
+
 
 // ignore: must_be_immutable, camel_case_types
 class home_screen extends StatefulWidget {
+  const home_screen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _home_screenState createState() => _home_screenState();
 }
 
+// ignore: camel_case_types
 class _home_screenState extends State<home_screen> {
   late ScrollController _controller;
   late Timer _timer;
 
-  int _cek = 0;
   bool _tujuan = true;
   
   @override
@@ -64,7 +64,7 @@ class _home_screenState extends State<home_screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigasiBar(),
+      bottomNavigationBar: BottomNavigasiBar(context, inputan: 0),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -88,10 +88,6 @@ class _home_screenState extends State<home_screen> {
                               fontWeight: FontWeight.w800,
                               fontSize: 18))
                     ])),
-            const SizedBox(
-              height: 5,
-            ),
-            _fitur_1(),
             const SizedBox(
               height: 5,
             ),
@@ -232,7 +228,7 @@ class _home_screenState extends State<home_screen> {
         ),
         GestureDetector(
           onTap: () {
-            print("halo");
+            
             // Aksi ketika Container diklik
           },
           child: Container(
@@ -288,7 +284,7 @@ class _home_screenState extends State<home_screen> {
         ),
         GestureDetector(
           onTap: () {
-            print("halo");
+            
             // Aksi ketika Container diklik
           },
           child: Container(
@@ -303,62 +299,6 @@ class _home_screenState extends State<home_screen> {
                 Icons.assignment_ind, // Ikon verifikasi user
                 size: 48.0, // Ukuran ikon
                 color: Colors.black, // Warna ikon
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Stack _fitur_1() {
-    return Stack(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-              top: 13.0, bottom: 13.0, left: 28), // Padding atas dan bawah
-          child: TextButton(
-            onPressed: () {
-              // Aksi ketika tombol ditekan
-            },
-            style: TextButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              backgroundColor: const Color.fromARGB(
-                  255, 219, 231, 116), // Warna latar belakang tombol
-              minimumSize: const Size(296.0, 78.0), // Ukuran minimum tombol
-            ),
-            child: const Padding(
-              padding:
-                  EdgeInsets.only(left: 65.0), // Padding untuk bagian kiri teks
-              child: Text('Jadwalkan Langsung',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 20)),
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            print("halo");
-            // Aksi ketika Container diklik
-          },
-          child: Container(
-            width: 102, // Lebar
-            height: 102, // Tinggi
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 135, 203, 198), // Warna latar belakang
-              shape: BoxShape.circle,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 25.0, bottom: 25.0, left: 30, right: 20),
-              child: Image.asset(
-                'assets/images/verified-account.png', // Path ke gambar di assets
-                fit: BoxFit
-                    .cover, // Cara gambar disesuaikan dengan ukuran yang ditentukan
               ),
             ),
           ),
@@ -403,7 +343,7 @@ class _home_screenState extends State<home_screen> {
                   onPressed: () {
                     showDialog(
                         context: context,
-                        builder: (context) => notifikasi_blur());
+                        builder: (context) => const notifikasi_blur());
                   },
                   icon: const Icon(Icons.notifications),
                 ),
