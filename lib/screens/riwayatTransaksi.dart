@@ -4,7 +4,7 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:rumah_sakit/components/bottomNavigasiBar.dart';
-
+import 'package:rumah_sakit/screens/detail_pertemuan.dart';
 
 
 
@@ -153,18 +153,19 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
                     onTap: (){
                       
 
-                      // switch (pageName) {
-                      //   case 'Page1':
+                      // switch (riwayatPemesanan[indek]["Status Riwayat"]) {
+                      //   case 'Segera':
+                          
+                          
+                      //     break;
+                      //   case 'Selesai':
                       //     Navigator.push(
                       //       context,
-                      //       MaterialPageRoute(builder: (context) => Page1()),
+                      //       MaterialPageRoute(builder: (context) => rating()),
                       //     );
+                          
                       //     break;
-                      //   case 'Page2':
-                      //     // Panggil fungsi Anda di sini
-                      //     yourFunction();
-                      //     break;
-                      //   // tambahkan kasus lainnya sesuai kebutuhan
+                      //   tambahkan kasus lainnya sesuai kebutuhan
                       //   default:
                       //     Navigator.push(
                       //       context,
@@ -190,7 +191,25 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
                   ),
                    GestureDetector(
                     onTap: (){
-                      
+                       switch (riwayatPemesanan[indek]["Status Riwayat"]) {
+                        case 'Segera':
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const detail_pertemuan()),
+                          );
+                          
+                          break;
+                        //case 'Selesai':
+                          
+                          
+                          //break;
+                        // tambahkan kasus lainnya sesuai kebutuhan
+                        //default:
+                        //   Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(builder: (context) => HomePage()),
+                        //   );
+                      }
                     },
                     child: Container(
                       width: 130,
