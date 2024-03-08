@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
 
-
-
-
 // ignore: camel_case_types
 class detail_pertemuan extends StatefulWidget {
   const detail_pertemuan({super.key});
