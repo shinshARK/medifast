@@ -1,8 +1,10 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import "package:flutter_feather_icons/flutter_feather_icons.dart";
-import 'package:rumah_sakit/screens/home_screen.dart';
 import 'dart:async';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:rumah_sakit/components/bottomNavigasiBar.dart';
+
 
 
 
@@ -15,21 +17,19 @@ class riwayatTransaksi extends StatefulWidget {
   _riwayatTransaksiState createState() => _riwayatTransaksiState();
 }
 
-
-
-
-
-
-
 // ignore: camel_case_types
 class _riwayatTransaksiState extends State<riwayatTransaksi> {
-  var riwayatPemesanan = [{"nama Dokter":"Dr. Eka Rakhman Z.Sp.A","Spesialis":"Dokter Anak","Status Riwayat":"Segera","Tanggal" : "2024-03-04","jam":"02:00:00.857"}];
-  var riwayatResep = [];
+  var riwayatPemesanan = [{"nama Dokter":"Dr. Eka Rakhman Z.Sp.A","Spesialis":"Dokter Anak","Status Riwayat":"Segera","Tanggal" : "2024-03-04","jam":"02:00:00.857","gambar":"dokter_1.png","pilihan" : "jadwal"},
+    {"nama Dokter":"Dr. Eka Rakhman Z.Sp.A","Spesialis":"Dokter Anak","Status Riwayat":"Selesai","Tanggal" : "2024-03-04","jam":"02:00:00.857","gambar":"dokter_1.png","pilihan" : "jadwal"},
+    {"nama Dokter":"-","Spesialis":"-","Status Riwayat":"-","Tanggal" : "2024-03-04","jam":"02:00:00.857","gambar":"task_1.png","pilihan" : "catatan"},
+    {"nama Dokter":"Dr. Endang Suharian,Sp.THT","Spesialis":"Dokter THT","Status Riwayat":"Batal","Tanggal" : "2024-03-04","jam":"02:00:00.857","gambar":"dokter_1.png","pilihan" : "jadwal"}
+  ];
+  
   @override
   Widget build(BuildContext context) {
     
     return Scaffold(
-      bottomNavigationBar: _bottomNavigasiBar(),
+      bottomNavigationBar: BottomNavigasiBar(),
       
       appBar: AppBar(
         title: const Text('Riwayat Transaksi',style: TextStyle(fontWeight: FontWeight.w700),),
@@ -39,99 +39,22 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
       backgroundColor: Colors.black.withOpacity(0.1),
       body: SingleChildScrollView(
         child: Column(
-          children: List.generate(1, (index) {
-            return _riwayat(2,true,false,1);
+          children: List.generate(4, (index) {
+            return riwayatPemesanan[index]['pilihan'] == "jadwal" ? riwayatPemesanan[index]['Status Riwayat'] == "batal" ? _riwayat(1,true,1,index)  : _riwayat(2,true,1,index) : _riwayat(1,false,2,index);
           }),
         ),
       ),
     );
   }
 
-  // ignore: non_constant_identifier_names
-  var menu_icon = [
-    Icons.home,
-    Icons.calendar_month,
-    Icons.person,
-    Icons.format_list_bulleted,
-    Icons.account_circle_outlined
-  ];
+  
 
-  // ignore: non_constant_identifier_names
-  var menu_label = ["Beranda", "Riwayat", "Doktor", "Artikel", "Profil"];
-  final int _selectedIndex = 1;
-
-  BottomNavigationBar _bottomNavigasiBar() {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      
-      showUnselectedLabels: true,
-      items: menu_icon
-          .asMap()
-          .entries
-          .map((e) => BottomNavigationBarItem(
-                icon: GestureDetector(
-                  onTap: (){
-                    if(e.key == 0){
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          // ignore: non_constant_identifier_names
-                          builder: (Context) => home_screen(),
-                        ),
-                        (route) => false);
-                    }
-                  },
-                  child: Container(
-                    width: 70,
-                    height: 70,
-                    decoration: BoxDecoration(
-                      color: _selectedIndex == e.key
-                          ? const Color.fromARGB(255, 135, 203, 198)
-                          : null, // Warna latar belakang saat item dipilih
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: _selectedIndex ==
-                              e.key // Menambahkan efek bayangan saat item dipilih
-                          ? [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.25),
-                                blurRadius: 4.9,
-                                offset:
-                                    const Offset(0, 0), // changes position of shadow
-                              ),
-                            ]
-                          : null,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(e.value,size: 40,color: _selectedIndex == e.key
-                                  ? Colors.white
-                                  : Colors.black,), // Mengubah ukuran ikon
-                        Text(
-                          menu_label[e.key],
-                          style: TextStyle(
-                              color: _selectedIndex == e.key
-                                  ? Colors.white
-                                  : Colors.black,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 8),
-                              textAlign: TextAlign.center,
-                        ), // Menambahkan label ke dalam Container
-                      ],
-                    ),
-                  ),
-                ),
-                label: '', // Menghapus label dari BottomNavigationBarItem
-              ))
-          .toList(),
-    );
-  }
-
-  Center _riwayat(int jumlahTombol,bool keterangan,bool pembatasKeterangan,int jenisPilihan){
+  Center _riwayat(int jumlahTombol,bool keterangan,int jenisPilihan,int indek){
     return Center(
       child: Container(
         width: 320,
         height: 180,
-        margin: EdgeInsets.only(top: 20),
+        margin: const EdgeInsets.only(top: 20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
@@ -150,42 +73,69 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
                 CircleAvatar(
                   radius: 52,
                   backgroundColor: Colors.white.withOpacity(0.0),
-                  child: const CircleAvatar(
-                    radius: 40,
-                    backgroundImage: AssetImage(
-                        'assets/images/profile_picture_2.png'), // Ganti dengan path foto Anda
-                  ),
+                  child: keterangan == true ?  
+                    CircleAvatar(
+                      radius: 40,
+                      backgroundImage: AssetImage("assets/images/${riwayatPemesanan[indek]['gambar']}"),
+                    ) 
+                    : 
+                    Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage("assets/images/${riwayatPemesanan[indek]['gambar']}"),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
                 )
+
                 ,
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      width: 200,
-                      child: Text(jenisPilihan == 1 ? riwayatPemesanan[0]["nama Dokter"]:riwayatResep[0],style: TextStyle(fontWeight: FontWeight.bold))
-                      ),
+                    Text(jenisPilihan == 1 ? riwayatPemesanan[indek]["nama Dokter"]!:"Catatan Dokter & rersep",style: const TextStyle(fontWeight: FontWeight.bold)),
                     const SizedBox(
                       height: 4,
                     ),
-                    keterangan == true ? Row(
+                    if (keterangan == true) Row(
                       children: [
-                        Text("Dokter Anak "),
-                        pembatasKeterangan == true ? Text("|") : Text(" "),
+                        Text(riwayatPemesanan[0]['Spesialis']!),
+                        const Text(" |"),
                         Container(
                           width: 60,
                           decoration: BoxDecoration(
-                            color: Colors.yellow.withOpacity(0.1),
+                            color: riwayatPemesanan[indek]["Status Riwayat"] == "Segera" ? Colors.yellow.withOpacity(0.1) : riwayatPemesanan[indek]["Status Riwayat"] == "Selesai" ? Colors.green.withOpacity(0.1) : Colors.red.withOpacity(0.1) ,
                             borderRadius: BorderRadius.circular(20)
                           ),
-                          child: Text(riwayatPemesanan[0]["Status Riwayat"]!,style: TextStyle(color: Color.fromARGB(255, 255, 255, 0)),textAlign: TextAlign.center,),
+                          child: Text(riwayatPemesanan[indek]["Status Riwayat"]!,style: TextStyle(
+                            color: riwayatPemesanan[indek]["Status Riwayat"] == "Segera" ? Colors.yellow : riwayatPemesanan[indek]["Status Riwayat"] == "Selesai" ? Colors.green : Colors.red,
+                          ),textAlign: TextAlign.center,),
                         )
                       ],
-                    ) : const SizedBox(
+                    ) else const SizedBox(
                       height: 0,
                     ),
                     const SizedBox(
                       height: 4,
                     ),
-                    Text("15 fubuari 2023 | 11:00")
+                    
+                    FutureBuilder<String>(
+                      future: formatTanggalDanWaktu(riwayatPemesanan[indek]["Tanggal"]!, riwayatPemesanan[indek]["jam"]!), // panggil fungsi Anda di sini
+                      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const CircularProgressIndicator();  // tampilkan indikator loading saat menunggu
+                        } else {
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          } else {
+                            return Text('${snapshot.data}');  // tampilkan hasil fungsi
+                          }
+                        }
+                      },
+                    )
+                
                   ],
                 )
               ],
@@ -193,30 +143,49 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
             Container(
               width: 290,
               alignment: AlignmentDirectional.center,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 border: Border(top: BorderSide(color: Colors.grey))
               ),
-              child: Row(
+              child:jumlahTombol == 2 ? Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
                     onTap: (){
+                      
 
-                    },
+                      // switch (pageName) {
+                      //   case 'Page1':
+                      //     Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(builder: (context) => Page1()),
+                      //     );
+                      //     break;
+                      //   case 'Page2':
+                      //     // Panggil fungsi Anda di sini
+                      //     yourFunction();
+                      //     break;
+                      //   // tambahkan kasus lainnya sesuai kebutuhan
+                      //   default:
+                      //     Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(builder: (context) => HomePage()),
+                      //     );
+                      // }
+                    },      
                     child: Container(
                       width: 130,
                       height: 40,
                       alignment: AlignmentDirectional.center,
-                      margin: EdgeInsets.only(right: 20,top: 20),
+                      margin: const EdgeInsets.only(right: 20,top: 20),
                       decoration: BoxDecoration(
                         
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: Color.fromARGB(255, 135, 203, 198), // Warna border
+                          color: const Color.fromARGB(255, 135, 203, 198), // Warna border
                           width: 3.0, // Ketebalan border
                         )
                       ),
-                      child: Text("Batalkan Booking",style: TextStyle(color: Color.fromARGB(255, 135, 203, 198)),textAlign: TextAlign.center,),
+                      child: Text(riwayatPemesanan[indek]["Status Riwayat"] == "Segera" ? "Batalkan Booking" : "Nilai",style: const TextStyle(color: Color.fromARGB(255, 135, 203, 198)),textAlign: TextAlign.center,),
                     ),
                   ),
                    GestureDetector(
@@ -227,20 +196,51 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
                       width: 130,
                       height: 40,
                       alignment: AlignmentDirectional.center,
-                      margin: EdgeInsets.only(top: 20),
+                      margin: const EdgeInsets.only(top: 20),
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 135, 203, 198),
+                        color: const Color.fromARGB(255, 135, 203, 198),
                         borderRadius: BorderRadius.circular(20)
                       ),
-                      child: Text("Detail",style: TextStyle(color: Colors.white),textAlign: TextAlign.center,),
+                      child: Text(riwayatPemesanan[indek]["Status Riwayat"] == "Segera" ? "Detail" : "jadwalkan kembali",style: const TextStyle(color: Colors.white),textAlign: TextAlign.center,),
                     ),
                   )
                 ],
-              ),
+              ) : GestureDetector(
+                    onTap: (){
+                      
+                    },
+                    child: Container(
+                      width: 260,
+                      height: 40,
+                      alignment: AlignmentDirectional.center,
+                      margin: const EdgeInsets.only(top: 20),
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 135, 203, 198),
+                        borderRadius: BorderRadius.circular(20)
+                      ),
+                      child: Text(keterangan == false ? "Detail" : "jadwalkan ulang",style: const TextStyle(color: Colors.white),textAlign: TextAlign.center,),
+                    ),
+                  ),
             )
           ],
         ),
       ),
     );
   }
+
+  Future<String> formatTanggalDanWaktu(String tanggalInput, String jamInput) async {
+    await initializeDateFormatting('id_ID', null);
+
+    var tanggal = DateTime.parse(tanggalInput);
+    var jam = TimeOfDay.fromDateTime(DateTime.parse("1970-01-01 $jamInput"));
+
+    var formatterTanggal = DateFormat('dd MMMM yyyy', 'id_ID');
+    var formatterJam = DateFormat('HH:mm', 'id_ID');
+
+    var tanggalFormatted = formatterTanggal.format(tanggal);
+    var jamFormatted = formatterJam.format(DateTime(1970, 1, 1, jam.hour, jam.minute));
+
+    return "$tanggalFormatted | $jamFormatted";
+  }
+
 }
