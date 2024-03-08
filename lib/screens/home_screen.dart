@@ -64,7 +64,7 @@ class _home_screenState extends State<home_screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigasiBar(context, inputan: 0),
+      bottomNavigationBar: const BottomNavigasiBar(inputan: 0),
       body: SingleChildScrollView(
         child: Column(
           children: [

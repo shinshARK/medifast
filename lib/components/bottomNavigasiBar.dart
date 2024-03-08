@@ -6,10 +6,10 @@ import 'package:rumah_sakit/screens/home_screen.dart';
 class BottomNavigasiBar extends StatefulWidget {
   
   final int inputan;
-  const BottomNavigasiBar(BuildContext context, {super.key, required this.inputan});
+  const BottomNavigasiBar({super.key, required this.inputan});
   @override
   // ignore: library_private_types_in_public_api, no_logic_in_create_state
-  _BottomNavigasiBarState createState() => _BottomNavigasiBarState(inputan, selectedIndex: inputan);
+  _BottomNavigasiBarState createState() => _BottomNavigasiBarState();
 }
 
 class _BottomNavigasiBarState extends State<BottomNavigasiBar> {
@@ -25,7 +25,11 @@ class _BottomNavigasiBarState extends State<BottomNavigasiBar> {
   // ignore: non_constant_identifier_names
   var menu_label = ["Beranda", "Riwayat", "Doktor", "Artikel", "Profil"];
   int selectedIndex = 0;
-  _BottomNavigasiBarState(int inputan, {required this.selectedIndex});
+  @override
+  void initState() {
+    super.initState();
+    selectedIndex = widget.inputan;
+  }
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
