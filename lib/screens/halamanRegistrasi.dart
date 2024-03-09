@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rumah_sakit/screens/halamanLogin.dart';
+import 'package:rumah_sakit/components/popupcustom.dart';
 
 class HalamanRegistrasi extends StatefulWidget {
   const HalamanRegistrasi({super.key});
@@ -88,16 +89,25 @@ class _HalamanRegistrasiState extends State<HalamanRegistrasi> {
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    if (_formKey.currentState!.validate()) {
+                    // if (_formKey.currentState!.validate()) {
                       // Jika form valid, tampilkan dialog
                       showDialog(
                         context: context,
                         barrierDismissible: false,
                         builder: (context) {
-                          return _pemberitahuanBerhasil();
+                          return Dialog(child: PopupCustom(page1: () {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const HalamanLogin()),
+                            );
+                          }, page2: (){}, jumlah_tombol: 1, notif: 'berhasil', judul_notif: 'Berhasil\nMembuat Akun', penjelasan_tambahan: '', nama_tombol_1: 'Masuk', nama_tombol_2: '',
+                          
+                          ));
                         },
                       );
-                    }
+                    // }
                   },
                   child: Container(
                     width: 370,
@@ -122,71 +132,6 @@ class _HalamanRegistrasiState extends State<HalamanRegistrasi> {
           ),
         ),
       ),
-    );
-  }
-
-  Dialog _pemberitahuanBerhasil() {
-    return Dialog(
-      child: Container(
-          width: 259,
-          height: 370,
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Container(
-                width: 142,
-                height: 142,
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 219, 231, 116),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.verified_user,
-                  size: 62,
-                  color: Colors.white,
-                ),
-              ),
-              Container(
-                width: 195,
-                margin: const EdgeInsets.only(top: 40),
-                child: const Text(
-                  "Berhasil\nMembuat Akun",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Color.fromARGB(255, 219, 231, 116),
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const HalamanLogin()),
-                  );
-                },
-                child: Container(
-                  width: 192,
-                  height: 52,
-                  margin: const EdgeInsets.only(top: 30),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 135, 203, 198),
-                      borderRadius: BorderRadius.circular(30)),
-                  child: const Text(
-                    "Masuk",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500),
-                  ),
-                ),
-              ),
-            ],
-          )),
     );
   }
 
