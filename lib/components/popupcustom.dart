@@ -105,7 +105,7 @@ class _PopupCustomState extends State<PopupCustom> {
             margin: const EdgeInsets.only(top: 20),
             child:  Text(
               penjelasan_tambahan,
-              textAlign: TextAlign.left,
+              textAlign: TextAlign.center,
               style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold),
@@ -124,7 +124,7 @@ class _PopupCustomState extends State<PopupCustom> {
               // );
             },
             child: Container(
-              width: 192,
+              width: 252,
               height: 52,
               margin: const EdgeInsets.only(top: 30),
               alignment: Alignment.center,
@@ -146,7 +146,7 @@ class _PopupCustomState extends State<PopupCustom> {
               
             },
             child: Container(
-              width: 192,
+              width: 252,
               height: 52,
               margin: const EdgeInsets.only(top: 30),
               alignment: Alignment.center,
