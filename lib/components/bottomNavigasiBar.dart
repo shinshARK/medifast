@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rumah_sakit/screens/riwayatTransaksi.dart';
 import 'package:rumah_sakit/screens/home_screen.dart';
+import 'package:rumah_sakit/screens/daftar_dokter.dart';
+
 
 
 class BottomNavigasiBar extends StatefulWidget {
@@ -45,7 +47,7 @@ class _BottomNavigasiBarState extends State<BottomNavigasiBar> {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             // ignore: non_constant_identifier_names
-            builder: (Context) => home_screen(),
+            builder: (Context) => const home_screen(),
           ),
           (route) => false);
         // Lakukan sesuatu untuk item pertama di sini
@@ -58,6 +60,12 @@ class _BottomNavigasiBarState extends State<BottomNavigasiBar> {
           (route) => false);
         // Lakukan sesuatu untuk item kedua di sini
       } else if (index == 2) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            // ignore: non_constant_identifier_names
+            builder: (Context) => const daftar_dokter(),
+          ),
+          (route) => false);
         // Lakukan sesuatu untuk item ketiga di sini
       }},
       items: menu_icon

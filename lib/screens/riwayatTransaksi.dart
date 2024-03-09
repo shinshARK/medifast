@@ -6,6 +6,8 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:rumah_sakit/components/bottomNavigasiBar.dart';
 import 'package:rumah_sakit/screens/detail_pertemuan.dart';
 import 'package:rumah_sakit/screens/catatan_dan_resep_dokter.dart';
+import 'package:rumah_sakit/screens/rating.dart';
+
 
 // ignore: must_be_immutable, camel_case_types
 class riwayatTransaksi extends StatefulWidget {
@@ -74,7 +76,7 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
         child: Column(
           children: List.generate(4, (index) {
             return riwayatPemesanan[index]['pilihan'] == "jadwal"
-                ? riwayatPemesanan[index]['Status Riwayat'] == "batal"
+                ? riwayatPemesanan[index]['Status Riwayat'] == "Batal"
                     ? _riwayat(1, true, 1, index)
                     : _riwayat(2, true, 1, index)
                 : _riwayat(1, false, 2, index);
@@ -213,15 +215,15 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            // switch (riwayatPemesanan[indek]["Status Riwayat"]) {
-                            //   case 'Segera':
+                            switch (riwayatPemesanan[indek]["Status Riwayat"]) {
+                              case 'Segera':
 
-                            //     break;
-                            //   case 'Selesai':
-                            //     Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(builder: (context) => rating()),
-                            //     );
+                                break;
+                              case 'Selesai':
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const rating()),
+                                );
 
                             //     break;
                             //   tambahkan kasus lainnya sesuai kebutuhan
@@ -230,7 +232,7 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
                             //       context,
                             //       MaterialPageRoute(builder: (context) => HomePage()),
                             //     );
-                            // }
+                            }
                           },
                           child: Container(
                             width: 130,
