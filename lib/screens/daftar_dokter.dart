@@ -1,14 +1,8 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
-import 'dart:async';
-import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:rumah_sakit/components/bottomNavigasiBar.dart';
-import 'package:rumah_sakit/components/datadokter.dart';
-
-import 'package:rumah_sakit/screens/detail_pertemuan.dart';
-import 'package:rumah_sakit/screens/catatan_dan_resep_dokter.dart';
-import 'package:rumah_sakit/screens/rating.dart';
+import 'package:rumah_sakit/models/dokter_model.dart';
+import 'package:rumah_sakit/screens/datasearch.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 // ignore: must_be_immutable, camel_case_types
@@ -21,74 +15,61 @@ class daftar_dokter extends StatefulWidget {
 }
 
 var dokter = ["Semua", "Umum", "Anak", "Dalam"];
-List<List<String>> data = [["Dr. Eki Rakhmah Z, Sp.A","Dokter Spesialis Anak","4.8","true",""],
-["Dr. Yudi Heriyanto","Dokter Umum","4.2","false",""],
-["Dr. Lilis","Dokter Umum","4.5","false",""],
-["Dr. Rini wijaya. Sp.PD","Dokter Spesialis Dalam","4.8","false",""],
-["Dr. Budi Santoso, Sp.A","Dokter Spesialis Anak","4.3","true",""]
 
-];
-List<List<String>> data2 = [["Dr. Eki Rakhmah Z, Sp.A","Dokter Spesialis Anak","4.8","true",""],
-["Dr. Yudi Heriyanto","Dokter Umum","4.2","false",""],
-["Dr. Lilis","Dokter Umum","4.5","false",""],
-["Dr. Rini wijaya. Sp.PD","Dokter Spesialis Dalam","4.8","false",""],
-["Dr. Budi Santoso, Sp.A","Dokter Spesialis Anak","4.3","true",""]
-
-];
 int selecteddokter = 0;
-List<bool> _isLiked = [true, false, false, false, true];
 
 // ignore: camel_case_types
 class _daftar_dokterState extends State<daftar_dokter> {
   // ignore: non_constant_identifier_names
-  List<int> posisi_data(){
+  List<int> posisi_data() {
     List<int> hasil = [];
-    for(int i = 0; i < data.length; i++){
-      if(selecteddokter == 0){
+
+    for (int i = 0; i < data_dokter.length; i++) {
+      if (selecteddokter == 0) {
         hasil.add(i);
-      }else if(cek(data[i]) == true){
+      } else if (data_dokter[i]
+              .spesialis
+              .toLowerCase()
+              .contains(dokter[selecteddokter].toLowerCase()) ==
+          true) {
         hasil.add(i);
       }
     }
+
     return hasil;
   }
 
-  bool cek(List<String> test){
-    if(test[1].toLowerCase().contains(dokter[selecteddokter].toLowerCase()) == true){
-      return true;
-    }else{
-      return false;
-    }
-  }
-  List<String> data_nama(){
+  List<String> daftarnama() {
     List<String> sem = [];
-    for(int i = 0;i < data.length;i++){
-      sem.add(data[i][0]);
+    for (DokterModel temp in data_dokter) {
+      sem.add(temp.nama);
     }
     return sem;
   }
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       bottomNavigationBar: const BottomNavigasiBar(inputan: 2),
       appBar: AppBar(
         title: const Text(
           'Dokter',
-          style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
         actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {
-                showSearch(context: context, delegate: DataSearch(data_nama()));
-              },
-            ),
-          ],
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              setState(() {
+                showSearch(context: context, delegate: DataSearch(data_dokter));
+              });
+            },
+          ),
+        ],
         elevation: 10,
         shadowColor: Colors.white,
       ),
-      backgroundColor: Colors.black.withOpacity(0.1),
       body: Column(children: [
         _katagori(),
         const SizedBox(
@@ -96,107 +77,129 @@ class _daftar_dokterState extends State<daftar_dokter> {
         ),
         SizedBox(
           width: 400,
-          height: 680,
+          height: 640,
           child: ListView.separated(
             itemCount: posisi_data().length,
             itemBuilder: (BuildContext context, int index) {
-              return datadokter(index: posisi_data()[index], data: data, isLiked: _isLiked,);
-            }, separatorBuilder: (BuildContext context, int index) { return const SizedBox(height: 10,); },
+              return Material(
+                elevation: 5.0, // Nilai elevasi
+                borderRadius: BorderRadius.circular(20),
+                child: Container(
+                  width: 300,
+                  margin: const EdgeInsets.only(top: 20),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 20),
+                        child: CircleAvatar(
+                          radius: 52,
+                          backgroundColor: Colors.white.withOpacity(0.0),
+                          child: CircleAvatar(
+                            radius: 40,
+                            backgroundImage: AssetImage(
+                                'assets/images/${data_dokter[posisi_data()[index]].image}'),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      Container(
+                        width: 200,
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              data_dokter[posisi_data()[index]].nama,
+                              style: const TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              data_dokter[posisi_data()[index]].spesialis,
+                              style: const TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                RatingBar.builder(
+                                  initialRating:
+                                      double.parse(data_dokter[posisi_data()[index]].rating),
+                                  minRating: 1,
+                                  direction: Axis.horizontal,
+                                  allowHalfRating: true,
+                                  itemCount: 5,
+                                  itemSize: 20,
+                                  //itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                                  itemBuilder: (context, _) => const Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                    size: 1.0,
+                                  ),
+                                  // ignore: avoid_types_as_parameter_names
+                                  onRatingUpdate: (rating) {},
+                                  ignoreGestures: true,
+                                ),
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                Text(
+                                  data_dokter[posisi_data()[index]].rating,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      Container(
+                        alignment: Alignment.topRight,
+                        child: IconButton(
+                          icon: Icon(
+                            data_dokter[posisi_data()[index]].tanda
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: data_dokter[posisi_data()[index]].tanda
+                                ? Colors.black
+                                : Colors.black,
+                            size: 30,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              data_dokter[posisi_data()[index]].tanda
+                                  ? data_dokter[posisi_data()[index]].setTanda(false)
+                                  : data_dokter[posisi_data()[index]].setTanda(true);
+                            });
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return const SizedBox(
+                height: 10,
+              );
+            },
           ),
         )
       ]),
     );
-  }
-
-  Material _datadokter(int index) {
-    return Material(
-              elevation: 5.0, // Nilai elevasi
-              borderRadius: BorderRadius.circular(20),
-              child: Container(
-                width: 300,
-                margin: const EdgeInsets.only(top: 20),
-                child: Row(
-                  
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 20),
-                      child: CircleAvatar(
-                        radius: 52,
-                        backgroundColor: Colors.white.withOpacity(0.0),
-                        child: const CircleAvatar(
-                          radius: 40,
-                          backgroundImage: AssetImage("assets/images/dokter_1.png"),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 20,),
-                    Container(
-                      width: 200,
-                      padding: const EdgeInsets.only(bottom: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(data[index][0],style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold
-                          ),),
-                          const SizedBox(height: 10,),
-                          Text(data[index][1],style: const TextStyle(
-                            fontSize: 14,
-                          ),),
-                          const SizedBox(height: 10,),
-                          Row(
-                            children: [
-                              RatingBar.builder(
-                              initialRating: double.parse(data[index][2]),
-                              minRating: 1,
-                              direction: Axis.horizontal,
-                              allowHalfRating: true,
-                              itemCount: 5,
-                              itemSize: 20,
-                              //itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                              itemBuilder: (context, _) => const Icon(
-                              
-                                Icons.star,
-                                color: Colors.amber,
-                                size: 1.0,
-                              ),
-                              // ignore: avoid_types_as_parameter_names
-                              onRatingUpdate: (rating) { 
-                              },
-                              ignoreGestures: true,
-                              ),
-                              const SizedBox(width: 15,),
-                              Text(data[index][2],style: const TextStyle(
-                                fontSize: 14,
-                              ),),
-                              
-                            ],
-                          ),
-                      ],),
-                    ),
-                    const SizedBox(width: 20,),
-                    Container(
-                      alignment: Alignment.topRight,
-                      child: IconButton(
-                        icon: Icon(
-                          _isLiked[index] ? Icons.favorite : Icons.favorite_border,
-                          color: _isLiked[index] ? Colors.black : Colors.black,
-                          size: 30,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _isLiked[index] = !_isLiked[index];
-                          });
-                        },
-                      ),
-                    )
-
-                  ],
-                ),
-              ),
-            );
   }
 
   Container _katagori() {
@@ -254,55 +257,4 @@ class _daftar_dokterState extends State<daftar_dokter> {
           itemCount: dokter.length),
     );
   }
-}
-
-
-class DataSearch extends SearchDelegate<String> {
-  final List<String> data; // Anda perlu mengisi list ini dengan data Anda
-
-  DataSearch(this.data);
-
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return [
-      IconButton(
-        icon: Icon(Icons.clear),
-        onPressed: () {
-          query = '';
-        },
-      ),
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    return IconButton(
-      icon: AnimatedIcon(
-        icon: AnimatedIcons.menu_arrow,
-        progress: transitionAnimation,
-      ),
-      onPressed: () {
-        close(context, '');
-      },
-    );
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    // Anda bisa mengembalikan widget Anda di sini berdasarkan hasil pencarian
-    return Container();
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    final suggestionList = query.isEmpty
-        ? data
-        : data.where((p) => p.toLowerCase().startsWith(query.toLowerCase())).toList();
-
-    return ListView.builder(
-      itemBuilder: (context, index) => datadokter(index: index, data: data2, isLiked: _isLiked),
-      itemCount: suggestionList.length,
-    );
-  }
-  
 }
