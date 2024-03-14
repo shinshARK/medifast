@@ -64,10 +64,13 @@ class _home_screenState extends State<home_screen> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: const BottomNavigasiBar(inputan: 0),
-      body: SingleChildScrollView(
-        child: Column(
+  return Scaffold(
+    bottomNavigationBar: const BottomNavigasiBar(inputan: 0),
+    body: SafeArea(
+      child: SingleChildScrollView(
+        child: Flex(
+          direction: Axis.vertical,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const SizedBox(
               height: 5,
@@ -109,14 +112,14 @@ class _home_screenState extends State<home_screen> {
                 separatorBuilder: (context, index) => const SizedBox(width: 20.0,),
                 itemCount: 3,
               ),
-            )
-            ,
-            
+            ),
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
+
   
   // ignore: non_constant_identifier_names
   GestureDetector _artikel_populer() {
