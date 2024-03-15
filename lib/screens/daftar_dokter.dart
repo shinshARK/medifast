@@ -69,15 +69,11 @@ class _daftar_dokterState extends State<daftar_dokter> {
         elevation: 10,
         shadowColor: Colors.white,
       ),
-      body: Column(children: [
+      body: Column(children: <Widget>[
         _katagori(),
-        const SizedBox(
-          height: 30,
-        ),
-        SizedBox(
-          width: 400,
-          height: 640,
+        Expanded(
           child: ListView.separated(
+            
             itemCount: posisi_data().length,
             itemBuilder: (BuildContext context, int index) {
               return Material(
@@ -205,8 +201,8 @@ class _daftar_dokterState extends State<daftar_dokter> {
 
   Container _katagori() {
     return Container(
-      height: 40,
-      margin: const EdgeInsets.only(top: 20, left: 10),
+      height: 50,
+      margin: const EdgeInsets.only(top: 20,bottom: 30),
       child: ListView.separated(
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) => GestureDetector(
