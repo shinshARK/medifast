@@ -1,16 +1,31 @@
-# rumah_sakit
+# Medifast
 
-A new Flutter project.
+Flutter project untuk Tugas Besar Provis.
 
-## Getting Started
+## Progress
+untuk pengumpulan tugas
+taro hasil pekerjaan, ss disini, jelaskan, cantumkan siapa yang mengerjakan
 
-This project is a starting point for a Flutter application.
+### 4 Maret - 20 Maret (TP 2 Praktikum) // ini harusnya per sprint kali ya
 
-A few resources to get you started if this is your first Flutter project:
+#### Halaman Login - Ilham
+(ss)
+(penjelasan fitur2 yang ada di dalamnya, widgetnya apa aja yg dipake, dst, kalo ada yang kek subhalaman/popup tambahin juga)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+#### Halaman Registrasi - Ilham
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+#### Halaman Home - Ilham
+##### Notifikasi (contoh subhalaman)
+
+#### Halaman Daftar Dokter - Ilham
+
+#### Halaman Detail Janji yang akan datang - Repan
+
+#### Halaman Catatan Dokter & Resep
+
+#### Halaman Artikel - Raditya
+
+#### Halaman Profil - Adrian
+
+
+### 20 Maret -  
