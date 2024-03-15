@@ -49,7 +49,6 @@ class _daftar_dokterState extends State<daftar_dokter> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       bottomNavigationBar: const BottomNavigasiBar(inputan: 2),
       appBar: AppBar(
@@ -69,7 +68,6 @@ class _daftar_dokterState extends State<daftar_dokter> {
         ],
         elevation: 10,
         shadowColor: Colors.white,
-        
       ),
       body: Column(children: [
         _katagori(),
@@ -132,8 +130,8 @@ class _daftar_dokterState extends State<daftar_dokter> {
                             Row(
                               children: [
                                 RatingBar.builder(
-                                  initialRating:
-                                      double.parse(data_dokter[posisi_data()[index]].rating),
+                                  initialRating: double.parse(
+                                      data_dokter[posisi_data()[index]].rating),
                                   minRating: 1,
                                   direction: Axis.horizontal,
                                   allowHalfRating: true,
@@ -181,8 +179,10 @@ class _daftar_dokterState extends State<daftar_dokter> {
                           onPressed: () {
                             setState(() {
                               data_dokter[posisi_data()[index]].tanda
-                                  ? data_dokter[posisi_data()[index]].setTanda(false)
-                                  : data_dokter[posisi_data()[index]].setTanda(true);
+                                  ? data_dokter[posisi_data()[index]]
+                                      .setTanda(false)
+                                  : data_dokter[posisi_data()[index]]
+                                      .setTanda(true);
                             });
                           },
                         ),

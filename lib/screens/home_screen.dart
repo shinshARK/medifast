@@ -5,8 +5,6 @@ import 'package:rumah_sakit/components/bottomNavigasiBar.dart';
 import 'package:rumah_sakit/components/highlight.dart';
 import 'dart:async';
 
-
-
 // ignore: must_be_immutable, camel_case_types
 class home_screen extends StatefulWidget {
   const home_screen({super.key});
@@ -22,37 +20,45 @@ class _home_screenState extends State<home_screen> {
   late Timer _timer;
 
   bool _tujuan = true;
-  
+
   @override
   void initState() {
     super.initState();
     _controller = ScrollController();
     _timer = Timer.periodic(const Duration(seconds: 8), (Timer t) {
-      if(_controller.offset > 740 && _tujuan == true){
+      if (_controller.offset > 740 && _tujuan == true) {
         _tujuan = false;
       }
-      if(_controller.offset < 20 && _tujuan == false){
-          _tujuan = true;
-        }
+      if (_controller.offset < 20 && _tujuan == false) {
+        _tujuan = true;
+      }
       if (_controller.hasClients && _tujuan == true) {
         _controller.animateTo(
-          _controller.offset + (_controller.offset % 377 == 0 ? 377 : (_controller.offset < 377 ? (377 - _controller.offset) : (754 - _controller.offset))), // 200 is the distance to scroll each time
-          
+          _controller.offset +
+              (_controller.offset % 377 == 0
+                  ? 377
+                  : (_controller.offset < 377
+                      ? (377 - _controller.offset)
+                      : (754 -
+                          _controller
+                              .offset))), // 200 is the distance to scroll each time
+
           curve: Curves.easeInOut,
           duration: const Duration(milliseconds: 800),
         );
-        
-        
-      }else if (_controller.hasClients && _tujuan == false) {
+      } else if (_controller.hasClients && _tujuan == false) {
         _controller.animateTo(
-          _controller.offset - (_controller.offset % 377 == 0 ? 377 : (_controller.offset < 377 ? _controller.offset : (_controller.offset - 377))), // 200 is the distance to scroll each time
+          _controller.offset -
+              (_controller.offset % 377 == 0
+                  ? 377
+                  : (_controller.offset < 377
+                      ? _controller.offset
+                      : (_controller.offset -
+                          377))), // 200 is the distance to scroll each time
           curve: Curves.easeInOut,
           duration: const Duration(milliseconds: 800),
         );
-        
-        
       }
-      
     });
   }
 
@@ -62,71 +68,74 @@ class _home_screenState extends State<home_screen> {
     _controller.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
-  return Scaffold(
-    bottomNavigationBar: const BottomNavigasiBar(inputan: 0),
-    body: SafeArea(
-      child: SingleChildScrollView(
-        child: Flex(
-          direction: Axis.vertical,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 5,
-            ),
-            _profil(context),
-            const SizedBox(
-              height: 5,
-            ),
-            RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                    text: "Selamat Pagi\n",
-                    style: GoogleFonts.openSans(fontSize: 14),
-                    children: const [
-                      TextSpan(
-                          text: "Ilham Akbar",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 18))
-                    ])),
-            const SizedBox(
-              height: 5,
-            ),
-             
-            const highlight(inputan: 1, logo: 'Handshake.png', kalimat: 'Jadwal Janji'),
-            const SizedBox(
-              height: 20,
-            ),
-             const highlight(inputan: 1, logo: 'IdentificationBadge.png', kalimat: 'Pangilan Dokter\nke Rumah'),
-            _artikel_fitur(),
-            Container(
-              height: 172,
-              margin: const EdgeInsets.only(left: 15,right: 10),
-              child: ListView.separated(
-                controller: _controller,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context,index) => _artikel_populer(),
-                separatorBuilder: (context, index) => const SizedBox(width: 20.0,),
-                itemCount: 3,
+    return Scaffold(
+      bottomNavigationBar: const BottomNavigasiBar(inputan: 0),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Flex(
+            direction: Axis.vertical,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 5,
               ),
-            ),
-          ],
+              _profil(context),
+              const SizedBox(
+                height: 5,
+              ),
+              RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                      text: "Selamat Pagi\n",
+                      style: GoogleFonts.openSans(fontSize: 14),
+                      children: const [
+                        TextSpan(
+                            text: "Ilham Akbar",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w800,
+                                fontSize: 18))
+                      ])),
+              const SizedBox(
+                height: 5,
+              ),
+              const highlight(
+                  inputan: 1, logo: 'handshake.png', kalimat: 'Jadwal Janji'),
+              const SizedBox(
+                height: 20,
+              ),
+              const highlight(
+                  inputan: 1,
+                  logo: 'IdentificationBadge.png',
+                  kalimat: 'Pangilan Dokter\nke Rumah'),
+              _artikel_fitur(),
+              Container(
+                height: 172,
+                margin: const EdgeInsets.only(left: 15, right: 10),
+                child: ListView.separated(
+                  controller: _controller,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) => _artikel_populer(),
+                  separatorBuilder: (context, index) => const SizedBox(
+                    width: 20.0,
+                  ),
+                  itemCount: 3,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
-  
   // ignore: non_constant_identifier_names
   GestureDetector _artikel_populer() {
     return GestureDetector(
-      onTap: (){
-                    
-      },
+      onTap: () {},
       child: Container(
         width: 360.0,
         height: 172.0,
@@ -167,7 +176,7 @@ class _home_screenState extends State<home_screen> {
       ),
     );
   }
-  
+
   // ignore: non_constant_identifier_names
   Row _artikel_fitur() {
     return Row(
@@ -182,7 +191,6 @@ class _home_screenState extends State<home_screen> {
           padding: const EdgeInsets.only(bottom: 20), // Padding di semua sisi
           child: TextButton(
               onPressed: () {
-                
                 // Aksi ketika tombol ditekan
               },
               style: TextButton.styleFrom(
@@ -234,7 +242,6 @@ class _home_screenState extends State<home_screen> {
               children: [
                 IconButton(
                   onPressed: () {
-                    
                     showDialog(
                         context: context,
                         builder: (context) => const notifikasi_blur());
