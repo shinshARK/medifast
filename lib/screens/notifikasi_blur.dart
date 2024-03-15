@@ -1,58 +1,10 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:rumah_sakit/screens/home_screen.dart';
-DateTime waktuSekarang = DateTime.now();
-String waktuSekarangString = waktuSekarang.toString();
+import 'package:rumah_sakit/models/notifikasi_model.dart';
+
 // ignore: non_constant_identifier_names
-var data_notifikasi = [
-  [
-    "1",
-    "Resep digital sudah dapat kamu lihat pada halaman\nRiwayat Transaksi",
-    "0",
-    waktuSekarangString,
-    ""
-  ],
-  [
-    "2",
-    "Jangan lupa untuk minum Obat Paracetamol 2 x 3\nSesudah Makan!",
-    "1",
-    "2024-03-08 20:00:00.857",
-    ""
-  ],
-  [
-    "3",
-    "Jangan lupa untuk minum Obat Paracetamol 2 x 3\nSesudah Makan!",
-    "1",
-    "2024-03-09 02:00:00.857",
-    ""
-  ],
-  [
-    "1",
-    "Resep digital sudah dapat kamu lihat pada halaman\nRiwayat Transaksi",
-    "0",
-    "2024-03-04 05:00:00.857",
-    ""
-  ],
-  [
-    "2",
-    "Jangan lupa untuk minum Obat Paracetamol 2 x 3\nSesudah Makan!",
-    "1",
-    "2024-03-04 02:00:00.857",
-    ""
-  ],
-  [
-    "3",
-    "Jangan lupa untuk minum Obat Paracetamol 2 x 3\nSesudah Makan!",
-    "1",
-    "2024-03-04 02:00:00.857",
-    ""
-  ]
-];
-// ignore: non_constant_identifier_names
-var icon_notification = [
-  Icons.medication_liquid_outlined,
-  Icons.calendar_month
-];
+
 
 
 // ignore: camel_case_types
@@ -66,40 +18,62 @@ class notifikasi_blur extends StatefulWidget {
 
 // ignore: camel_case_types
 class _notifikasi_blurState extends State<notifikasi_blur> {
+  
 
+  List<NotifikasiModel> hariIni = datanotifikasi.where((notif) {
+    DateTime tanggalNotif = DateTime.parse(notif.tanggal);
+    notif.status = true;
+    return tanggalNotif.day == DateTime.now().day;
+  }).toList();
+
+  List<NotifikasiModel> kemarin = datanotifikasi.where((notif) {
+    DateTime tanggalNotif = DateTime.parse(notif.tanggal);
+    return tanggalNotif.day == DateTime.now().subtract(const Duration(days: 1)).day;
+  }).toList();
+
+  List<NotifikasiModel> mingguIni = datanotifikasi.where((notif) {
+    DateTime tanggalNotif = DateTime.parse(notif.tanggal);
+    return tanggalNotif.isAfter(DateTime.now().subtract(const Duration(days: 7)));
+  }).toList();
+
+  List<NotifikasiModel> lebihDariSeminggu = datanotifikasi.where((notif) {
+    DateTime tanggalNotif = DateTime.parse(notif.tanggal);
+    return tanggalNotif.isBefore(DateTime.now().subtract(const Duration(days: 7)));
+  }).toList();
 
   
   // ignore: non_constant_identifier_names
-String cek_estimasi_waktu(String tanggalWaktuString) {
+void cek_estimasi_waktu(List<NotifikasiModel> data) {
+  DateTime waktuSekarang = DateTime.now();
+  for (var temp in data) {
+    if (cek_hari(temp.tanggal) == 0) {
+      DateTime tanggalWaktu = DateTime.parse(temp.tanggal);
+      int jam2 = tanggalWaktu.hour;
+      int menit2 = tanggalWaktu.minute;
+      int detik2 = tanggalWaktu.second;
+      int jam1 = waktuSekarang.hour;
+      int menit1 = waktuSekarang.minute;
+      int detik1 = waktuSekarang.second;
 
-  
-  
-  if (cek_hari(tanggalWaktuString) == 0) {
-    DateTime tanggalWaktu = DateTime.parse(tanggalWaktuString);
-    int jam2 = tanggalWaktu.hour;
-    int menit2 = tanggalWaktu.minute;
-    int detik2 = tanggalWaktu.second;
-    int jam1 = waktuSekarang.hour;
-    int menit1 = waktuSekarang.minute;
-    int detik1 = waktuSekarang.second;
-
-    if (jam1 - jam2 != 0) {
-      return "${jam1 - jam2}h";
-    } else if (menit1 - menit2 != 0) {
-      return "${menit1 - menit2}m";
-    } else {
-      return "${detik1 - detik2}d";
+      if (jam1 - jam2 != 0) {
+        temp.updatewaktu("${jam1 - jam2}h") ;
+      } else if (menit1 - menit2 != 0) {
+        temp.updatewaktu("${menit1 - menit2}m") ;
+      } else {
+        temp.updatewaktu( "${detik1 - detik2}d");
+      }
     }
+    
   }
-
-  return "";
+  
 }
+
 
 // ignore: non_constant_identifier_names
 int cek_data(int range){
   int cek = 0;
-  for(int i = 0;i < data_notifikasi.length;i++){
-    if(cek_hari(data_notifikasi[i][3]) == range){
+  for(int i = 0;i < datanotifikasi.length;i++){
+    if(cek_hari(datanotifikasi[i].tanggal) == range){
       cek++;
     }
   }
@@ -109,8 +83,8 @@ int cek_data(int range){
 // ignore: non_constant_identifier_names
 List<int> posisi_data(int range){
   List<int> data = [];
-  for(int i = 0;i < data_notifikasi.length;i++){
-    if(cek_hari(data_notifikasi[i][3]) == range){
+  for(int i = 0;i < datanotifikasi.length;i++){
+    if(cek_hari(datanotifikasi[i].tanggal) == range){
       data.add(i);
     }
   }
@@ -139,53 +113,53 @@ List<int> posisi_data(int range){
                 const SizedBox(
                   height: 10,
                 ),
-                cek_data(0) > 0 ? Column(
+                hariIni.isNotEmpty ? Column(
                   
-                  children:  List.generate(posisi_data(0).length,(index) {
+                  children:  List.generate(hariIni.length,(index) {
 
-                    return _katagori(posisi_data(0)[index], "hari ini", 0,index);
+                    return _katagori(hariIni, "Hari ini", 0,index);
                   }),
                 ) : const SizedBox(
                   height: 0.01,
                 ),
-                cek_data(0) > 0 ? const SizedBox(
+                hariIni.isNotEmpty ? const SizedBox(
                   height: 10,
                 ) : const SizedBox(
                   height: 0.01,
                 ),
-                cek_data(1) > 0 ? Column(
+                kemarin.isNotEmpty ? Column(
                   
-                  children:  List.generate(posisi_data(1).length,(index) {
+                  children:  List.generate(kemarin.length,(index) {
 
-                    return _katagori(posisi_data(1)[index], "Kemarin", 1,index);
+                    return _katagori(kemarin, "Kemarin", 1,index);
                   }),
                 ) : const SizedBox(
                   height: 0.01,
                 ),
-                cek_data(1) > 0 ? const SizedBox(
+                kemarin.isNotEmpty ? const SizedBox(
                   height: 10,
                 ) : const SizedBox(
                   height: 0.01,
                 ),
-                cek_data(2) > 0 ? Column(
+                mingguIni.isNotEmpty ? Column(
                   
-                  children:  List.generate(posisi_data(2).length,(index) {
+                  children:  List.generate(mingguIni.length,(index) {
 
-                    return _katagori(posisi_data(2)[index], "minggu ini", 2,index);
+                    return _katagori(mingguIni, "Minggu ini", 2,index);
                   }),
                 ) : const SizedBox(
                   height: 0.01,
                 ),
-                cek_data(2) > 0 ? const SizedBox(
+                mingguIni.isNotEmpty ? const SizedBox(
                   height: 10,
                 ) : const SizedBox(
                   height: 0.01,
                 ),
-                cek_data(3) > 0 ? Column(
+                lebihDariSeminggu.isNotEmpty ? Column(
                   
-                  children:  List.generate(posisi_data(3).length,(index) {
+                  children:  List.generate(lebihDariSeminggu.length,(index) {
 
-                    return _katagori(posisi_data(3)[index], "more", 3,index);
+                    return _katagori(lebihDariSeminggu, "More", 3,index);
                   }),
                 ) : const SizedBox(
                   height: 0.01,
@@ -199,8 +173,8 @@ List<int> posisi_data(int range){
     );
   }
   // ignore: prefer_final_fields
-  List<bool> _tampilkanContainer = [false, false, false, false, false];
-  Column _katagori(int index, String judulKatagori, int cek,int posisi) {
+  List<bool> _tampilkanContainer = [true, true, false, false, false];
+  Column _katagori(List<NotifikasiModel> data, String judulKatagori, int cek,int posisi) {
     return Column(
       children: [
         Container(
@@ -213,6 +187,10 @@ List<int> posisi_data(int range){
                 onTap: () {
                   setState(() {
                     _tampilkanContainer[cek] = !_tampilkanContainer[cek];
+                    if(cek == 0){
+                      
+                      cek_estimasi_waktu(data);
+                    }
                   });
                 },
                 child: Text(
@@ -221,13 +199,13 @@ List<int> posisi_data(int range){
                         color: Color.fromARGB(255, 133, 133, 133), fontSize: 16),
                   ),
               )
-              : cek_hari(data_notifikasi[index][3]) == cek && _tampilkanContainer[cek]
+              : cek_hari(data[posisi].tanggal) == cek && _tampilkanContainer[cek]
                   ? const SizedBox(
                       height: 20,
                     )
                   : null,
         ),
-        cek_hari(data_notifikasi[index][3]) == cek
+        cek_hari(data[posisi].tanggal) == cek
             ? _tampilkanContainer[cek] ? Stack(
                 children: [
                   Container(
@@ -268,9 +246,8 @@ List<int> posisi_data(int range){
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
-                                    icon_notification[int.tryParse(
-                                            data_notifikasi[index][2]) ??
-                                        0],
+                                            data[posisi].icon
+                                        ,
                                     size: 29,
                                   )
                                 ],
@@ -296,7 +273,7 @@ List<int> posisi_data(int range){
                                 margin:
                                     const EdgeInsets.only(left: 30, right: 40),
                                 child: Text(
-                                  data_notifikasi[index][1],
+                                  data[posisi].keterangan,
                                   style: const TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.w600),
@@ -309,7 +286,7 @@ List<int> posisi_data(int range){
                   Container(
                     margin: const EdgeInsets.only(left: 303, top: 20),
                     child: Text(
-                      cek_estimasi_waktu(data_notifikasi[index][3]),
+                      data[posisi].selisih,
                       style: const TextStyle(
                           color: Color.fromARGB(255, 133, 133, 133),
                           fontSize: 13),
@@ -327,6 +304,7 @@ List<int> posisi_data(int range){
 
 // ignore: non_constant_identifier_names
 String cek_waktu() {
+  DateTime waktuSekarang = DateTime.now();
   int jam = waktuSekarang.hour;
   if (jam >= 4 && jam < 10) {
     return "Pagi";

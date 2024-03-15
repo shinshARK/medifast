@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:rumah_sakit/screens/notifikasi_blur.dart';
 import 'package:rumah_sakit/components/bottomNavigasiBar.dart';
 import 'package:rumah_sakit/components/highlight.dart';
+import 'package:rumah_sakit/models/notifikasi_model.dart';
 import 'dart:async';
 
 // ignore: must_be_immutable, camel_case_types
@@ -86,6 +87,7 @@ class _home_screenState extends State<home_screen> {
               const SizedBox(
                 height: 5,
               ),
+              
               RichText(
                   textAlign: TextAlign.center,
                   text: TextSpan(
@@ -242,13 +244,15 @@ class _home_screenState extends State<home_screen> {
               children: [
                 IconButton(
                   onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) => const notifikasi_blur());
+                    setState(() {
+                      showDialog(
+                          context: context,
+                          builder: (context) => const notifikasi_blur());
+                      });
                   },
                   icon: const Icon(Icons.notifications),
                 ),
-                Positioned(
+                cekstatus() ? Positioned(
                   right: 8,
                   top: 5,
                   child: Container(
@@ -259,12 +263,25 @@ class _home_screenState extends State<home_screen> {
                       shape: BoxShape.circle,
                     ),
                   ),
-                ),
+                ) : const SizedBox(),
               ],
             ),
           ),
         )
       ],
     );
+  }
+
+  bool cekstatus(){
+    int jumlah = 0;
+    for (var data in datanotifikasi) {
+      if (!data.status){
+        jumlah++;
+      }
+    }
+    if (jumlah > 0){
+      return true;
+    }
+    return false;
   }
 }
