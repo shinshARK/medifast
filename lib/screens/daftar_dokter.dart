@@ -69,6 +69,7 @@ class _daftar_dokterState extends State<daftar_dokter> {
         ],
         elevation: 10,
         shadowColor: Colors.white,
+        
       ),
       body: Column(children: [
         _katagori(),

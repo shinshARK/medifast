@@ -71,7 +71,6 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
         elevation: 10,
         shadowColor: Colors.white,
       ),
-      backgroundColor: Colors.black.withOpacity(0.1),
       body: SingleChildScrollView(
         child: Column(
           children: List.generate(4, (index) {
@@ -89,199 +88,234 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
   Center _riwayat(
       int jumlahTombol, bool keterangan, int jenisPilihan, int indek) {
     return Center(
-      child: Container(
-        width: 320,
-        height: 180,
-        margin: const EdgeInsets.only(top: 20),
-        decoration:
-            BoxDecoration(borderRadius: BorderRadius.circular(20), boxShadow: [
-          BoxShadow(
-            color: Colors.white.withOpacity(0.7),
-            blurRadius: 2.0,
-            offset: const Offset(0, 4), // changes position of shadow
-          ),
-        ]),
-        child: Column(
-          children: [
-            Row(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: Material(
+          elevation: 5.0, // Nilai elevasi
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+            width: 320,
+            height: 180,
+            decoration:
+                BoxDecoration(borderRadius: BorderRadius.circular(20), boxShadow: [
+              BoxShadow(
+                color: Colors.white.withOpacity(0.7),
+                blurRadius: 2.0,
+                offset: const Offset(0, 4), // changes position of shadow
+              ),
+            ]),
+            child: Column(
               children: [
-                CircleAvatar(
-                  radius: 52,
-                  backgroundColor: Colors.white.withOpacity(0.0),
-                  child: keterangan == true
-                      ? CircleAvatar(
-                          radius: 40,
-                          backgroundImage: AssetImage(
-                              "assets/images/${riwayatPemesanan[indek]['gambar']}"),
-                        )
-                      : Container(
-                          width: 60,
-                          height: 60,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                  "assets/images/${riwayatPemesanan[indek]['gambar']}"),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
                   children: [
-                    Text(
-                        jenisPilihan == 1
-                            ? riwayatPemesanan[indek]["nama Dokter"]!
-                            : "Catatan Dokter & rersep",
-                        style: const TextStyle(fontWeight: FontWeight.bold)),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    if (keterangan == true)
-                      Row(
-                        children: [
-                          Text(riwayatPemesanan[0]['Spesialis']!),
-                          const Text(" |"),
-                          Container(
-                            width: 60,
-                            decoration: BoxDecoration(
-                                color: riwayatPemesanan[indek]
-                                            ["Status Riwayat"] ==
-                                        "Segera"
-                                    ? Colors.yellow.withOpacity(0.1)
-                                    : riwayatPemesanan[indek]
-                                                ["Status Riwayat"] ==
-                                            "Selesai"
-                                        ? Colors.green.withOpacity(0.1)
-                                        : Colors.red.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Text(
-                              riwayatPemesanan[indek]["Status Riwayat"]!,
-                              style: TextStyle(
-                                color: riwayatPemesanan[indek]
-                                            ["Status Riwayat"] ==
-                                        "Segera"
-                                    ? Colors.yellow
-                                    : riwayatPemesanan[indek]
-                                                ["Status Riwayat"] ==
-                                            "Selesai"
-                                        ? Colors.green
-                                        : Colors.red,
+                    CircleAvatar(
+                      radius: 52,
+                      backgroundColor: Colors.white.withOpacity(0.0),
+                      child: keterangan == true
+                          ? CircleAvatar(
+                              radius: 40,
+                              backgroundImage: AssetImage(
+                                  "assets/images/${riwayatPemesanan[indek]['gambar']}"),
+                            )
+                          : Container(
+                              width: 60,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage(
+                                      "assets/images/${riwayatPemesanan[indek]['gambar']}"),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                              textAlign: TextAlign.center,
                             ),
-                          )
-                        ],
-                      )
-                    else
-                      const SizedBox(
-                        height: 0,
-                      ),
-                    const SizedBox(
-                      height: 4,
                     ),
-                    FutureBuilder<String>(
-                      future: formatTanggalDanWaktu(
-                          riwayatPemesanan[indek]["Tanggal"]!,
-                          riwayatPemesanan[indek]
-                              ["jam"]!), // panggil fungsi Anda di sini
-                      builder: (BuildContext context,
-                          AsyncSnapshot<String> snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const CircularProgressIndicator(); // tampilkan indikator loading saat menunggu
-                        } else {
-                          if (snapshot.hasError) {
-                            return Text('Error: ${snapshot.error}');
-                          } else {
-                            return Text(
-                                '${snapshot.data}'); // tampilkan hasil fungsi
-                          }
-                        }
-                      },
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                            jenisPilihan == 1
+                                ? riwayatPemesanan[indek]["nama Dokter"]!
+                                : "Catatan Dokter & rersep",
+                            style: const TextStyle(fontWeight: FontWeight.bold)),
+                        const SizedBox(
+                          height: 4,
+                        ),
+                        if (keterangan == true)
+                          Row(
+                            children: [
+                              Text(riwayatPemesanan[0]['Spesialis']!),
+                              const Text(" |"),
+                              Container(
+                                width: 60,
+                                decoration: BoxDecoration(
+                                    color: riwayatPemesanan[indek]
+                                                ["Status Riwayat"] ==
+                                            "Segera"
+                                        ? Colors.yellow.withOpacity(0.1)
+                                        : riwayatPemesanan[indek]
+                                                    ["Status Riwayat"] ==
+                                                "Selesai"
+                                            ? Colors.green.withOpacity(0.1)
+                                            : Colors.red.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Text(
+                                  riwayatPemesanan[indek]["Status Riwayat"]!,
+                                  style: TextStyle(
+                                    color: riwayatPemesanan[indek]
+                                                ["Status Riwayat"] ==
+                                            "Segera"
+                                        ? Colors.yellow
+                                        : riwayatPemesanan[indek]
+                                                    ["Status Riwayat"] ==
+                                                "Selesai"
+                                            ? Colors.green
+                                            : Colors.red,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              )
+                            ],
+                          )
+                        else
+                          const SizedBox(
+                            height: 0,
+                          ),
+                        const SizedBox(
+                          height: 4,
+                        ),
+                        FutureBuilder<String>(
+                          future: formatTanggalDanWaktu(
+                              riwayatPemesanan[indek]["Tanggal"]!,
+                              riwayatPemesanan[indek]
+                                  ["jam"]!), // panggil fungsi Anda di sini
+                          builder: (BuildContext context,
+                              AsyncSnapshot<String> snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const CircularProgressIndicator(); // tampilkan indikator loading saat menunggu
+                            } else {
+                              if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              } else {
+                                return Text(
+                                    '${snapshot.data}'); // tampilkan hasil fungsi
+                              }
+                            }
+                          },
+                        )
+                      ],
                     )
                   ],
-                )
-              ],
-            ),
-            Container(
-              width: 290,
-              alignment: AlignmentDirectional.center,
-              decoration: const BoxDecoration(
-                  border: Border(top: BorderSide(color: Colors.grey))),
-              child: jumlahTombol == 2
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            switch (riwayatPemesanan[indek]["Status Riwayat"]) {
-                              case 'Segera':
-
-                                break;
-                              case 'Selesai':
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => const rating()),
-                                );
-
-                            //     break;
-                            //   tambahkan kasus lainnya sesuai kebutuhan
-                            //   default:
-                            //     Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(builder: (context) => HomePage()),
-                            //     );
-                            }
-                          },
-                          child: Container(
-                            width: 130,
-                            height: 40,
-                            alignment: AlignmentDirectional.center,
-                            margin: const EdgeInsets.only(right: 20, top: 20),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(
-                                  color: const Color.fromARGB(
-                                      255, 135, 203, 198), // Warna border
-                                  width: 3.0, // Ketebalan border
-                                )),
-                            child: Text(
-                              riwayatPemesanan[indek]["Status Riwayat"] ==
-                                      "Segera"
-                                  ? "Batalkan Booking"
-                                  : "Nilai",
-                              style: const TextStyle(
-                                  color: Color.fromARGB(255, 135, 203, 198)),
-                              textAlign: TextAlign.center,
+                ),
+                Container(
+                  width: 290,
+                  alignment: AlignmentDirectional.center,
+                  decoration: const BoxDecoration(
+                      border: Border(top: BorderSide(color: Colors.grey))),
+                  child: jumlahTombol == 2
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                switch (riwayatPemesanan[indek]["Status Riwayat"]) {
+                                  case 'Segera':
+          
+                                    break;
+                                  case 'Selesai':
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const rating()),
+                                    );
+          
+                                //     break;
+                                //   tambahkan kasus lainnya sesuai kebutuhan
+                                //   default:
+                                //     Navigator.push(
+                                //       context,
+                                //       MaterialPageRoute(builder: (context) => HomePage()),
+                                //     );
+                                }
+                              },
+                              child: Container(
+                                width: 130,
+                                height: 40,
+                                alignment: AlignmentDirectional.center,
+                                margin: const EdgeInsets.only(right: 20, top: 20),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(
+                                      color: const Color.fromARGB(
+                                          255, 135, 203, 198), // Warna border
+                                      width: 3.0, // Ketebalan border
+                                    )),
+                                child: Text(
+                                  riwayatPemesanan[indek]["Status Riwayat"] ==
+                                          "Segera"
+                                      ? "Batalkan Booking"
+                                      : "Nilai",
+                                  style: const TextStyle(
+                                      color: Color.fromARGB(255, 135, 203, 198)),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                        GestureDetector(
+                            GestureDetector(
+                              onTap: () {
+                                switch (riwayatPemesanan[indek]["Status Riwayat"]) {
+                                  case 'Segera':
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const detail_pertemuan()),
+                                    );
+          
+                                    break;
+                                  //case 'Selesai':
+          
+                                  //break;
+                                  // tambahkan kasus lainnya sesuai kebutuhan
+                                  //default:
+                                  //   Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(builder: (context) => HomePage()),
+                                  //   );
+                                }
+                              },
+                              child: Container(
+                                width: 130,
+                                height: 40,
+                                alignment: AlignmentDirectional.center,
+                                margin: const EdgeInsets.only(top: 20),
+                                decoration: BoxDecoration(
+                                    color: const Color.fromARGB(255, 135, 203, 198),
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Text(
+                                  riwayatPemesanan[indek]["Status Riwayat"] ==
+                                          "Segera"
+                                      ? "Detail"
+                                      : "jadwalkan kembali",
+                                  style: const TextStyle(color: Colors.white),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            )
+                          ],
+                        )
+                      : GestureDetector(
                           onTap: () {
-                            switch (riwayatPemesanan[indek]["Status Riwayat"]) {
-                              case 'Segera':
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const detail_pertemuan()),
-                                );
-
-                                break;
-                              //case 'Selesai':
-
-                              //break;
-                              // tambahkan kasus lainnya sesuai kebutuhan
-                              //default:
-                              //   Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(builder: (context) => HomePage()),
-                              //   );
+                            if (keterangan == false) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const catatan_dan_resep_dokter()),
+                              );
                             }
                           },
                           child: Container(
-                            width: 130,
+                            width: 260,
                             height: 40,
                             alignment: AlignmentDirectional.center,
                             margin: const EdgeInsets.only(top: 20),
@@ -289,45 +323,16 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
                                 color: const Color.fromARGB(255, 135, 203, 198),
                                 borderRadius: BorderRadius.circular(20)),
                             child: Text(
-                              riwayatPemesanan[indek]["Status Riwayat"] ==
-                                      "Segera"
-                                  ? "Detail"
-                                  : "jadwalkan kembali",
+                              keterangan == false ? "Detail" : "jadwalkan ulang",
                               style: const TextStyle(color: Colors.white),
                               textAlign: TextAlign.center,
                             ),
                           ),
-                        )
-                      ],
-                    )
-                  : GestureDetector(
-                      onTap: () {
-                        if (keterangan == false) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const catatan_dan_resep_dokter()),
-                          );
-                        }
-                      },
-                      child: Container(
-                        width: 260,
-                        height: 40,
-                        alignment: AlignmentDirectional.center,
-                        margin: const EdgeInsets.only(top: 20),
-                        decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 135, 203, 198),
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Text(
-                          keterangan == false ? "Detail" : "jadwalkan ulang",
-                          style: const TextStyle(color: Colors.white),
-                          textAlign: TextAlign.center,
                         ),
-                      ),
-                    ),
-            )
-          ],
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );
