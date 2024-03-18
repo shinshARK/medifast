@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rumah_sakit/screens/halamanArtikel.dart';
 import 'package:rumah_sakit/screens/riwayatTransaksi.dart';
 import 'package:rumah_sakit/screens/home_screen.dart';
 import 'package:rumah_sakit/screens/daftar_dokter.dart';
@@ -64,6 +65,14 @@ class _BottomNavigasiBarState extends State<BottomNavigasiBar> {
           MaterialPageRoute(
             // ignore: non_constant_identifier_names
             builder: (Context) => const daftar_dokter(),
+          ),
+          (route) => false);
+        // Lakukan sesuatu untuk item ketiga di sini
+      }else if (index == 3) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            // ignore: non_constant_identifier_names
+            builder: (Context) => const halamanArtikel(),
           ),
           (route) => false);
         // Lakukan sesuatu untuk item ketiga di sini
