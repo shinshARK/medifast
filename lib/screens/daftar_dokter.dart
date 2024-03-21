@@ -73,124 +73,13 @@ class _daftar_dokterState extends State<daftar_dokter> {
         _katagori(),
         Expanded(
           child: ListView.separated(
-            
             itemCount: posisi_data().length,
             itemBuilder: (BuildContext context, int index) {
-              return Material(
-                elevation: 5.0, // Nilai elevasi
-                borderRadius: BorderRadius.circular(20),
-                child: Container(
-                  width: 300,
-                  margin: const EdgeInsets.only(top: 20),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 20),
-                        child: CircleAvatar(
-                          radius: 52,
-                          backgroundColor: Colors.white.withOpacity(0.0),
-                          child: CircleAvatar(
-                            radius: 40,
-                            backgroundImage: AssetImage(
-                                'assets/images/${data_dokter[posisi_data()[index]].image}'),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        width: 200,
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              data_dokter[posisi_data()[index]].nama,
-                              style: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              data_dokter[posisi_data()[index]].spesialis,
-                              style: const TextStyle(
-                                fontSize: 14,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              children: [
-                                RatingBar.builder(
-                                  initialRating: double.parse(
-                                      data_dokter[posisi_data()[index]].rating),
-                                  minRating: 1,
-                                  direction: Axis.horizontal,
-                                  allowHalfRating: true,
-                                  itemCount: 5,
-                                  itemSize: 20,
-                                  //itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                                  itemBuilder: (context, _) => const Icon(
-                                    Icons.star,
-                                    color: Colors.amber,
-                                    size: 1.0,
-                                  ),
-                                  // ignore: avoid_types_as_parameter_names
-                                  onRatingUpdate: (rating) {},
-                                  ignoreGestures: true,
-                                ),
-                                const SizedBox(
-                                  width: 15,
-                                ),
-                                Text(
-                                  data_dokter[posisi_data()[index]].rating,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          icon: Icon(
-                            data_dokter[posisi_data()[index]].tanda
-                                ? Icons.favorite
-                                : Icons.favorite_border,
-                            color: data_dokter[posisi_data()[index]].tanda
-                                ? Colors.black
-                                : Colors.black,
-                            size: 30,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              data_dokter[posisi_data()[index]].tanda
-                                  ? data_dokter[posisi_data()[index]]
-                                      .setTanda(false)
-                                  : data_dokter[posisi_data()[index]]
-                                      .setTanda(true);
-                            });
-                          },
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              );
+              return listdokter(index);
             },
             separatorBuilder: (BuildContext context, int index) {
               return const SizedBox(
-                height: 10,
+                height: 30,
               );
             },
           ),
@@ -199,10 +88,120 @@ class _daftar_dokterState extends State<daftar_dokter> {
     );
   }
 
+  Padding listdokter(int index) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Material(
+        elevation: 5.0, // Nilai elevasi
+        borderRadius: BorderRadius.circular(20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 10,horizontal: 5),
+              child: CircleAvatar(
+                radius: 52,
+                backgroundColor: Colors.white.withOpacity(0.0),
+                child: CircleAvatar(
+                  radius: 40,
+                  backgroundImage: AssetImage(
+                      'assets/images/${data_dokter[posisi_data()[index]].image}'),
+                ),
+              ),
+            ),
+            
+            Container(
+              
+              margin: const EdgeInsets.only(top: 23,left: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    data_dokter[posisi_data()[index]].nama,
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 3,
+                  ),
+                  Text(
+                    data_dokter[posisi_data()[index]].spesialis,
+                    style: const TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 7,
+                  ),
+                  Row(
+                    children: [
+                      RatingBar.builder(
+                        initialRating: double.parse(
+                            data_dokter[posisi_data()[index]].rating),
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        itemSize: 20,
+                        //itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                        itemBuilder: (context, _) => const Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                          size: 1.0,
+                        ),
+                        // ignore: avoid_types_as_parameter_names
+                        onRatingUpdate: (rating) {},
+                        ignoreGestures: true,
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      Text(
+                        data_dokter[posisi_data()[index]].rating,
+                        style: const TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            
+            Expanded(
+              child: Container(
+                alignment: Alignment.topRight,
+                child: IconButton(
+                  icon: Icon(
+                    data_dokter[posisi_data()[index]].tanda
+                        ? Icons.favorite
+                        : Icons.favorite_border,
+                    color: data_dokter[posisi_data()[index]].tanda
+                        ? Colors.black
+                        : Colors.black,
+                    size: 30,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      data_dokter[posisi_data()[index]].tanda
+                          ? data_dokter[posisi_data()[index]].setTanda(false)
+                          : data_dokter[posisi_data()[index]].setTanda(true);
+                    });
+                  },
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   Container _katagori() {
     return Container(
-      height: 50,
-      margin: const EdgeInsets.only(top: 20,bottom: 30),
+      height: 40,
+      margin: const EdgeInsets.only(top: 20, bottom: 10),
       child: ListView.separated(
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) => GestureDetector(

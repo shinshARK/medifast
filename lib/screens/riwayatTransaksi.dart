@@ -21,89 +21,57 @@ class riwayatTransaksi extends StatefulWidget {
 
 // ignore: camel_case_types
 class _riwayatTransaksiState extends State<riwayatTransaksi> {
-  var riwayatPemesanan = [
-    {
-      "nama Dokter": "Dr. Eka Rakhman Z.Sp.A",
-      "Spesialis": "Dokter Anak",
-      "Status Riwayat": "Segera",
-      "Tanggal": "2024-03-04",
-      "jam": "02:00:00.857",
-      "gambar": "dokter_1.png",
-      "pilihan": "jadwal"
-    },
-    {
-      "nama Dokter": "Dr. Eka Rakhman Z.Sp.A",
-      "Spesialis": "Dokter Anak",
-      "Status Riwayat": "Selesai",
-      "Tanggal": "2024-03-04",
-      "jam": "02:00:00.857",
-      "gambar": "dokter_1.png",
-      "pilihan": "jadwal"
-    },
-    {
-      "nama Dokter": "-",
-      "Spesialis": "-",
-      "Status Riwayat": "-",
-      "Tanggal": "2024-03-04",
-      "jam": "02:00:00.857",
-      "gambar": "task_1.png",
-      "pilihan": "catatan"
-    },
-    {
-      "nama Dokter": "Dr. Endang Suharian,Sp.THT",
-      "Spesialis": "Dokter THT",
-      "Status Riwayat": "Batal",
-      "Tanggal": "2024-03-04",
-      "jam": "02:00:00.857",
-      "gambar": "dokter_1.png",
-      "pilihan": "jadwal"
-    }
-  ];
+  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: const BottomNavigasiBar( inputan: 1),
       appBar: AppBar(
         title: const Text(
           'Riwayat Transaksi',
-          style: TextStyle(fontWeight: FontWeight.w700),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
+        backgroundColor: Colors.white,
         elevation: 10,
         shadowColor: Colors.white,
+        
       ),
+      bottomNavigationBar: const BottomNavigasiBar( inputan: 1),
       body: SingleChildScrollView(
-        child: Column(
-          children: List.generate(riwayattransaksi.length, (index) {
-            return _riwayat(riwayattransaksi[index]);
-          }),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 10),
+          child: Column(
+            children: List.generate(riwayattransaksi.length, (index) {
+              return _riwayat(riwayattransaksi[index]);
+            }),
+          ),
         ),
       ),
     );
   }
 
-  Center _riwayat(RiwayatTransaksiModel data) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 20),
-        child: Material(
-          elevation: 5.0, // Nilai elevasi
-          borderRadius: BorderRadius.circular(20),
-          child: Container(
-            width: 320,
-            height: data.status == "Selesai" ? 250 : 180,
-            decoration:
-                BoxDecoration(borderRadius: BorderRadius.circular(20), boxShadow: [
-              BoxShadow(
-                color: Colors.white.withOpacity(0.7),
-                blurRadius: 2.0,
-                offset: const Offset(0, 4), // changes position of shadow
-              ),
-            ]),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+  Padding _riwayat(RiwayatTransaksiModel data) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+      child: Material(
+        elevation: 5.0, // Nilai elevasi
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          padding: const EdgeInsets.only(bottom: 15),
+          decoration:
+              BoxDecoration(borderRadius: BorderRadius.circular(20), boxShadow: [
+            BoxShadow(
+              color: Colors.white.withOpacity(0.7),
+              blurRadius: 2.0,
+              offset: const Offset(0, 4), // changes position of shadow
+            ),
+          ]),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     CircleAvatar(
                       radius: 52,
@@ -116,93 +84,98 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
                             )
                           
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(data.dokter.nama,     
-                            style: const TextStyle(fontWeight: FontWeight.bold)),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                          Row(
-                            children: [
-                              Text(data.dokter.spesialis),
-                              const Text(" |"),
-                              Container(
-                                width: 60,
-                                decoration: BoxDecoration(
-                                    color: data.status ==
-                                            "Segera"
-                                        ? Colors.yellow.withOpacity(0.1)
-                                        : data.status ==
-                                                "Selesai"
-                                            ? Colors.green.withOpacity(0.1)
-                                            : Colors.red.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: Text(
-                                  data.status,
-                                  style: TextStyle(
-                                    color: data.status ==
-                                            "Segera"
-                                        ? Colors.yellow
-                                        : data.status ==
-                                                "Selesai"
-                                            ? Colors.green
-                                            : Colors.red,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(data.dokter.nama,     
+                              style: const TextStyle(fontWeight: FontWeight.bold)),
+                          const SizedBox(
+                            height: 7,
+                          ),
+                            Row(
+                              children: [
+                                Text(data.dokter.spesialis),
+                                const Text(" |"),
+                                Container(
+                                  width: 60,
+                                  decoration: BoxDecoration(
+                                      color: data.status ==
+                                              "Segera"
+                                          ? Colors.yellow.withOpacity(0.1)
+                                          : data.status ==
+                                                  "Selesai"
+                                              ? Colors.green.withOpacity(0.1)
+                                              : Colors.red.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Text(
+                                    data.status,
+                                    style: TextStyle(
+                                      color: data.status ==
+                                              "Segera"
+                                          ? Colors.yellow
+                                          : data.status ==
+                                                  "Selesai"
+                                              ? Colors.green
+                                              : Colors.red,
+                                    ),
+                                    textAlign: TextAlign.center,
                                   ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              )
-                            ],
-                          )
-                        ,
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        FutureBuilder<String>(
-                          future: formatTanggalDanWaktu(
-                              data.tanggal,
-                              data.jam), // panggil fungsi Anda di sini
-                          builder: (BuildContext context,
-                              AsyncSnapshot<String> snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const CircularProgressIndicator(); // tampilkan indikator loading saat menunggu
-                            } else {
-                              if (snapshot.hasError) {
-                                return Text('Error: ${snapshot.error}');
+                                )
+                              ],
+                            )
+                          ,
+                          const SizedBox(
+                            height: 7,
+                          ),
+                          FutureBuilder<String>(
+                            future: formatTanggalDanWaktu(
+                                data.tanggal,
+                                data.jam), // panggil fungsi Anda di sini
+                            builder: (BuildContext context,
+                                AsyncSnapshot<String> snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const CircularProgressIndicator(); // tampilkan indikator loading saat menunggu
                               } else {
-                                return Text(
-                                    '${snapshot.data}'); // tampilkan hasil fungsi
+                                if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else {
+                                  return Text(
+                                      '${snapshot.data}'); // tampilkan hasil fungsi
+                                }
                               }
-                            }
-                          },
-                        )
-                      ],
+                            },
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
-                Container(
-                  width: 290,
-                  alignment: AlignmentDirectional.center,
-                  decoration: const BoxDecoration(
-                      border: Border(top: BorderSide(color: Colors.grey))),
-                  child: data.status != "Batal"
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            GestureDetector(
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 25),
+                alignment: AlignmentDirectional.center,
+                decoration: const BoxDecoration(
+                    border: Border(top: BorderSide(color: Colors.grey))),
+                child: data.status != "Batal"
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children:<Widget> [
+                          Expanded(
+                            child: GestureDetector(
                               onTap: () {
                                 switch (data.status) {
                                   case 'Segera':
-          
+                                    
                                     break;
                                   case 'Selesai':
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(builder: (context) => const rating()),
                                     );
-          
+                                    
                                 //     break;
                                 //   tambahkan kasus lainnya sesuai kebutuhan
                                 //   default:
@@ -213,7 +186,7 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
                                 }
                               },
                               child: Container(
-                                width: 130,
+                                
                                 height: 40,
                                 alignment: AlignmentDirectional.center,
                                 margin: const EdgeInsets.only(right: 20, top: 20),
@@ -235,7 +208,9 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
                                 ),
                               ),
                             ),
-                            GestureDetector(
+                          ),
+                          Expanded(
+                            child: GestureDetector(
                               onTap: () {
                                 switch (data.status) {
                                   case 'Segera':
@@ -245,10 +220,10 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
                                           builder: (context) =>
                                               const detail_pertemuan()),
                                     );
-          
+                                    
                                     break;
                                   //case 'Selesai':
-          
+                                    
                                   //break;
                                   // tambahkan kasus lainnya sesuai kebutuhan
                                   //default:
@@ -259,7 +234,7 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
                                 }
                               },
                               child: Container(
-                                width: 130,
+                                
                                 height: 40,
                                 alignment: AlignmentDirectional.center,
                                 margin: const EdgeInsets.only(top: 20),
@@ -275,56 +250,56 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
                                   textAlign: TextAlign.center,
                                 ),
                               ),
-                            )
-                          ],
-                        )
-                      : GestureDetector(
-                          onTap: () {
-                            
-                          },
-                          child: Container(
-                            width: 290,
-                            height: 40,
-                            alignment: AlignmentDirectional.center,
-                            margin: const EdgeInsets.only(top: 20),
-                            decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 135, 203, 198),
-                                borderRadius: BorderRadius.circular(20)),
-                            child: const Text(
-                              "Jadwalkan Ulang",
-                              style: TextStyle(color: Colors.white),
-                              textAlign: TextAlign.center,
                             ),
+                          )
+                        ],
+                      )
+                    : GestureDetector(
+                        onTap: () {
+                          
+                        },
+                        child: Container(
+                          
+                          height: 40,
+                          alignment: AlignmentDirectional.center,
+                          margin: const EdgeInsets.only(top: 20),
+                          decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 135, 203, 198),
+                              borderRadius: BorderRadius.circular(20)),
+                          child: const Text(
+                            "Jadwalkan Ulang",
+                            style: TextStyle(color: Colors.white),
+                            textAlign: TextAlign.center,
                           ),
                         ),
-                ),
-                data.status == "Selesai" ?
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              const catatan_dan_resep_dokter()),
-                    );
-                  },
-                  child: Container(
-                    width: 290,
-                    height: 40,
-                    alignment: AlignmentDirectional.center,
-                    margin: const EdgeInsets.only(top: 20),
-                    decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 135, 203, 198),
-                        borderRadius: BorderRadius.circular(20)),
-                    child: const Text(
-                      "Catatan Dokter & Resep",
-                      style: TextStyle(color: Colors.white),
-                      textAlign: TextAlign.center,
-                    ),
+                      ),
+              ),
+              data.status == "Selesai" ?
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const catatan_dan_resep_dokter()),
+                  );
+                },
+                child: Container(
+                  
+                  height: 40,
+                  alignment: AlignmentDirectional.center,
+                  margin: const EdgeInsets.only(top: 20,left: 25,right: 25),
+                  decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 135, 203, 198),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: const Text(
+                    "Catatan Dokter & Resep",
+                    style: TextStyle(color: Colors.white),
+                    textAlign: TextAlign.center,
                   ),
-                ) : const SizedBox()
-              ],
-            ),
+                ),
+              ) : const SizedBox()
+            ],
           ),
         ),
       ),
