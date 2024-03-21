@@ -4,6 +4,7 @@ import 'package:rumah_sakit/screens/notifikasi_blur.dart';
 import 'package:rumah_sakit/components/bottomNavigasiBar.dart';
 import 'package:rumah_sakit/components/highlight.dart';
 import 'package:rumah_sakit/models/notifikasi_model.dart';
+import 'package:rumah_sakit/models/layar_screens.dart';
 import 'dart:async';
 
 // ignore: must_be_immutable, camel_case_types
@@ -21,26 +22,29 @@ class _home_screenState extends State<home_screen> {
   late Timer _timer;
 
   bool _tujuan = true;
+  
+
 
   @override
   void initState() {
     super.initState();
     _controller = ScrollController();
     _timer = Timer.periodic(const Duration(seconds: 8), (Timer t) {
-      if (_controller.offset > 740 && _tujuan == true) {
+      if (_controller.offset >= ((screens.width - 5) * 2) && _tujuan == true) {
         _tujuan = false;
       }
-      if (_controller.offset < 20 && _tujuan == false) {
+      if (_controller.offset <= 10 && _tujuan == false) {
         _tujuan = true;
       }
+      
       if (_controller.hasClients && _tujuan == true) {
         _controller.animateTo(
           _controller.offset +
-              (_controller.offset % 377 == 0
-                  ? 377
-                  : (_controller.offset < 377
-                      ? (377 - _controller.offset)
-                      : (754 -
+              (_controller.offset % (screens.width - 5) == 0
+                  ? (screens.width - 5)
+                  : (_controller.offset < (screens.width - 5)
+                      ? ((screens.width - 5) - _controller.offset)
+                      : (((screens.width - 5) * 2) -
                           _controller
                               .offset))), // 200 is the distance to scroll each time
 
@@ -50,12 +54,12 @@ class _home_screenState extends State<home_screen> {
       } else if (_controller.hasClients && _tujuan == false) {
         _controller.animateTo(
           _controller.offset -
-              (_controller.offset % 377 == 0
-                  ? 377
-                  : (_controller.offset < 377
+              (_controller.offset % (screens.width - 5) == 0
+                  ? (screens.width - 5)
+                  : (_controller.offset < (screens.width - 5)
                       ? _controller.offset
                       : (_controller.offset -
-                          377))), // 200 is the distance to scroll each time
+                          (screens.width - 5)))), // 200 is the distance to scroll each time
           curve: Curves.easeInOut,
           duration: const Duration(milliseconds: 800),
         );
@@ -88,24 +92,29 @@ class _home_screenState extends State<home_screen> {
                 height: 5,
               ),
               
-              RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                      text: "Selamat Pagi\n",
-                      style: GoogleFonts.openSans(fontSize: 14),
-                      children: const [
-                        TextSpan(
-                            text: "Ilham Akbar",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w800,
-                                fontSize: 18))
-                      ])),
+              Text.rich(
+                TextSpan(
+                  text: "Selamat Pagi\n",
+                  style: GoogleFonts.openSans(fontSize: 14),
+                  children: const [
+                    TextSpan(
+                      text: "Ilham Akbar",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 18
+                      )
+                    )
+                  ]
+                ),
+                textAlign: TextAlign.center,
+              ),
+
               const SizedBox(
                 height: 5,
               ),
               const highlight(
-                  inputan: 1, logo: 'handshake.png', kalimat: 'Jadwal Janji'),
+                  inputan: 1, logo: 'Handshake.png', kalimat: 'Jadwal Janji'),
               const SizedBox(
                 height: 20,
               ),
@@ -115,7 +124,7 @@ class _home_screenState extends State<home_screen> {
                   kalimat: 'Pangilan Dokter\nke Rumah'),
               _artikel_fitur(),
               Container(
-                height: 172,
+                height: 182,
                 margin: const EdgeInsets.only(left: 15, right: 10),
                 child: ListView.separated(
                   controller: _controller,
@@ -133,16 +142,13 @@ class _home_screenState extends State<home_screen> {
       ),
     );
   }
-
+  
   // ignore: non_constant_identifier_names
   GestureDetector _artikel_populer() {
     return GestureDetector(
       onTap: () {},
       child: Container(
-        width: 360.0,
-        height: 172.0,
-        margin: const EdgeInsets.only(bottom: 20),
-        alignment: Alignment.center,
+        width: (screens.width / pembagianlayar) - 25,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
           gradient: const LinearGradient(
@@ -155,10 +161,11 @@ class _home_screenState extends State<home_screen> {
           ),
         ),
         child: Row(
+          
           children: [
             Container(
-              width: 178.0,
-              height: 162.0,
+              width: ((screens.width / pembagianlayar) - 25)/2,
+              alignment: Alignment.topLeft,
               padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
               child: const Text(
                   'Alergi sering kambuh? Segera Konsultasi dengan Dokter Ini',
@@ -168,9 +175,9 @@ class _home_screenState extends State<home_screen> {
                       fontSize: 16)),
             ),
             Container(
-              width: 180.0,
-              height: 180.0,
-              alignment: Alignment.bottomCenter,
+              width: ((screens.width / pembagianlayar) - 25)/2,
+              alignment: Alignment.bottomRight,
+             
               child: Image.asset('assets/images/image_61.png'),
             )
           ],

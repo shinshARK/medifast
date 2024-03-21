@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rumah_sakit/screens/splash_screen.dart';
+import 'package:rumah_sakit/models/layar_screens.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,6 +12,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    screens.setwidth(MediaQuery.of(context).size.width);
+    
+    screens.height = MediaQuery.of(context).size.height;
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -32,6 +36,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
+      
       debugShowCheckedModeBanner: false,
       home: const SplashScreen(),
     );
