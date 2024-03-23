@@ -79,7 +79,7 @@ class _HalamanProfilstate extends State<HalamanProfil> {
                 initialValue: "IlhamAkbar@gmail.com",
               ),
               _formNomerTelepon(
-                labelText: "No Telpon",
+                labelText: "Nomor Telpon",
                 initialValue: "089123712873",
               ),
               _buildDropdownButtonFormField(
@@ -246,7 +246,7 @@ class _HalamanProfilstate extends State<HalamanProfil> {
           initialValue,
           style: const TextStyle(
             fontSize: 16,
-            color: Colors.grey,
+            color: Colors.black,
           ),
         ),
         items: ['Laki-Laki', 'Perempuan'].map((gender) => DropdownMenuItem<String>(

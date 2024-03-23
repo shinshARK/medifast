@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
     
     screens.height = MediaQuery.of(context).size.height;
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'MediFast',
       theme: ThemeData(
         // This is the theme of your application.
         //
