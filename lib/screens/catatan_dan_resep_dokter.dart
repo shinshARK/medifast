@@ -1,7 +1,10 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:flutter/material.dart';
 import 'package:rumah_sakit/components/popupcustom.dart';
 import 'package:rumah_sakit/screens/pembayaran_obat.dart';
-
+import 'package:rumah_sakit/models/catatan_dokter_model.dart';
+import 'package:rumah_sakit/components/toggleText.dart';
 // ignore: camel_case_types
 class catatan_dan_resep_dokter extends StatefulWidget {
   const catatan_dan_resep_dokter({super.key});
@@ -16,6 +19,8 @@ var botton = ["Beli di Apotek", "Simpan Detail Obat"];
 
 // ignore: camel_case_types
 class _catatan_dan_resep_dokterState extends State<catatan_dan_resep_dokter> {
+
+  List<CatatanDokterModel> catatan = data_catatan;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,12 +52,46 @@ class _catatan_dan_resep_dokterState extends State<catatan_dan_resep_dokter> {
                   color: Colors.teal.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Text(
-                  'Gejala\nAnak tubuh panas melebihi 37°C, batuk pilek dan flu, muntah berkepanjangan, jarang buang air kecil, tidak mengeluarkan air mata saat menangis, dan lemas.\n\nKemungkinan Diagnosis\n> Mengalami Demam',
-                  style: TextStyle(
-                    fontSize: 16,
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Gejala", // Display Gejala heading
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      catatan[0].gejala, // Display Gejala body
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Diagnosis", // Display Diagnosis heading
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            ((catatan[0].diagnosis).isEmpty ? "Belum ada Diagnosa" : catatan[0].diagnosis), // Display Diagnosis body
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                  ],
                 ),
+
               ),
               SizedBox(height: 16),
               Text(
@@ -75,7 +114,7 @@ class _catatan_dan_resep_dokterState extends State<catatan_dan_resep_dokter> {
                     Text(
                       'Eki Rakhmah Z',
                       style: TextStyle(
-                        fontSize: 16,
+                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -115,19 +154,20 @@ class _catatan_dan_resep_dokterState extends State<catatan_dan_resep_dokter> {
                       ],
                     ),
                     SizedBox(height: 8),
-                    Text(
-                      'Aktifkan pengingat minum obat',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(Icons.check_box_outline_blank),
-                        SizedBox(width: 8),
-                        Text('Aktifkan'),
+                        Text(
+                          'Aktifkan pengingatin minum obat',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        ToggleTextWidget(firstValue: "Aktifkan", secondValue: "Nonaktifkan")
+                        
                       ],
                     ),
+                    
                   ],
                 ),
               ),
