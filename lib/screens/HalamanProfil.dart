@@ -72,7 +72,7 @@ class _HalamanProfilstate extends State<HalamanProfil> {
               ),
               _formttl(
                 labelText: "Tanggal Lahir",
-                initialValue: "12 - januari - 2001",
+                controller: _tanggallahirController,
               ),
               _formemail(
                 labelText: "Email",
@@ -124,15 +124,15 @@ class _HalamanProfilstate extends State<HalamanProfil> {
 
   Container _formttl({
       required String labelText,
-      required String initialValue,
+      required TextEditingController controller,
     }) {
-      final TextEditingController _tanggallahirController = TextEditingController(text: initialValue);
+      //final TextEditingController _tanggallahirController = TextEditingController(text: initialValue);
       return Container(
         width: 370,
         margin: const EdgeInsets.only(top: 10),
         padding: const EdgeInsets.all(8.0),
         child: TextFormField(
-          controller: _tanggallahirController,
+          controller: controller,
           textInputAction: TextInputAction.next,
           onFieldSubmitted: (value) {
             // Ketika tombol enter ditekan, pindah ke TextFormField berikutnya
@@ -158,7 +158,7 @@ class _HalamanProfilstate extends State<HalamanProfil> {
             );
             if (pickedDate != null) {
               String formattedDate = DateFormat('dd - MMMM - yyyy').format(pickedDate); // format the date to desired format
-              _tanggallahirController.text = formattedDate;
+              controller.text = formattedDate;
             }
           },
         ),
