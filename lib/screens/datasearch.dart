@@ -162,16 +162,16 @@ class DataSearch extends SearchDelegate<String> {
                 alignment: Alignment.topRight,
                 child: IconButton(
                   icon: Icon(
-                    suggestionList[index].tanda
+                    suggestionList[index].favorite
                         ? Icons.favorite
                         : Icons.favorite_border,
                     color:
-                        suggestionList[index].tanda ? Colors.black : Colors.black,
+                        suggestionList[index].favorite ? Colors.black : Colors.black,
                     size: 30,
                   ),
                   onPressed: () {
                     setState(() {
-                      suggestionList[index].tanda
+                      suggestionList[index].favorite
                           ? suggestionList[index].setTanda(false)
                           : suggestionList[index].setTanda(true);
                     });

@@ -218,7 +218,7 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const detail_pertemuan()),
+                                              const DetailPertemuan()),
                                     );
                                     
                                     break;
