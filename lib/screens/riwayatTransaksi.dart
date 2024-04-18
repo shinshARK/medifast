@@ -4,10 +4,10 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:rumah_sakit/components/bottomNavigasiBar.dart';
-import 'package:rumah_sakit/screens/detail_pertemuan.dart';
 import 'package:rumah_sakit/screens/catatan_dan_resep_dokter.dart';
 import 'package:rumah_sakit/screens/rating.dart';
 import 'package:rumah_sakit/models/riwayat_transaksi_model.dart';
+import 'package:rumah_sakit/screens/detail_pertemuan.dart';
 
 
 // ignore: must_be_immutable, camel_case_types
@@ -218,7 +218,7 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const detail_pertemuan()),
+                                              const DetailPertemuan()),
                                     );
                                     
                                     break;
