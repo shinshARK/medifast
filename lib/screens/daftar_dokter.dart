@@ -174,17 +174,17 @@ class _daftar_dokterState extends State<daftar_dokter> {
                 alignment: Alignment.topRight,
                 child: IconButton(
                   icon: Icon(
-                    data_dokter[posisi_data()[index]].tanda
+                    data_dokter[posisi_data()[index]].favorite
                         ? Icons.favorite
                         : Icons.favorite_border,
-                    color: data_dokter[posisi_data()[index]].tanda
+                    color: data_dokter[posisi_data()[index]].favorite
                         ? Colors.black
                         : Colors.black,
                     size: 30,
                   ),
                   onPressed: () {
                     setState(() {
-                      data_dokter[posisi_data()[index]].tanda
+                      data_dokter[posisi_data()[index]].favorite
                           ? data_dokter[posisi_data()[index]].setTanda(false)
                           : data_dokter[posisi_data()[index]].setTanda(true);
                     });
