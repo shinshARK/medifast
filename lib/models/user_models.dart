@@ -21,7 +21,7 @@ class UserModel{
 var data_user = [
   // Data yang sudah ada
   UserModel(firstname: "wahyu ", lastname: "sanhusi",email: "wahyu@gmail.com", telpon: "0835478853", password: "password"),
-  UserModel(firstname: "agus",lastname: "william",email: "agus@gmail.com", telpon: "0835478853", password: "password"),
+  UserModel(firstname: "agus",lastname: "william",email: "agus@gmail.com", telpon: "agus@gmail.com", password: "password"),
   UserModel(firstname: "rafi",lastname: "ahmad",email: "rafi@gmail.com", telpon: "0835478853", password: "password"),
   UserModel(firstname: "odang",lastname: "saluhi",email: "odang@gmail.com", telpon: "0835478853", password: "password"),
   UserModel(firstname: "budi",lastname: "gunawan",email: "budi@gmail.com", telpon: "0835478853", password: "password")
