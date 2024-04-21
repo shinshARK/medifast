@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rumah_sakit/screens/splash_screen.dart';
 import 'package:rumah_sakit/models/layar_screens.dart';
+import 'package:rumah_sakit/screens/test_fetch_article.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screens.setwidth(MediaQuery.of(context).size.width);
-    
+
     screens.height = MediaQuery.of(context).size.height;
     return MaterialApp(
       title: 'MediFast',
@@ -36,9 +37,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      
+
       debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
+      // home: const SplashScreen(),
+      home: ArticlePage()
     );
   }
 }
