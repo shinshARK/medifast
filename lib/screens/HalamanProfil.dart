@@ -49,7 +49,7 @@ class _HalamanProfilstate extends State<HalamanProfil> {
         actions: <Widget>[
           TextButton(
             onPressed: 
-            // isEditing ? _saveForm :
+            isEditing ? _saveForm :
             () {
               setState(() {
                 isEditing = !isEditing;
@@ -95,23 +95,28 @@ class _HalamanProfilstate extends State<HalamanProfil> {
     );
   }
 
-// void _saveForm() {
-//  if (_formKey.currentState!.validate()) {
-//     // Simpan data di sini
-//     _formKey.currentState!.save();
-//     // Misalnya, kita menyimpan data ke dalam variabel
-//     String nama = _namaController.text;
-//     String tanggalLahir = _tanggallahirController.text;
-//     String email = _emailController.text;
-//     String nomorTelepon = _nomortelponController.text;
-//     String jenisKelamin = this.jenisKelamin; // Menggunakan variabel jenisKelamin yang sudah ada
+  void _saveForm() {
+  if (_formKey.currentState!.validate()) {
+      // Simpan data di sini
+      _formKey.currentState!.save();
+      // Misalnya, kita menyimpan data ke dalam variabel
+      String nama = _namaController.text;
+      String tanggalLahir = _tanggallahirController.text;
+      String email = _emailController.text;
+      String nomorTelepon = _nomortelponController.text;
+      // Variabel jenisKelamin sudah diperbarui di dalam _buildDropdownButtonFormField
 
-//     // Ubah status isEditing menjadi false
-//     setState(() {
-//       isEditing = false;
-//     });
-//  }
-// }
+      // Ubah status isEditing menjadi false
+      setState(() {
+        isEditing = false;
+      });
+
+      // Tampilkan pesan sukses atau lakukan aksi lainnya setelah data disimpan
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Data berhasil disimpan!')),
+      );
+  }
+  }
 
   Container _formNama({
     required String labelText,
