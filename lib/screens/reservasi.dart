@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import 'package:rumah_sakit/screens/Pilihan_Pembayaran.dart';
 import 'package:rumah_sakit/screens/daftar_dokter.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:rumah_sakit/models/dokter_model.dart';
@@ -89,7 +91,9 @@ class _ReservasiState extends State<Reservasi> {
                         Text(
                           dokter.nama,
                           style: const TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w700),
+
+                              fontSize: 18, fontWeight: FontWeight.w700),
+
                         ),
                         Text(
                           dokter.spesialis,
@@ -444,12 +448,14 @@ class _ReservasiState extends State<Reservasi> {
       color: Colors.white,
       child: GestureDetector(
         onTap: () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //       builder: (context) =>
-          //            const Pilihan_Pembayaran()),
-          // );
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                     const Pilihan_Pembayaran()),
+          );
+
         },
         child: Container(
           width: 350,

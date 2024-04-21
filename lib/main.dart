@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:rumah_sakit/screens/splash_screen.dart';
 import 'package:rumah_sakit/models/layar_screens.dart';
 import 'package:rumah_sakit/screens/test_fetch_article.dart';
+import 'package:rumah_sakit/screens/reservasi.dart';
+import 'package:rumah_sakit/models/dokter_model.dart';
+import 'package:rumah_sakit/screens/test_fetch_article.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -39,8 +43,10 @@ class MyApp extends StatelessWidget {
       ),
 
       debugShowCheckedModeBanner: false,
+
       // home: const SplashScreen(),
-      home: ArticlePage()
+      home: Reservasi(dokter: data_dokter[0])
+
     );
   }
 }

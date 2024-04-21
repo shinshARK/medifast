@@ -114,7 +114,7 @@ class _home_screenState extends State<home_screen> {
                 height: 5,
               ),
               const highlight(
-                  inputan: 1, logo: 'Handshake.png', kalimat: 'Jadwal Janji'),
+                  inputan: 1, logo: 'handshake.png', kalimat: 'Jadwal Janji'),
               const SizedBox(
                 height: 20,
               ),
