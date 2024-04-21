@@ -4,9 +4,8 @@ import 'package:rumah_sakit/screens/Pilihan_Pembayaran.dart';
 import 'package:rumah_sakit/screens/daftar_dokter.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:rumah_sakit/models/dokter_model.dart';
-class Reservasi extends StatefulWidget {
-  
 
+class Reservasi extends StatefulWidget {
   final DokterModel dokter;
 
   const Reservasi({Key? key, required this.dokter}) : super(key: key);
@@ -38,11 +37,11 @@ class _ReservasiState extends State<Reservasi> {
   int _gender = 0;
   final List<int> _genders = [0, 1];
   // Membuat controller dengan teks awal
-  final namaPasienController =
-      TextEditingController(text: 'Immanuel Carlos');
+  final namaPasienController = TextEditingController(text: 'Immanuel Carlos');
   final umurController = TextEditingController(text: '6');
   final keluhanController = TextEditingController(text: 'Demam Tinggi');
-  final alamatController = TextEditingController(text: 'Jl. Cibeunying Kidul No.2 Kota Bandung');
+  final alamatController =
+      TextEditingController(text: 'Jl. Cibeunying Kidul No.2 Kota Bandung');
   @override
   Widget build(BuildContext context) {
     DokterModel dokter = widget.dokter;
@@ -51,7 +50,7 @@ class _ReservasiState extends State<Reservasi> {
         title: Center(
           child: Text(
             dokter.nama,
-            style: const TextStyle(fontWeight: FontWeight.w700,fontSize: 19),
+            style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 19),
           ),
         ),
       ),
@@ -76,14 +75,14 @@ class _ReservasiState extends State<Reservasi> {
                     child: CircleAvatar(
                       radius: 52,
                       backgroundColor: Colors.white.withOpacity(0.0),
-                      child:  CircleAvatar(
+                      child: CircleAvatar(
                         radius: 40,
                         backgroundImage:
                             AssetImage('assets/images/${dokter.image}'),
                       ),
                     ),
                   ),
-                   Padding(
+                  Padding(
                     padding: const EdgeInsets.only(right: 40),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,9 +90,7 @@ class _ReservasiState extends State<Reservasi> {
                         Text(
                           dokter.nama,
                           style: const TextStyle(
-
                               fontSize: 18, fontWeight: FontWeight.w700),
-
                         ),
                         Text(
                           dokter.spesialis,
@@ -311,7 +308,8 @@ class _ReservasiState extends State<Reservasi> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 10),
                     decoration: BoxDecoration(
                         color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(20)),
@@ -334,7 +332,8 @@ class _ReservasiState extends State<Reservasi> {
                   ),
                   const SizedBox(height: 20),
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 10),
                     decoration: BoxDecoration(
                         color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(20)),
@@ -357,7 +356,8 @@ class _ReservasiState extends State<Reservasi> {
                   ),
                   const SizedBox(height: 20),
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 10),
                     decoration: BoxDecoration(
                         color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(20)),
@@ -391,7 +391,8 @@ class _ReservasiState extends State<Reservasi> {
                   ),
                   const SizedBox(height: 20),
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 10),
                     decoration: BoxDecoration(
                         color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(20)),
@@ -414,7 +415,8 @@ class _ReservasiState extends State<Reservasi> {
                   ),
                   const SizedBox(height: 20),
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 10),
                     decoration: BoxDecoration(
                         color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(20)),
@@ -443,19 +445,16 @@ class _ReservasiState extends State<Reservasi> {
       ),
     );
   }
+
   BottomAppBar _BottomNavigasiBar(BuildContext context) {
     return BottomAppBar(
       color: Colors.white,
       child: GestureDetector(
         onTap: () {
-
           Navigator.push(
             context,
-            MaterialPageRoute(
-                builder: (context) =>
-                     const Pilihan_Pembayaran()),
+            MaterialPageRoute(builder: (context) => const Pilihan_Pembayaran()),
           );
-
         },
         child: Container(
           width: 350,
