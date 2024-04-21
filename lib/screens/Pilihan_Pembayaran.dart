@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rumah_sakit/components/popupcustom.dart';
+import 'package:rumah_sakit/screens/riwayatTransaksi.dart';
 
 // ignore: camel_case_types
 class Pilihan_Pembayaran extends StatefulWidget {
@@ -120,10 +121,12 @@ class _Pilihan_PembayaranState extends State<Pilihan_Pembayaran> {
             barrierDismissible: false,
             builder: (context) {
               return Dialog(child: PopupCustom(page1: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
-                Navigator.pop(context);
-                Navigator.pop(context);
+                Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                          
+                          builder: (Context) => const riwayatTransaksi(),
+                        ),
+                        (route) => false);
                 
               }, page2: (){}, jumlah_tombol: 1, notif: 'berhasil', judul_notif: 'pembayaran\nBerhasil', penjelasan_tambahan: 'Silahkan menuggu sesuai\ndengan Nomer Antrial yang tertera\nNomer Antrian : 12', nama_tombol_1: 'Kembali ke Riwayat Traansaksi', nama_tombol_2: '',
               

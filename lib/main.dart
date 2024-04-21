@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:rumah_sakit/screens/splash_screen.dart';
 import 'package:rumah_sakit/models/layar_screens.dart';
+<<<<<<< Updated upstream
+=======
+import 'package:rumah_sakit/screens/test_fetch_article.dart';
+import 'package:rumah_sakit/screens/reservasi.dart';
+import 'package:rumah_sakit/models/dokter_model.dart';
+>>>>>>> Stashed changes
 
 void main() {
   runApp(const MyApp());
@@ -38,7 +44,12 @@ class MyApp extends StatelessWidget {
       ),
       
       debugShowCheckedModeBanner: false,
+<<<<<<< Updated upstream
       home: const SplashScreen(),
+=======
+      // home: const SplashScreen(),
+      home: Reservasi(dokter: data_dokter[0])
+>>>>>>> Stashed changes
     );
   }
 }
