@@ -74,8 +74,9 @@ class _InformasiDokterState extends State<informasi_dokter> {
                 child: ListTile(
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-                  leading: const CircleAvatar(
-                    backgroundImage: AssetImage('assets/images/dokter_1.png'),
+                  leading: CircleAvatar(
+                    backgroundImage:
+                        AssetImage('assets/images/${widget.dokter.image}'),
                     radius: 30.0,
                   ),
                   title: Text('${widget.dokter.nama}',
