@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:rumah_sakit/components/bottomNavigasiBar.dart';
 import 'package:rumah_sakit/models/dokter_model.dart';
 import 'package:rumah_sakit/screens/datasearch.dart';
+import 'package:rumah_sakit/screens/informasi_dokter.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 // ignore: must_be_immutable, camel_case_types
@@ -92,109 +93,121 @@ class _daftar_dokterState extends State<daftar_dokter> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Material(
-        elevation: 5.0, // Nilai elevasi
-        borderRadius: BorderRadius.circular(20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 10,horizontal: 5),
-              child: CircleAvatar(
-                radius: 52,
-                backgroundColor: Colors.white.withOpacity(0.0),
-                child: CircleAvatar(
-                  radius: 40,
-                  backgroundImage: AssetImage(
-                      'assets/images/${data_dokter[posisi_data()[index]].image}'),
+          elevation: 5.0,
+          borderRadius: BorderRadius.circular(20),
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => informasi_dokter(
+                    key: ValueKey(data_dokter[posisi_data()[index]].nama),
+                    dokter: data_dokter[posisi_data()[index]],
+                  ),
                 ),
-              ),
-            ),
-            
-            Container(
-              
-              margin: const EdgeInsets.only(top: 23,left: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    data_dokter[posisi_data()[index]].nama,
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 3,
-                  ),
-                  Text(
-                    data_dokter[posisi_data()[index]].spesialis,
-                    style: const TextStyle(
-                      fontSize: 14,
+              );
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                  child: CircleAvatar(
+                    radius: 52,
+                    backgroundColor: Colors.white.withOpacity(0.0),
+                    child: CircleAvatar(
+                      radius: 40,
+                      backgroundImage: AssetImage(
+                          'assets/images/${data_dokter[posisi_data()[index]].image}'),
                     ),
                   ),
-                  const SizedBox(
-                    height: 7,
-                  ),
-                  Row(
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 23, left: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      RatingBar.builder(
-                        initialRating: double.parse(
-                            data_dokter[posisi_data()[index]].rating),
-                        minRating: 1,
-                        direction: Axis.horizontal,
-                        allowHalfRating: true,
-                        itemCount: 5,
-                        itemSize: 20,
-                        //itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                        itemBuilder: (context, _) => const Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                          size: 1.0,
-                        ),
-                        // ignore: avoid_types_as_parameter_names
-                        onRatingUpdate: (rating) {},
-                        ignoreGestures: true,
+                      Text(
+                        data_dokter[posisi_data()[index]].nama,
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(
-                        width: 15,
+                        height: 3,
                       ),
                       Text(
-                        data_dokter[posisi_data()[index]].rating,
+                        data_dokter[posisi_data()[index]].spesialis,
                         style: const TextStyle(
                           fontSize: 14,
                         ),
                       ),
+                      const SizedBox(
+                        height: 7,
+                      ),
+                      Row(
+                        children: [
+                          RatingBar.builder(
+                            initialRating: double.parse(
+                                data_dokter[posisi_data()[index]].rating),
+                            minRating: 1,
+                            direction: Axis.horizontal,
+                            allowHalfRating: true,
+                            itemCount: 5,
+                            itemSize: 20,
+                            //itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                            itemBuilder: (context, _) => const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                              size: 1.0,
+                            ),
+                            // ignore: avoid_types_as_parameter_names
+                            onRatingUpdate: (rating) {},
+                            ignoreGestures: true,
+                          ),
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          Text(
+                            data_dokter[posisi_data()[index]].rating,
+                            style: const TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
-                ],
-              ),
-            ),
-            
-            Expanded(
-              child: Container(
-                alignment: Alignment.topRight,
-                child: IconButton(
-                  icon: Icon(
-                    data_dokter[posisi_data()[index]].favorite
-                        ? Icons.favorite
-                        : Icons.favorite_border,
-                    color: data_dokter[posisi_data()[index]].favorite
-                        ? Colors.black
-                        : Colors.black,
-                    size: 30,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      data_dokter[posisi_data()[index]].favorite
-                          ? data_dokter[posisi_data()[index]].setTanda(false)
-                          : data_dokter[posisi_data()[index]].setTanda(true);
-                    });
-                  },
                 ),
-              ),
-            )
-          ],
-        ),
-      ),
+                Expanded(
+                  child: Container(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      icon: Icon(
+                        data_dokter[posisi_data()[index]].favorite
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        color: data_dokter[posisi_data()[index]].favorite
+                            ? Colors.black
+                            : Colors.black,
+                        size: 30,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          data_dokter[posisi_data()[index]].favorite
+                              ? data_dokter[posisi_data()[index]]
+                                  .setTanda(false)
+                              : data_dokter[posisi_data()[index]]
+                                  .setTanda(true);
+                        });
+                      },
+                    ),
+                  ),
+                )
+              ],
+            ),
+          )),
     );
   }
 
