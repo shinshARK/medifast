@@ -44,8 +44,8 @@ class MyApp extends StatelessWidget {
 
       debugShowCheckedModeBanner: false,
 
-      // home: const SplashScreen(),
-      home: Reservasi(dokter: data_dokter[0])
+      home: const SplashScreen(),
+      //home: Reservasi(dokter: data_dokter[0])
 
     );
   }
