@@ -1,9 +1,9 @@
-class UserModel{
+  class UserModel{
   String firstname;
   String lastname;
   String email;
   String telpon;
-  String password;
+  String hashed_password;
 
 
   UserModel({
@@ -11,8 +11,18 @@ class UserModel{
     required this.lastname,
     required this.email,
     required this.telpon,
-    required this.password
+    required this.hashed_password
   });
+
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      firstname: json['firstname'],
+      lastname: json['lastname'],
+      email: json['email'],
+      telpon: json['telpon'],
+      hashed_password: json['hashed_password'],
+    );
+  }
 
 }
 
@@ -20,11 +30,11 @@ class UserModel{
 // ignore: non_constant_identifier_names
 var data_user = [
   // Data yang sudah ada
-  UserModel(firstname: "wahyu ", lastname: "sanhusi",email: "wahyu@gmail.com", telpon: "0835478853", password: "password"),
-  UserModel(firstname: "agus",lastname: "william",email: "agus@gmail.com", telpon: "agus@gmail.com", password: "password"),
-  UserModel(firstname: "rafi",lastname: "ahmad",email: "rafi@gmail.com", telpon: "0835478853", password: "password"),
-  UserModel(firstname: "odang",lastname: "saluhi",email: "odang@gmail.com", telpon: "0835478853", password: "password"),
-  UserModel(firstname: "budi",lastname: "gunawan",email: "budi@gmail.com", telpon: "0835478853", password: "password")
+  UserModel(firstname: "wahyu ", lastname: "sanhusi",email: "wahyu@gmail.com", telpon: "0835478853", hashed_password: "hashed_password"),
+  UserModel(firstname: "agus",lastname: "william",email: "agus@gmail.com", telpon: "agus@gmail.com", hashed_password: "hashed_password"),
+  UserModel(firstname: "rafi",lastname: "ahmad",email: "rafi@gmail.com", telpon: "0835478853", hashed_password: "hashed_password"),
+  UserModel(firstname: "odang",lastname: "saluhi",email: "odang@gmail.com", telpon: "0835478853", hashed_password: "hashed_password"),
+  UserModel(firstname: "budi",lastname: "gunawan",email: "budi@gmail.com", telpon: "0835478853", hashed_password: "hashed_password")
 
   // UserModel(firstname: "Dummy1", lastname: "User1",email: "dummy1@gmail.com", telpon: "0835478854", password: "password1"),
   // UserModel(firstname: "Dummy2", lastname: "User2",email: "dummy2@gmail.com", telpon: "0835478855", password: "password2"),
@@ -42,3 +52,6 @@ var data_user = [
   // UserModel(firstname: "Dummy14", lastname: "User14",email: "dummy14@gmail.com", telpon: "0835478867", password: "password14"),
   // UserModel(firstname: "Dummy15", lastname: "User15",email: "dummy15@gmail.com", telpon: "0835478868", password: "password15"),
 ];
+
+
+// .fromJson
