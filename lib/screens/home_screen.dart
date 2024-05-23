@@ -1,11 +1,17 @@
+import 'dart:convert';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:rumah_sakit/repositories/auth_repository.dart';
 import 'package:rumah_sakit/screens/notifikasi_blur.dart';
 import 'package:rumah_sakit/components/bottomNavigasiBar.dart';
 import 'package:rumah_sakit/components/highlight.dart';
 import 'package:rumah_sakit/models/notifikasi_model.dart';
 import 'package:rumah_sakit/models/layar_screens.dart';
-import 'dart:async';
+import '../models/user_models.dart';
 
 // ignore: must_be_immutable, camel_case_types
 class home_screen extends StatefulWidget {
@@ -21,14 +27,15 @@ class _home_screenState extends State<home_screen> {
   late ScrollController _controller;
   late Timer _timer;
 
+  UserModel? user;
   bool _tujuan = true;
-  
-
 
   @override
   void initState() {
     super.initState();
     _controller = ScrollController();
+    _fetchUser();
+
     _timer = Timer.periodic(const Duration(seconds: 8), (Timer t) {
       if (_controller.offset >= ((screens.width - 5) * 2) && _tujuan == true) {
         _tujuan = false;
@@ -36,7 +43,7 @@ class _home_screenState extends State<home_screen> {
       if (_controller.offset <= 10 && _tujuan == false) {
         _tujuan = true;
       }
-      
+
       if (_controller.hasClients && _tujuan == true) {
         _controller.animateTo(
           _controller.offset +
@@ -67,6 +74,14 @@ class _home_screenState extends State<home_screen> {
     });
   }
 
+  Future<void> _fetchUser() async {
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final AuthRepository authRepository = AuthRepository(sharedPreferences);
+    setState(() {
+      user = authRepository.getUser();
+    });
+  }
+
   @override
   void dispose() {
     _timer.cancel();
@@ -91,25 +106,23 @@ class _home_screenState extends State<home_screen> {
               const SizedBox(
                 height: 5,
               ),
-              
               Text.rich(
                 TextSpan(
                   text: "Selamat Pagi\n",
                   style: GoogleFonts.openSans(fontSize: 14),
-                  children: const [
+                  children: [
                     TextSpan(
-                      text: "Ilham Akbar",
+                      text: "${user?.firstname ?? 'John'} ${user?.lastname ?? 'Doe'}",
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w800,
-                        fontSize: 18
-                      )
+                        fontSize: 18,
+                      ),
                     )
-                  ]
+                  ],
                 ),
                 textAlign: TextAlign.center,
               ),
-
               const SizedBox(
                 height: 5,
               ),
@@ -142,7 +155,7 @@ class _home_screenState extends State<home_screen> {
       ),
     );
   }
-  
+
   // ignore: non_constant_identifier_names
   GestureDetector _artikel_populer() {
     return GestureDetector(
@@ -161,10 +174,9 @@ class _home_screenState extends State<home_screen> {
           ),
         ),
         child: Row(
-          
           children: [
             Container(
-              width: ((screens.width / pembagianlayar) - 25)/2,
+              width: ((screens.width / pembagianlayar) - 25) / 2,
               alignment: Alignment.topLeft,
               padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
               child: const Text(
@@ -175,9 +187,8 @@ class _home_screenState extends State<home_screen> {
                       fontSize: 16)),
             ),
             Container(
-              width: ((screens.width / pembagianlayar) - 25)/2,
+              width: ((screens.width / pembagianlayar) - 25) / 2,
               alignment: Alignment.bottomRight,
-             
               child: Image.asset('assets/images/image_61.png'),
             )
           ],
@@ -197,13 +208,15 @@ class _home_screenState extends State<home_screen> {
                 style: GoogleFonts.openSans(
                     fontSize: 24, fontWeight: FontWeight.w700))),
         Padding(
-          padding: const EdgeInsets.only(bottom: 20), // Padding di semua sisi
+          padding:
+              const EdgeInsets.only(bottom: 20), // Padding di semua sisi
           child: TextButton(
               onPressed: () {
                 // Aksi ketika tombol ditekan
               },
               style: TextButton.styleFrom(
-                minimumSize: const Size(90.0, 16.0), // Ukuran minimum tombol
+                minimumSize:
+                    const Size(90.0, 16.0), // Ukuran minimum tombol
               ),
               child: const Text(
                 'Lihat Semua', // Teks yang ditampilkan
@@ -254,23 +267,26 @@ class _home_screenState extends State<home_screen> {
                     setState(() {
                       showDialog(
                           context: context,
-                          builder: (context) => const notifikasi_blur());
-                      });
+                          builder: (context) =>
+                              const notifikasi_blur());
+                    });
                   },
                   icon: const Icon(Icons.notifications),
                 ),
-                cekstatus() ? Positioned(
-                  right: 8,
-                  top: 5,
-                  child: Container(
-                    width: 10,
-                    height: 10,
-                    decoration: const BoxDecoration(
-                      color: Colors.red,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ) : const SizedBox(),
+                cekstatus()
+                    ? Positioned(
+                        right: 8,
+                        top: 5,
+                        child: Container(
+                          width: 10,
+                          height: 10,
+                          decoration: const BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      )
+                    : const SizedBox(),
               ],
             ),
           ),
@@ -279,16 +295,13 @@ class _home_screenState extends State<home_screen> {
     );
   }
 
-  bool cekstatus(){
+  bool cekstatus() {
     int jumlah = 0;
     for (var data in datanotifikasi) {
-      if (!data.status){
+      if (!data.status) {
         jumlah++;
       }
     }
-    if (jumlah > 0){
-      return true;
-    }
-    return false;
+    return jumlah > 0;
   }
 }

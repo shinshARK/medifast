@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rumah_sakit/components/popupcustom.dart';
 import 'package:rumah_sakit/screens/halamanRegistrasi.dart';
 import 'package:rumah_sakit/screens/home_screen.dart';
+
+import '../blocs/auth/login/login_bloc.dart';
 
 class HalamanLogin extends StatefulWidget {
   const HalamanLogin({super.key});
@@ -15,8 +19,6 @@ class _HalamanLoginState extends State<HalamanLogin> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
-  
 
   FocusNode myFocusNode1 = FocusNode();
 
@@ -37,33 +39,59 @@ class _HalamanLoginState extends State<HalamanLogin> {
   }
 
   void navigateToNextPage(BuildContext context) async {
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) {
-      return  const Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: 100.0, // Ubah lebar sesuai kebutuhan Anda
-            height: 100.0, // Ubah tinggi sesuai kebutuhan Anda
-            child: CircularProgressIndicator(strokeWidth: 10.0,color: Color.fromARGB(255, 135, 203, 198),),
-          ),
-        ],
-      );
-    },
-  );
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 100.0, // Ubah lebar sesuai kebutuhan Anda
+              height: 100.0, // Ubah tinggi sesuai kebutuhan Anda
+              child: CircularProgressIndicator(
+                strokeWidth: 10.0,
+                color: Color.fromARGB(255, 135, 203, 198),
+              ),
+            ),
+          ],
+        );
+      },
+    );
 
-  await Future.delayed(const Duration(seconds: 1)); // Ubah durasi sesuai kebutuhan Anda
+    await Future.delayed(
+        const Duration(seconds: 1)); // Ubah durasi sesuai kebutuhan Anda
 
-  // ignore: use_build_context_synchronously
-  Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          // ignore: non_constant_identifier_names
-                          builder: (Context) => home_screen(),
-                        ),
-                        (route) => false); // Navigasi ke halaman selanjutnya
-}
+    // ignore: use_build_context_synchronously
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          // ignore: non_constant_identifier_names
+          builder: (Context) => home_screen(),
+        ),
+        (route) => false); // Navigasi ke halaman selanjutnya
+  }
+
+  void showLoading(BuildContext context) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 100.0, // Ubah lebar sesuai kebutuhan Anda
+              height: 100.0, // Ubah tinggi sesuai kebutuhan Anda
+              child: CircularProgressIndicator(
+                strokeWidth: 10.0,
+                color: Color.fromARGB(255, 135, 203, 198),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,18 +121,55 @@ class _HalamanLoginState extends State<HalamanLogin> {
           ],
         ),
       ),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            _title(),
-            _formEmail(),
-            _formPassword(),
-            Center(
-              child: GestureDetector(
-                onTap: () {
-                  
-                  //if (_formKey.currentState!.validate()) {
+      body: BlocListener<LoginBloc, LoginState>(
+        listener: (context, state) {
+          // TODO: implement listener
+          if(state is LoginSuccess) {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const home_screen()),
+                (route) => false);
+          } else if(state is LoginLoading) {
+            showLoading(context);
+          } else if (state is LoginFailure) {
+
+            // TODO: kalau login gagal, masih terus menampilkan circularprogresindicator, fix this
+
+
+
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('Error'),
+                  content: Text(state.error),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('OK'),
+                    )
+                  ],
+                );
+              },
+            );
+          }
+        },
+
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              _title(),
+              _formEmail(),
+              _formPassword(),
+              Center(
+                child: GestureDetector(
+                  onTap: () {
+                    //if (_formKey.currentState!.validate()) {
                     // ignore: non_constant_identifier_names
                     // Navigator.of(context).pushAndRemoveUntil(
                     //     MaterialPageRoute(
@@ -112,29 +177,36 @@ class _HalamanLoginState extends State<HalamanLogin> {
                     //       builder: (Context) => home_screen(),
                     //     ),
                     //     (route) => false);
-                    navigateToNextPage(context);
-                  //}
-                },
-                child: Container(
-                  width: 370,
-                  height: 72,
-                  margin: const EdgeInsets.only(top: 50),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 135, 203, 198),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Text(
-                    "Masuk",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500),
+
+                    // navigateToNextPage(context);
+
+                    //}
+
+                    context.read<LoginBloc>().add(LoginRequested(
+                        _emailController.text.trim(),
+                        _passwordController.text.trim()));
+                  },
+                  child: Container(
+                    width: 370,
+                    height: 72,
+                    margin: const EdgeInsets.only(top: 50),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 135, 203, 198),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Text(
+                      "Masuk",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
