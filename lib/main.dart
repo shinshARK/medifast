@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rumah_sakit/blocs/login/login_bloc.dart';
-import 'package:rumah_sakit/blocs/registration/registration_bloc.dart';
+import 'package:rumah_sakit/blocs/auth/login/login_bloc.dart';
+import 'package:rumah_sakit/blocs/auth/registration/registration_bloc.dart';
 import 'package:rumah_sakit/repositories/auth_repository.dart';
 import 'package:rumah_sakit/screens/splash_screen.dart';
 import 'package:rumah_sakit/models/layar_screens.dart';

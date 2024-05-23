@@ -5,7 +5,7 @@ import 'package:rumah_sakit/components/popupcustom.dart';
 import 'package:rumah_sakit/screens/halamanRegistrasi.dart';
 import 'package:rumah_sakit/screens/home_screen.dart';
 
-import '../blocs/login/login_bloc.dart';
+import '../blocs/auth/login/login_bloc.dart';
 
 class HalamanLogin extends StatefulWidget {
   const HalamanLogin({super.key});

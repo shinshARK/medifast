@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class CatatanDokterModel{
   String gejala;
   String diagnosis;
