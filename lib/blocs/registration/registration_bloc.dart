@@ -16,7 +16,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     emit(RegistrationLoading());
     try {
       final success = await authRepository.register(
-        event.namaDepan, event.namaBelakang, event.email, event.telpon, event.password
+        event.namaDepan, event.namaBelakang, event.email, event.telephone, event.password
       );
       if (success) {
         emit(RegistrationSuccess());

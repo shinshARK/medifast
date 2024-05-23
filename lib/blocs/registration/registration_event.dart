@@ -12,10 +12,10 @@ class RegisterRequest extends RegistrationEvent {
   final String namaDepan;
   final String namaBelakang;
   final String email;
-  final String telpon;
+  final String telephone;
   final String password;
 
-  RegisterRequest(this.namaDepan, this.namaBelakang, this.email, this.telpon, this.password);
+  RegisterRequest(this.namaDepan, this.namaBelakang, this.email, this.telephone, this.password);
   @override
-  List<Object> get props => [namaDepan, namaBelakang, email, telpon, password];
+  List<Object> get props => [namaDepan, namaBelakang, email, telephone, password];
 }

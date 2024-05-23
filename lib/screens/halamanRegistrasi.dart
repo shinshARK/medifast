@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rumah_sakit/blocs/auth/auth_bloc.dart';
 import 'package:rumah_sakit/blocs/registration/registration_bloc.dart';
 import 'package:rumah_sakit/screens/halamanLogin.dart';
 import 'package:rumah_sakit/components/popupcustom.dart';

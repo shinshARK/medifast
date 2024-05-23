@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rumah_sakit/blocs/auth/auth_bloc.dart';
+import 'package:rumah_sakit/blocs/login/login_bloc.dart';
 import 'package:rumah_sakit/blocs/registration/registration_bloc.dart';
 import 'package:rumah_sakit/repositories/auth_repository.dart';
 import 'package:rumah_sakit/screens/splash_screen.dart';
@@ -14,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   final sharedPreferences = await SharedPreferences.getInstance();
-  final authRepository = AuthRepository();
+  final authRepository = AuthRepository(sharedPreferences);
 
   runApp(MyApp(sharedPreferences, authRepository));
 }
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
     screens.height = MediaQuery.of(context).size.height;
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => AuthBloc(sharedPreferences, authRepository)),
+        BlocProvider(create: (context) => LoginBloc(sharedPreferences, authRepository)),
         BlocProvider(create: (context) => RegistrationBloc(authRepository)),
       ],
       child: MaterialApp(
