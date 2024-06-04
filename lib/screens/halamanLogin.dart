@@ -150,7 +150,7 @@ class _HalamanLoginState extends State<HalamanLogin> {
                   page2: () {},
                   jumlah_tombol: 1,
                   notif: 'Gagal',
-                  judul_notif: 'Gagal\nLogin',
+                  judul_notif: 'Gagal Login',
                   penjelasan_tambahan: '',
                   nama_tombol_1: 'Login ulang',
                   nama_tombol_2: '',
