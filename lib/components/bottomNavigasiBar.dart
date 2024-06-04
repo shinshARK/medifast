@@ -5,7 +5,6 @@ import 'package:rumah_sakit/screens/riwayatTransaksi.dart';
 import 'package:rumah_sakit/screens/home_screen.dart';
 import 'package:rumah_sakit/screens/daftar_dokter.dart';
 
-
 class BottomNavigasiBar extends StatefulWidget {
   
   final int inputan;
@@ -45,44 +44,19 @@ class _BottomNavigasiBarState extends State<BottomNavigasiBar> {
       // Lakukan sesuatu untuk semua item di sini
 
       if (index == 0) {
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            // ignore: non_constant_identifier_names
-            builder: (Context) => const home_screen(),
-          ),
-          (route) => false);
+        Navigator.of(context).pushNamed('/home');
         // Lakukan sesuatu untuk item pertama di sini
       } else if (index == 1) {
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            // ignore: non_constant_identifier_names
-            builder: (Context) => const riwayatTransaksi(),
-          ),
-          (route) => false);
+        Navigator.of(context).pushNamed('/riwayat-transaksi');
         // Lakukan sesuatu untuk item kedua di sini
       } else if (index == 2) {
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            // ignore: non_constant_identifier_names
-            builder: (Context) => const daftar_dokter(),
-          ),
-          (route) => false);
+        Navigator.of(context).pushNamed('/Daftar-Dokter');
         // Lakukan sesuatu untuk item ketiga di sini
       }else if (index == 3) {
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            // ignore: non_constant_identifier_names
-            builder: (Context) => const halamanArtikel(),
-          ),
-          (route) => false);
+        Navigator.of(context).pushNamed('/Artikel');
         // Lakukan sesuatu untuk item ketiga di sini
       }else if (index == 4) {
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            // ignore: non_constant_identifier_names
-            builder: (Context) => const HalamanProfil(),
-          ),
-          (route) => false);
+        Navigator.of(context).pushNamed('/Profil');
         // Lakukan sesuatu untuk item ketiga di sini
       }},
       items: menu_icon
