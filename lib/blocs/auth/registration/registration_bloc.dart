@@ -21,7 +21,8 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       if (success) {
         emit(RegistrationSuccess());
       } else {
-        emit(RegistrationFailure('Registration failed'));
+        
+        emit(RegistrationFailure('Registration tes'));
       }
     } catch (e) {
       emit(RegistrationFailure(e.toString()));

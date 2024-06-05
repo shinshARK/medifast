@@ -110,18 +110,26 @@ class _HalamanRegistrasiState extends State<HalamanRegistrasi> {
             showDialog(
               context: context,
               builder: (context) {
-                return AlertDialog(
-                  title: const Text('Error'),
-                  content: Text(state.error),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('OK'),
-                    )
-                  ],
-                );
+                return Dialog(
+                    child: PopupCustom(
+                  page1: () {
+                    Navigator.pop(context);
+                    // Navigator.pop(context);
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) =>
+                    //           const HalamanLogin()),
+                    // );
+                  },
+                  page2: () {},
+                  jumlah_tombol: 1,
+                  notif: 'Gagal',
+                  judul_notif: 'Gagal\nMembuat Akun',
+                  penjelasan_tambahan: '',
+                  nama_tombol_1: 'masukan ulang',
+                  nama_tombol_2: '',
+                ));
               },
             );
           }
