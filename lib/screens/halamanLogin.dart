@@ -124,6 +124,7 @@ class _HalamanLoginState extends State<HalamanLogin> {
       body: BlocListener<LoginBloc, LoginState>(
         listener: (context, state) {
           // TODO: implement listener
+            print(state);
           if(state is LoginSuccess) {
             Navigator.pushAndRemoveUntil(
                 context,
@@ -141,19 +142,19 @@ class _HalamanLoginState extends State<HalamanLogin> {
             showDialog(
               context: context,
               builder: (context) {
-                return AlertDialog(
-                  title: const Text('Error'),
-                  content: Text(state.error),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('OK'),
-                    )
-                  ],
-                );
+                return Dialog(
+                    child: PopupCustom(
+                  page1: () {
+                    Navigator.pop(context);
+                  },
+                  page2: () {},
+                  jumlah_tombol: 1,
+                  notif: 'Gagal',
+                  judul_notif: 'Gagal Login',
+                  penjelasan_tambahan: '',
+                  nama_tombol_1: 'Login ulang',
+                  nama_tombol_2: '',
+                ));
               },
             );
           }
