@@ -1,4 +1,4 @@
-class DokterModel{
+class DokterModel {
   String nama;
   String image;
   String spesialis;
@@ -8,32 +8,69 @@ class DokterModel{
   String tentang;
   String jadwal;
 
-
-  DokterModel({
-    required this.nama,
-    required this.image,
-    required this.spesialis,
-    required this.rating,
-    required this.favorite,
-    required this.pengalaman,
-    required this.tentang,
-    required this.jadwal
-  });
+  DokterModel(
+      {required this.nama,
+      required this.image,
+      required this.spesialis,
+      required this.rating,
+      required this.favorite,
+      required this.pengalaman,
+      required this.tentang,
+      required this.jadwal});
 
   void setTanda(bool newValue) {
     favorite = newValue;
   }
 }
 
-
 // ignore: non_constant_identifier_names
 var data_dokter = [
   // Data yang sudah ada
-  DokterModel(nama: "Dr. Eki Rakhmah Z, Sp.A",spesialis: "Dokter Anak",rating: "4.8",favorite: true,image: "dokter_1.png", pengalaman: 1, tentang: "apa ini 1", jadwal: "senin, 07:00 - 08:00"),
-  DokterModel(nama: "Dr. Yudi Heriyanto",spesialis: "Dokter Umum",rating: "4.2",favorite: false,image: "dokter_4.png", pengalaman: 2, tentang: "apa ini 2", jadwal: "selasa, 07:00 - 08:00"),
-  DokterModel(nama: "Dr. Rina wijaya, Sp.PD",spesialis: "Dokter Dalam",rating: "4.8",favorite: false,image: "dokter_2.png", pengalaman: 10, tentang: "apa ini 3", jadwal: "rabu, 07:00 - 08:00"),
-  DokterModel(nama: "Dr. Budi Santoso, Sp.A",spesialis: "Dokter Anak",rating: "4.3",favorite: true,image: "dokter_5.png", pengalaman: 11, tentang: "apa ini 4", jadwal: "kamis, 07:00 - 08:00"),
-  DokterModel(nama: "Dr. Lilis",spesialis: "Dokter Umum",rating: "4.5",favorite: false,image: "dokter_3.png", pengalaman: 5, tentang: "apa ini 5", jadwal: "jumat, 07:00 - 08:00")
+  DokterModel(
+      nama: "Dr. Eki Rakhmah Z, Sp.A",
+      spesialis: "Dokter Anak",
+      rating: "4.8",
+      favorite: true,
+      image: "dokter_1.png",
+      pengalaman: 1,
+      tentang: "apa ini 1",
+      jadwal: "senin, 07:00 - 08:00"),
+  DokterModel(
+      nama: "Dr. Yudi Heriyanto",
+      spesialis: "Dokter Umum",
+      rating: "4.2",
+      favorite: false,
+      image: "dokter_4.png",
+      pengalaman: 2,
+      tentang: "apa ini 2",
+      jadwal: "selasa, 07:00 - 08:00"),
+  DokterModel(
+      nama: "Dr. Rina wijaya, Sp.PD",
+      spesialis: "Dokter Dalam",
+      rating: "4.8",
+      favorite: false,
+      image: "dokter_2.png",
+      pengalaman: 10,
+      tentang: "apa ini 3",
+      jadwal: "rabu, 07:00 - 08:00"),
+  DokterModel(
+      nama: "Dr. Budi Santoso, Sp.A",
+      spesialis: "Dokter Anak",
+      rating: "4.3",
+      favorite: true,
+      image: "dokter_5.png",
+      pengalaman: 11,
+      tentang: "apa ini 4",
+      jadwal: "kamis, 07:00 - 08:00"),
+  DokterModel(
+      nama: "Dr. Lilis",
+      spesialis: "Dokter Umum",
+      rating: "4.5",
+      favorite: false,
+      image: "dokter_3.png",
+      pengalaman: 5,
+      tentang: "apa ini 5",
+      jadwal: "jumat, 07:00 - 08:00")
 
   // DokterModel(nama: "Dr. Dummy 1",spesialis: "Dokter Anak",rating: "4.1",favorite: true,image: "dokter_6.png", pengalaman: 3, tentang: "apa ini 6", jadwal: "senin, 09:00 - 10:00"),
   // DokterModel(nama: "Dr. Dummy 2",spesialis: "Dokter Umum",rating: "4.2",favorite: false,image: "dokter_7.png", pengalaman: 4, tentang: "apa ini 7", jadwal: "selasa, 09:00 - 10:00"),

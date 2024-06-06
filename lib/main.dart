@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rumah_sakit/blocs/auth/login/login_bloc.dart';
 import 'package:rumah_sakit/blocs/auth/registration/registration_bloc.dart';
 import 'package:rumah_sakit/repositories/auth_repository.dart';
+
+import 'package:rumah_sakit/routes.dart';
 import 'package:rumah_sakit/screens/splash_screen.dart';
 import 'package:rumah_sakit/models/layar_screens.dart';
 import 'package:rumah_sakit/screens/test_fetch_article.dart';
@@ -13,7 +15,9 @@ import 'package:rumah_sakit/screens/test_fetch_article.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
+
     WidgetsFlutterBinding.ensureInitialized();
+
   final sharedPreferences = await SharedPreferences.getInstance();
   final authRepository = AuthRepository(sharedPreferences);
 
@@ -38,6 +42,10 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'MediFast',
+
+        initialRoute: '/home',
+        routes: routes,
+
         theme: ThemeData(
           // This is the theme of your application.
           //

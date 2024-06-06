@@ -48,15 +48,17 @@ class _HalamanProfilstate extends State<HalamanProfil> {
         backgroundColor: Colors.white,
         actions: <Widget>[
           TextButton(
-            child: Text(
-              isEditing ? 'Simpan' : 'Edit',
-              style: GoogleFonts.inter(fontWeight: FontWeight.w500, color: Colors.black),
-            ),
-            onPressed: () {
+            onPressed: 
+            isEditing ? _saveForm :
+            () {
               setState(() {
                 isEditing = !isEditing;
               });
             },
+            child: Text(
+              isEditing ? 'Simpan' : 'Edit',
+              style: GoogleFonts.inter(fontWeight: FontWeight.w500, color: Colors.black),
+            ),
           ),
         ],
       ),
@@ -93,6 +95,32 @@ class _HalamanProfilstate extends State<HalamanProfil> {
     );
   }
 
+  void _saveForm() {
+  if (_formKey.currentState!.validate()) {
+      // Simpan data di sini
+      _formKey.currentState!.save();
+      // Misalnya, kita menyimpan data ke dalam variabel
+      String nama = _namaController.text;
+      String tanggalLahir = _tanggallahirController.text;
+      String email = _emailController.text;
+      String nomorTelepon = _nomortelponController.text;
+      // Variabel jenisKelamin sudah diperbarui di dalam _buildDropdownButtonFormField
+
+
+
+
+      // Ubah status isEditing menjadi false
+      setState(() {
+        isEditing = false;
+      });
+
+      // Tampilkan pesan sukses atau lakukan aksi lainnya setelah data disimpan
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Data berhasil disimpan!')),
+      );
+  }
+  }
+
   Container _formNama({
     required String labelText,
     required String initialValue,
@@ -118,6 +146,7 @@ class _HalamanProfilstate extends State<HalamanProfil> {
           labelText: labelText,
           hintStyle: const TextStyle(fontSize: 16),
         ),
+        enabled: isEditing,
       ),
     );
   }
@@ -161,6 +190,7 @@ class _HalamanProfilstate extends State<HalamanProfil> {
               controller.text = formattedDate;
             }
           },
+          enabled: isEditing,
         ),
       );
     }
@@ -190,6 +220,7 @@ class _HalamanProfilstate extends State<HalamanProfil> {
           labelText: labelText,
           hintStyle: const TextStyle(fontSize: 16),
         ),
+        enabled: isEditing,
       ),
     );
   }
@@ -219,15 +250,16 @@ class _HalamanProfilstate extends State<HalamanProfil> {
           labelText: labelText,
           hintStyle: const TextStyle(fontSize: 16),
         ),
+        enabled: isEditing,
       ),
     );
   }
 
   Widget _buildDropdownButtonFormField({
-    required String labelText,
-    required String initialValue,
+  required String labelText,
+  required String initialValue,
   }) {
-    return Container(
+  return Container(
       width: 370,
       margin: const EdgeInsets.only(top: 10),
       padding: const EdgeInsets.all(8.0),
@@ -249,16 +281,16 @@ class _HalamanProfilstate extends State<HalamanProfil> {
             color: Colors.black,
           ),
         ),
-        items: ['Laki-Laki', 'Perempuan'].map((gender) => DropdownMenuItem<String>(
+        items: isEditing ? ['Laki-Laki', 'Perempuan'].map((gender) => DropdownMenuItem<String>(
           value: gender,
           child: Text(
             gender,
             style: const TextStyle(fontSize: 16),
           ),
-        )).toList(),
-        onChanged: (value) => setState(() => jenisKelamin = value!),
+        )).toList() : null, // Gunakan items jika isEditing adalah true
+        onChanged: isEditing ? (value) => setState(() => jenisKelamin = value!) : null, // Gunakan onChanged jika isEditing adalah true
       ),
-    );
+  );
   }
 
   Stack _profil(BuildContext context) {

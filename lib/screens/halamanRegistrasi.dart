@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rumah_sakit/blocs/auth/registration/registration_bloc.dart';
 import 'package:rumah_sakit/screens/halamanLogin.dart';
 import 'package:rumah_sakit/components/popupcustom.dart';
 
@@ -74,62 +76,125 @@ class _HalamanRegistrasiState extends State<HalamanRegistrasi> {
           ],
         ),
       ),
-      body: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              _title(),
-              _formNamaDepan(),
-              _formNamaBelakang(),
-              _formEmail(),
-              _formNomerTelepon(),
-              _formPassword(),
-              _formRePassword(),
-              Center(
-                child: GestureDetector(
-                  onTap: () {
-                    // if (_formKey.currentState!.validate()) {
-                      // Jika form valid, tampilkan dialog
-                      showDialog(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (context) {
-                          return Dialog(child: PopupCustom(page1: () {
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const HalamanLogin()),
-                            );
-                          }, page2: (){}, jumlah_tombol: 1, notif: 'berhasil', judul_notif: 'Berhasil\nMembuat Akun', penjelasan_tambahan: '', nama_tombol_1: 'Masuk', nama_tombol_2: '',
-                          
-                          ));
-                        },
-                      );
-                    // }
+      body: BlocListener<RegistrationBloc, RegistrationState>(
+        listener: (context, state) {
+          // TODO: implement listener
+          if (state is RegistrationSuccess) {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) {
+                return Dialog(
+                    child: PopupCustom(
+                  page1: () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const HalamanLogin()),
+                    );
                   },
-                  child: Container(
-                    width: 370,
-                    height: 72,
-                    margin: const EdgeInsets.only(top: 20, bottom: 20),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 219, 231, 116),
-                      borderRadius: BorderRadius.circular(10),
+                  page2: () {},
+                  jumlah_tombol: 1,
+                  notif: 'berhasil',
+                  judul_notif: 'Berhasil\nMembuat Akun',
+                  penjelasan_tambahan: '',
+                  nama_tombol_1: 'Masuk',
+                  nama_tombol_2: '',
+                ));
+              },
+            );
+          } else if (state is RegistrationFailure) {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return Dialog(
+                    child: PopupCustom(
+                  page1: () {
+                    Navigator.pop(context);
+                    // Navigator.pop(context);
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) =>
+                    //           const HalamanLogin()),
+                    // );
+                  },
+                  page2: () {},
+                  jumlah_tombol: 1,
+                  notif: 'Gagal',
+                  judul_notif: 'Gagal\nMembuat Akun',
+                  penjelasan_tambahan: '',
+                  nama_tombol_1: 'masukan ulang',
+                  nama_tombol_2: '',
+                ));
+              },
+            );
+          }
+        },
+        child: BlocBuilder<RegistrationBloc, RegistrationState>(
+          builder: (context, state) {
+
+            if (state is RegistrationLoading) {
+              return const Center(
+                child: CircularProgressIndicator(strokeWidth: 10.0,color: Color.fromARGB(255, 135, 203, 198)),
+              );
+            }
+
+            return Form(
+              key: _formKey,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    _title(),
+                    _formNamaDepan(),
+                    _formNamaBelakang(),
+                    _formEmail(),
+                    _formNomerTelepon(),
+                    _formPassword(),
+                    _formRePassword(),
+                    Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          // if (_formKey.currentState!.validate()) {
+                          // Jika form valid, tampilkan dialog
+                          context.read<RegistrationBloc>().add(RegisterRequest(
+                                _namaDepanController.text.trim(),
+                                _namaBelakangController.text.trim(),
+                                _emailController.text.trim(),
+                                _nomerTeleponController.text.trim(),
+                                _passwordController.text.trim(),
+                              ));
+
+
+                          // }
+                        },
+                        child: Container(
+                          width: 370,
+                          height: 72,
+                          margin: const EdgeInsets.only(top: 20, bottom: 20),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 219, 231, 116),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Text(
+                            "Daftar",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
                     ),
-                    child: const Text(
-                      "Daftar",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
-                    ),
-                  ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
