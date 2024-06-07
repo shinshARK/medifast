@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'MediFast',
-        initialRoute: '/home',
+        initialRoute: '/Splash',
         routes: routes,
         theme: ThemeData(
           // This is the theme of your application.
