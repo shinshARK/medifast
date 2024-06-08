@@ -13,6 +13,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthRepository authRepository;
 
   LoginBloc(this.sharedPreferences, this.authRepository) : super(LoginInitial()) {
+
     on<LoginRequested>(_onLoginRequested);
     on<LogoutRequested>(_onLogoutRequested);
     on<LoginReset>((event, emit) => emit(LoginInitial()));
@@ -70,7 +71,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  Future<void> _onLogoutRequested(LogoutRequested event, Emitter<LoginState> emit) async {
+  Future<void> _onLogoutRequested(
+      LogoutRequested event, Emitter<LoginState> emit) async {
     emit(LoginLoading());
     try {
       await authRepository.logout();
