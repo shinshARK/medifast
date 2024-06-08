@@ -22,8 +22,8 @@ class _InformasiDokterState extends State<informasi_dokter> {
       if (selecteddokter == 0) {
         hasil.add(i);
       } else if (data_dokter[i]
-              .spesialis
-              .toLowerCase()
+              .specialty
+              ?.toLowerCase()
               .contains(dokter[selecteddokter].toLowerCase()) ==
           true) {
         hasil.add(i);
@@ -38,7 +38,7 @@ class _InformasiDokterState extends State<informasi_dokter> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "${widget.dokter.nama}",
+          "${widget.dokter.name}",
           style: const TextStyle(fontWeight: FontWeight.w700),
         ),
         elevation: 10,
@@ -76,13 +76,13 @@ class _InformasiDokterState extends State<informasi_dokter> {
                       EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
                   leading: CircleAvatar(
                     backgroundImage:
-                        AssetImage('assets/images/${widget.dokter.image}'),
+                        AssetImage('assets/images/${widget.dokter.photo}'),
                     radius: 30.0,
                   ),
-                  title: Text('${widget.dokter.nama}',
+                  title: Text('${widget.dokter.name}',
                       style: const TextStyle(
                           fontSize: 18, fontWeight: FontWeight.bold)),
-                  subtitle: Text('${widget.dokter.spesialis}',
+                  subtitle: Text('${widget.dokter.specialty}',
                       style: const TextStyle(fontSize: 14)),
                 ),
               ),
@@ -96,7 +96,7 @@ class _InformasiDokterState extends State<informasi_dokter> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16.0, vertical: 8.0),
                         child: Column(children: [
-                          Text('${widget.dokter.pengalaman} Tahun',
+                          Text('${widget.dokter.experience} Tahun',
                               style: TextStyle(
                                   fontSize: 14, color: Color(0xFF8DB9FE))),
                           const Text('Pengalaman',
@@ -142,7 +142,7 @@ class _InformasiDokterState extends State<informasi_dokter> {
                     SizedBox(height: 10),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text('${widget.dokter.tentang}',
+                      child: Text('${widget.dokter.about}',
                           style: const TextStyle(fontSize: 14)),
                     ),
                   ],
@@ -164,7 +164,7 @@ class _InformasiDokterState extends State<informasi_dokter> {
                         Expanded(
                           child: Align(
                             alignment: Alignment.centerLeft,
-                            child: Text('${widget.dokter.jadwal}',
+                            child: Text('${widget.dokter.schedule}',
                                 style: const TextStyle(fontSize: 14)),
                           ),
                         ),

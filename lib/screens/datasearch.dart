@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:rumah_sakit/models/dokter_model.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
+
+
 class DataSearch extends SearchDelegate<String> {
   List<DokterModel> data;
-
-  DataSearch(this.data);
+  List<DokterModel> data_dokter = [];
+  DataSearch(this.data,this.data_dokter);
 
   int pencarianindex(String nama) {
     int index = 0;
     while (data_dokter.length > index) {
-      if (data_dokter[index].nama == nama) {
+      if (data_dokter[index].name == nama) {
         break;
       } else {
         index += 1;
@@ -55,11 +57,11 @@ class DataSearch extends SearchDelegate<String> {
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) {
         final suggestionList = query.isEmpty
-            ? data
-            : data
-                .where(
-                    (p) => p.nama.toLowerCase().contains(query.toLowerCase()))
-                .toList();
+    ? data
+    : data
+        .where((p) => p.name != null && p.name!.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
 
         return ListView.separated(
             itemBuilder: (context, index) {
@@ -94,7 +96,7 @@ class DataSearch extends SearchDelegate<String> {
                 child: CircleAvatar(
                   radius: 40,
                   backgroundImage: AssetImage(
-                      'assets/images/${suggestionList[index].image}'),
+                      'assets/images/${suggestionList[index].photo}'),
                 ),
               ),
             ),
@@ -106,7 +108,7 @@ class DataSearch extends SearchDelegate<String> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    suggestionList[index].nama,
+                    suggestionList[index].name ?? '',
                     style: const TextStyle(
                         fontSize: 16, fontWeight: FontWeight.bold),
                   ),
@@ -114,7 +116,7 @@ class DataSearch extends SearchDelegate<String> {
                     height: 10,
                   ),
                   Text(
-                    suggestionList[index].spesialis,
+                    suggestionList[index].specialty ?? '',
                     style: const TextStyle(
                       fontSize: 14,
                     ),
@@ -126,7 +128,7 @@ class DataSearch extends SearchDelegate<String> {
                     children: [
                       RatingBar.builder(
                         initialRating:
-                            double.parse(suggestionList[index].rating),
+                            double.parse(suggestionList[index].rating ?? ''),
                         minRating: 1,
                         direction: Axis.horizontal,
                         allowHalfRating: true,
@@ -146,7 +148,7 @@ class DataSearch extends SearchDelegate<String> {
                         width: 15,
                       ),
                       Text(
-                        suggestionList[index].rating,
+                        suggestionList[index].rating ?? '',
                         style: const TextStyle(
                           fontSize: 14,
                         ),
