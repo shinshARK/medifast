@@ -1,8 +1,8 @@
   class UserModel{
-  String firstname;
-  String lastname;
-  String email;
-  String telephone;
+  String? firstname;
+  String? lastname;
+  String? email;
+  String? telephone;
 
 
   UserModel({

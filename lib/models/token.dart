@@ -1,6 +1,6 @@
 class Token {
-  String accessToken;
-  String refreshToken;
+  String? accessToken;
+  String? refreshToken;
 
   Token({
     required this.accessToken,
