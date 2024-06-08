@@ -1,5 +1,6 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:rumah_sakit/components/bottomNavigasiBar.dart';
 import 'package:rumah_sakit/models/dokter_model.dart';
 import 'package:rumah_sakit/screens/datasearch.dart';
@@ -8,32 +9,54 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 // ignore: must_be_immutable, camel_case_types
 class daftar_dokter extends StatefulWidget {
-  const daftar_dokter({super.key});
+  // ignore: prefer_typing_uninitialized_variables
+  final mode;
+  // ignore: prefer_typing_uninitialized_variables
+  final filtel;
+  const daftar_dokter({super.key, required this.mode, required this.filtel});
 
   @override
   // ignore: library_private_types_in_public_api
   _daftar_dokterState createState() => _daftar_dokterState();
 }
 
-var dokter = ["Semua", "Umum", "Anak", "Dalam"];
+var dokter;
 
 int selecteddokter = 0;
 
 // ignore: camel_case_types
 class _daftar_dokterState extends State<daftar_dokter> {
+  int ?mode;
+  @override
+  void initState() {
+    super.initState();
+    dokter = widget.filtel;
+    mode = widget.mode;
+  }
   // ignore: non_constant_identifier_names
   List<int> posisi_data() {
     List<int> hasil = [];
-
-    for (int i = 0; i < data_dokter.length; i++) {
-      if (selecteddokter == 0) {
-        hasil.add(i);
-      } else if (data_dokter[i]
-              .spesialis
-              .toLowerCase()
-              .contains(dokter[selecteddokter].toLowerCase()) ==
-          true) {
-        hasil.add(i);
+    if(mode == 0){
+      for (int i = 0; i < data_dokter.length; i++) {
+        if (data_dokter[i]
+                .spesialis
+                .toLowerCase()
+                .contains(dokter[selecteddokter].toLowerCase()) ==
+            true) {
+          hasil.add(i);
+        }
+      }
+    }else{
+      for (int i = 0; i < data_dokter.length; i++) {
+        if (selecteddokter == 0) {
+          hasil.add(i);
+        } else if (data_dokter[i]
+                .spesialis
+                .toLowerCase()
+                .contains(dokter[selecteddokter].toLowerCase()) ==
+            true) {
+          hasil.add(i);
+        }
       }
     }
 
@@ -46,6 +69,28 @@ class _daftar_dokterState extends State<daftar_dokter> {
       sem.add(temp.nama);
     }
     return sem;
+  }
+
+  List<DokterModel> caridata(){
+    List<DokterModel> temp = [];
+    if(mode == 0){
+      for (int i = 0; i < data_dokter.length; i++) {
+        if (data_dokter[i]
+                .spesialis
+                .toLowerCase()
+                .contains(dokter[selecteddokter].toLowerCase()) ==
+            true) {
+          temp.add(data_dokter[i]);
+        }
+      }
+    }else{
+      for (int i = 0; i < data_dokter.length; i++) {
+        temp.add(data_dokter[i]);
+       
+      }
+    }
+
+    return temp;
   }
 
   @override
@@ -62,7 +107,7 @@ class _daftar_dokterState extends State<daftar_dokter> {
             icon: const Icon(Icons.search),
             onPressed: () {
               setState(() {
-                showSearch(context: context, delegate: DataSearch(data_dokter));
+                showSearch(context: context, delegate: DataSearch(caridata()));
               });
             },
           ),
@@ -71,7 +116,7 @@ class _daftar_dokterState extends State<daftar_dokter> {
         shadowColor: Colors.white,
       ),
       body: Column(children: <Widget>[
-        _katagori(),
+        mode == 1 ? _katagori() : const SizedBox(height: 30,),
         Expanded(
           child: ListView.separated(
             itemCount: posisi_data().length,
