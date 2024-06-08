@@ -9,43 +9,58 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-
   final SharedPreferences sharedPreferences;
   final AuthRepository authRepository;
 
   LoginBloc(this.sharedPreferences, this.authRepository) : super(LoginInitial()) {
-    // on<AppStarted>(_onAppStarted);
     on<LoginRequested>(_onLoginRequested);
     on<LogoutRequested>(_onLogoutRequested);
     on<LoginReset>((event, emit) => emit(LoginInitial()));
   }
 
   Future<void> _onLoginRequested(LoginRequested event, Emitter<LoginState> emit) async {
-
     print(event.email);
     print(event.password);
 
     emit(LoginLoading());
     try {
       final loginData = await authRepository.login(event.email, event.password);
+
       if (loginData != null) {
-        final user = UserModel.fromJson(loginData['user']);
-        final token = Token.fromJson(loginData);
+        final userJson = loginData['user'];
+        final tokensJson = loginData['tokens'];
 
-        await authRepository.saveToken(token.accessToken, token.refreshToken);
-        await authRepository.saveUser(user);
+        // Debug prints for JSON data
+        print('userJson: $userJson');
+        print('tokensJson: $tokensJson');
 
-        print(token.accessToken);
-        print(token.refreshToken);
+        if (userJson != null && tokensJson != null) {
+          print("from json... user");
+          final user = UserModel.fromJson(userJson);
+          print("from json... token");
+          
+          final token = Token.fromJson(tokensJson);
 
-        print(user.firstname);
-        print(user.lastname);
-        print(user.email);
-        print(user.telephone);
+          print("saving to sharedprefs...\n");
+          print(user);
+          print(token);
 
-        emit(LoginSuccess());
-      }
-      else {
+          await authRepository.saveUser(user);
+          await authRepository.saveTokens(token);
+
+          print(token.accessToken);
+          print(token.refreshToken);
+
+          print(user.firstname);
+          print(user.lastname);
+          print(user.email);
+          print(user.telephone);
+
+          emit(LoginSuccess());
+        } else {
+          emit(LoginFailure('Invalid login data received'));
+        }
+      } else {
         emit(LoginFailure('Login failed'));
       }
     } catch (e) {

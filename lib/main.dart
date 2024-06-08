@@ -17,14 +17,23 @@ void main() async {
   final sharedPreferences = await SharedPreferences.getInstance();
   final authRepository = AuthRepository(sharedPreferences);
 
-  runApp(MyApp(sharedPreferences, authRepository));
+
+  final user = sharedPreferences.getString('user');
+  final tokens = sharedPreferences.getString('tokens');
+
+  final isUserLoggedIn = user != null && tokens != null;
+
+  final initialRoute = isUserLoggedIn ? '/home' : '/login';
+
+  runApp(MyApp(sharedPreferences, authRepository, initialRoute));
 }
 
 class MyApp extends StatelessWidget {
 
   final SharedPreferences sharedPreferences;
   final AuthRepository authRepository;
-  MyApp(this.sharedPreferences, this.authRepository);
+  final String initialRoute;
+  MyApp(this.sharedPreferences, this.authRepository, this.initialRoute);
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -38,7 +47,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'MediFast',
-        initialRoute: '/home',
+        initialRoute: initialRoute,
         routes: routes,
         theme: ThemeData(
           // This is the theme of your application.
