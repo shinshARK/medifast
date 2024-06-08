@@ -44,19 +44,19 @@ class _BottomNavigasiBarState extends State<BottomNavigasiBar> {
       // Lakukan sesuatu untuk semua item di sini
 
       if (index == 0) {
-        Navigator.of(context).pushNamed('/home');
+        Navigator.of(context).pushReplacementNamed('/home');
         // Lakukan sesuatu untuk item pertama di sini
       } else if (index == 1) {
-        Navigator.of(context).pushNamed('/riwayat-transaksi');
+        Navigator.of(context).pushReplacementNamed('/riwayat-transaksi');
         // Lakukan sesuatu untuk item kedua di sini
       } else if (index == 2) {
-        Navigator.of(context).pushNamed('/Daftar-Dokter');
+        Navigator.of(context).pushReplacementNamed('/Daftar-Dokter');
         // Lakukan sesuatu untuk item ketiga di sini
       }else if (index == 3) {
-        Navigator.of(context).pushNamed('/Artikel');
+        Navigator.of(context).pushReplacementNamed('/Artikel');
         // Lakukan sesuatu untuk item ketiga di sini
       }else if (index == 4) {
-        Navigator.of(context).pushNamed('/Profil');
+        Navigator.of(context).pushReplacementNamed('/Profil');
         // Lakukan sesuatu untuk item ketiga di sini
       }},
       items: menu_icon

@@ -53,19 +53,19 @@ class AuthRepository {
     await sharedPreferences.remove('user');
   }
 
-  Future<void> saveToken(String accessToken, String refreshToken) async {
-    await sharedPreferences.setString('access_token', accessToken);
-    await sharedPreferences.setString('refresh_token', refreshToken);
+  Future<void> saveTokens(Token token) async {
+    await sharedPreferences.setString('tokens', jsonEncode(token.toJson()));
   }
 
   Token? getToken() {
-    final accessToken = sharedPreferences.getString('access_token');
-    final refreshToken = sharedPreferences.getString('refresh_token');
-    if (accessToken != null && refreshToken != null) {
-      return Token(accessToken: accessToken, refreshToken: refreshToken);
+    final tokenDataString = sharedPreferences.getString('tokens');
+    if (tokenDataString != null) {
+      final tokenData = jsonDecode(tokenDataString);
+      return Token.fromJson(tokenData);
     }
     return null;
   }
+  
 
   Future<void> saveUser(UserModel user) async {
     await sharedPreferences.setString('user', jsonEncode(user.toJson()));
