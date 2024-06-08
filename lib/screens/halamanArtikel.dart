@@ -24,7 +24,7 @@ class _halamanArtikelState extends State<halamanArtikel> {
   @override
   void initState() {
     super.initState();
-    fetchData();
+    // fetchData();
   }
 
   Future<void> fetchData() async {

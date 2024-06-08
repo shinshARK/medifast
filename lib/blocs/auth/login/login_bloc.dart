@@ -29,19 +29,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     try {
       final loginData = await authRepository.login(event.email, event.password);
       if (loginData != null) {
-        final user = UserModel.fromJson(loginData['user']);
-        final token = Token.fromJson(loginData);
+        // final user = UserModel.fromJson(loginData['user']);
+        final token = Token.fromJson(loginData['data']);
 
         await authRepository.saveToken(token.accessToken, token.refreshToken);
-        await authRepository.saveUser(user);
+        // await authRepository.saveUser(user);
 
-        print(token.accessToken);
-        print(token.refreshToken);
+        // print(token.accessToken);
+        // print(token.refreshToken);
 
-        print(user.firstname);
-        print(user.lastname);
-        print(user.email);
-        print(user.telephone);
+        // print(user.firstname);
+        // print(user.lastname);
+        // print(user.email);
+        // print(user.telephone);
 
         emit(LoginSuccess());
       }

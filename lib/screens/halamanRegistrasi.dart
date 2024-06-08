@@ -158,7 +158,7 @@ class _HalamanRegistrasiState extends State<HalamanRegistrasi> {
                     Center(
                       child: GestureDetector(
                         onTap: () {
-                          // if (_formKey.currentState!.validate()) {
+                          if (_formKey.currentState!.validate()) {
                           // Jika form valid, tampilkan dialog
                           context.read<RegistrationBloc>().add(RegisterRequest(
                                 _namaDepanController.text.trim(),
@@ -169,7 +169,7 @@ class _HalamanRegistrasiState extends State<HalamanRegistrasi> {
                               ));
 
 
-                          // }
+                          }
                         },
                         child: Container(
                           width: 370,
