@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rumah_sakit/screens/daftar_dokter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:rumah_sakit/repositories/auth_repository.dart';
@@ -113,7 +114,7 @@ class _home_screenState extends State<home_screen> {
                   children: [
                     TextSpan(
                       text: "${user?.firstname ?? 'John'} ${user?.lastname ?? 'Doe'}",
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w800,
                         fontSize: 18,
@@ -126,15 +127,21 @@ class _home_screenState extends State<home_screen> {
               const SizedBox(
                 height: 5,
               ),
-              const highlight(
-                  inputan: 1, logo: 'handshake.png', kalimat: 'Jadwal Janji'),
+               highlight(
+                  inputan: 1, logo: 'handshake.png', kalimat: 'Jadwal Janji', redirect: () {Navigator.of(context).pushReplacementNamed('/Daftar-Dokter');},),
               const SizedBox(
                 height: 20,
               ),
-              const highlight(
+              highlight(
                   inputan: 1,
                   logo: 'IdentificationBadge.png',
-                  kalimat: 'Pangilan Dokter\nke Rumah'),
+                  kalimat: 'Pangilan Dokter\nke Rumah',
+                  redirect: () {Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const daftar_dokter(mode: 0, filtel: ["Umum"],)),
+              );}),
+                  
               _artikel_fitur(),
               Container(
                 height: 182,
@@ -212,7 +219,7 @@ class _home_screenState extends State<home_screen> {
               const EdgeInsets.only(bottom: 20), // Padding di semua sisi
           child: TextButton(
               onPressed: () {
-                // Aksi ketika tombol ditekan
+                Navigator.of(context).pushReplacementNamed('/Artikel');
               },
               style: TextButton.styleFrom(
                 minimumSize:

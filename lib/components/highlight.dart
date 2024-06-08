@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 class highlight extends StatefulWidget {
   final int inputan;
   final String logo,kalimat;
-
-  const highlight({super.key, required this.inputan, required this.logo, required this.kalimat});
+  final Function redirect;
+  const highlight({super.key, required this.inputan, required this.logo, required this.kalimat,required this.redirect});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -17,19 +17,21 @@ class highlight extends StatefulWidget {
 class _highlightState extends State<highlight> {
   int ?inputan;
   String ?logo,kalimat;
-
+  late Function redirect;
   @override
   void initState() {
     super.initState();
     inputan = widget.inputan;
     kalimat = widget.kalimat;
     logo = widget.logo;
+    redirect = widget.redirect;
   }
   
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        redirect();
         // backgroundColor: const Color.fromARGB(255, 219, 231, 116)
         // Aksi ketika Container diklik
         print("test");
