@@ -13,8 +13,8 @@ class RiwayatTransaksiModel{
     });
 }
 
-var riwayattransaksi = [
-  RiwayatTransaksiModel(dokter: data_dokter[0], status: "Segera", tanggal: "2024-03-04", jam: "02:00:00.857"),
-  RiwayatTransaksiModel(dokter: data_dokter[1], status: "Selesai", tanggal: "2024-03-04", jam: "02:00:00.857"),
-  RiwayatTransaksiModel(dokter: data_dokter[2], status: "Batal", tanggal: "2024-03-04", jam: "02:00:00.857")
-];
+// var riwayattransaksi = [
+//   RiwayatTransaksiModel(dokter: data_dokter[0], status: "Segera", tanggal: "2024-03-04", jam: "02:00:00.857"),
+//   RiwayatTransaksiModel(dokter: data_dokter[1], status: "Selesai", tanggal: "2024-03-04", jam: "02:00:00.857"),
+//   RiwayatTransaksiModel(dokter: data_dokter[2], status: "Batal", tanggal: "2024-03-04", jam: "02:00:00.857")
+// ];
