@@ -49,7 +49,7 @@ class _ReservasiState extends State<Reservasi> {
       appBar: AppBar(
         title: Center(
           child: Text(
-            dokter.nama,
+            dokter.name ?? '',
             style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 19),
           ),
         ),
@@ -78,7 +78,7 @@ class _ReservasiState extends State<Reservasi> {
                       child: CircleAvatar(
                         radius: 40,
                         backgroundImage:
-                            AssetImage('assets/images/${dokter.image}'),
+                            AssetImage('assets/images/${dokter.photo}'),
                       ),
                     ),
                   ),
@@ -88,12 +88,12 @@ class _ReservasiState extends State<Reservasi> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          dokter.nama,
+                          dokter.name ?? '',
                           style: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w700),
                         ),
                         Text(
-                          dokter.spesialis,
+                          dokter.specialty ?? '',
                           style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w500),
                         )

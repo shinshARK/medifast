@@ -26,12 +26,13 @@ class DokterModel {
   }
 
   factory DokterModel.fromJson(Map<String, dynamic> json) {
+    print(json);
     return DokterModel(
         name: json['name'],
         photo: json['photo'],
         specialty: json['specialty'],
         rating: json['rating'],
-        favorite: json['favorite'],
+        favorite: json.containsKey('favorite') ? json['favorite'] : false,
         experience: json['experience'],
         about: json['about'],
         schedule: json['schedule']);
