@@ -9,19 +9,19 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-
   final SharedPreferences sharedPreferences;
   final AuthRepository authRepository;
 
-  LoginBloc(this.sharedPreferences, this.authRepository) : super(LoginInitial()) {
+  LoginBloc(this.sharedPreferences, this.authRepository)
+      : super(LoginInitial()) {
     // on<AppStarted>(_onAppStarted);
     on<LoginRequested>(_onLoginRequested);
     on<LogoutRequested>(_onLogoutRequested);
     on<LoginReset>((event, emit) => emit(LoginInitial()));
   }
 
-  Future<void> _onLoginRequested(LoginRequested event, Emitter<LoginState> emit) async {
-
+  Future<void> _onLoginRequested(
+      LoginRequested event, Emitter<LoginState> emit) async {
     print(event.email);
     print(event.password);
 
@@ -29,23 +29,22 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     try {
       final loginData = await authRepository.login(event.email, event.password);
       if (loginData != null) {
-        final user = UserModel.fromJson(loginData['user']);
-        final token = Token.fromJson(loginData);
+        // final user = UserModel.fromJson(loginData['user']);
+        final token = Token.fromJson(loginData['data']);
 
         await authRepository.saveToken(token.accessToken, token.refreshToken);
-        await authRepository.saveUser(user);
+        // await authRepository.saveUser(user);
 
-        print(token.accessToken);
-        print(token.refreshToken);
+        // print(token.accessToken);
+        // print(token.refreshToken);
 
-        print(user.firstname);
-        print(user.lastname);
-        print(user.email);
-        print(user.telephone);
+        // print(user.firstname);
+        // print(user.lastname);
+        // print(user.email);
+        // print(user.telephone);
 
         emit(LoginSuccess());
-      }
-      else {
+      } else {
         emit(LoginFailure('Login failed'));
       }
     } catch (e) {
@@ -53,7 +52,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  Future<void> _onLogoutRequested(LogoutRequested event, Emitter<LoginState> emit) async {
+  Future<void> _onLogoutRequested(
+      LogoutRequested event, Emitter<LoginState> emit) async {
     emit(LoginLoading());
     try {
       await authRepository.logout();
