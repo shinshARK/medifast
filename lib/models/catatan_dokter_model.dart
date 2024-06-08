@@ -1,3 +1,4 @@
+import 'package:rumah_sakit/models/resep_digital.dart';
 class CatatanDokterModel{
   String gejala;
   String diagnosis;
