@@ -26,7 +26,6 @@ class DokterModel {
   }
 
   factory DokterModel.fromJson(Map<String, dynamic> json) {
-    print(json);
     return DokterModel(
         name: json['name'],
         photo: json['photo'],
