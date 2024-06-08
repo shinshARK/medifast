@@ -15,17 +15,19 @@ class DoctorRepository {
 
   Future<List<DokterModel>> fetchDokter() async {
 
-    final token = sharedPreferences.getString('access_token');
-
+    final token = jsonDecode(sharedPreferences.getString('tokens') ?? '')['access_token'] ;
+    print(token);
     final response = await http.get(
-      Uri.parse('http://localhost:8000/api/doctor'),
+      Uri.parse('http://localhost:8000/doctor/'),
       headers: {
         'Authorization': 'Bearer $token'
       }
     );
     if (response.statusCode == 200) {
-      List jsonResponse = json.decode(response.body);
-      return jsonResponse.map((data) => new DokterModel.fromJson(data)).toList();
+      Map<String, dynamic> jsonResponse = json.decode(response.body);
+    List<dynamic> doctorList = jsonResponse['doctor'];
+    print(doctorList);
+    return doctorList.map((data) => DokterModel.fromJson(data)).toList();
     } else {
       throw Exception('Failed to load doctor');
     }
@@ -33,9 +35,9 @@ class DoctorRepository {
   }
 
   Future<DokterModel> fetchDokterById(int id) async {
-    final token = sharedPreferences.getString('access_token');
+    final token = jsonDecode(sharedPreferences.getString('tokens') ?? '')['access_token'] ;
     final response = await http.get(
-      Uri.parse('http://localhost:8000/api/doctor/$id'),
+      Uri.parse('http://localhost:8000/doctor/$id'),
       headers: {
         'Authorization': 'Bearer $token'
       }

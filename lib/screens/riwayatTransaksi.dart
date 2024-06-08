@@ -41,9 +41,9 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
         child: Padding(
           padding: const EdgeInsets.only(top: 10),
           child: Column(
-            children: List.generate(riwayattransaksi.length, (index) {
-              return _riwayat(riwayattransaksi[index]);
-            }),
+            // children: List.generate(riwayattransaksi.length, (index) {
+            //   return _riwayat(riwayattransaksi[index]);
+            // }),
           ),
         ),
       ),
@@ -80,7 +80,7 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
                           CircleAvatar(
                               radius: 40,
                               backgroundImage: AssetImage(
-                                  "assets/images/${data.dokter.image}"),
+                                  "assets/images/${data.dokter.photo}"),
                             )
                           
                     ),
@@ -89,14 +89,14 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(data.dokter.nama,     
+                          Text(data.dokter.name ?? '',     
                               style: const TextStyle(fontWeight: FontWeight.bold)),
                           const SizedBox(
                             height: 7,
                           ),
                             Row(
                               children: [
-                                Text(data.dokter.spesialis),
+                                Text(data.dokter.specialty ?? ''),
                                 const Text(" |"),
                                 Container(
                                   width: 60,

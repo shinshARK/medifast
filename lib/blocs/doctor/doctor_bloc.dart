@@ -16,11 +16,13 @@ class DoctorBloc extends Bloc<DoctorEvent, DoctorState> {
 
   Future<void> _onDoctorRequested(DoctorRequested event, Emitter<DoctorState> emit) async {
     emit(DoctorLoading());
+    
     try {
       final data_dokter = await doctorRepository.fetchDokter();
-
+      
       emit(DoctorLoaded(data_dokter));
     } catch (e) {
+      print("failet");
       emit(DoctorFailure(e.toString()));
     }
   }
