@@ -146,6 +146,7 @@ class _HalamanLoginState extends State<HalamanLogin> {
                     child: PopupCustom(
                   page1: () {
                     Navigator.pop(context);
+                    Navigator.pop(context);
                   },
                   page2: () {},
                   jumlah_tombol: 1,

@@ -27,6 +27,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       final loginData = await authRepository.login(event.email, event.password);
 
       if (loginData != null) {
+
         final userJson = loginData['user'];
         final tokensJson = loginData['tokens'];
 
@@ -44,6 +45,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           print("saving to sharedprefs...\n");
           print(user);
           print(token);
+
 
           await authRepository.saveUser(user);
           await authRepository.saveTokens(token);
