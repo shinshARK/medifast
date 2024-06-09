@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rumah_sakit/blocs/article/article_bloc.dart';
 import 'package:rumah_sakit/blocs/auth/login/login_bloc.dart';
 import 'package:rumah_sakit/blocs/auth/registration/registration_bloc.dart';
 import 'package:rumah_sakit/blocs/doctor/doctor_bloc.dart';
+import 'package:rumah_sakit/repositories/article_repository.dart';
 import 'package:rumah_sakit/repositories/auth_repository.dart';
 import 'package:rumah_sakit/repositories/doctor_repository.dart';
 
@@ -20,7 +22,7 @@ void main() async {
 
   final sharedPreferences = await SharedPreferences.getInstance();
   final authRepository = AuthRepository(sharedPreferences);
-    final doctorRepository = DoctorRepository(sharedPreferences);
+  final doctorRepository = DoctorRepository(sharedPreferences);
 
   final user = sharedPreferences.getString('user');
   final tokens = sharedPreferences.getString('tokens');
@@ -29,15 +31,17 @@ void main() async {
 
   final initialRoute = isUserLoggedIn ? '/home' : '/login';
 
-  runApp(MyApp(sharedPreferences, authRepository, initialRoute, doctorRepository));
+  runApp(
+      MyApp(sharedPreferences, authRepository, initialRoute, doctorRepository));
 }
 
 class MyApp extends StatelessWidget {
   final SharedPreferences sharedPreferences;
   final AuthRepository authRepository;
-   final DoctorRepository doctorRepository;
+  final DoctorRepository doctorRepository;
   final String initialRoute;
-  MyApp(this.sharedPreferences, this.authRepository, this.initialRoute,  this.doctorRepository );
+  MyApp(this.sharedPreferences, this.authRepository, this.initialRoute,
+      this.doctorRepository);
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -49,8 +53,13 @@ class MyApp extends StatelessWidget {
         BlocProvider(
             create: (context) => LoginBloc(sharedPreferences, authRepository)),
         BlocProvider(create: (context) => RegistrationBloc(authRepository)),
-         BlocProvider(
-            create: (context) => DoctorBloc(sharedPreferences, doctorRepository)),
+        BlocProvider(
+            create: (context) =>
+                DoctorBloc(sharedPreferences, doctorRepository)),
+        BlocProvider(
+          create: (context) =>
+              ArticleBloc(ArticleRepository(sharedPreferences)),
+        ),
       ],
       child: MaterialApp(
         title: 'MediFast',

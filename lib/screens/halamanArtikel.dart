@@ -7,6 +7,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart'; // Import DateFormat
 import 'package:rumah_sakit/models/artikel_models.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rumah_sakit/blocs/article/article_bloc.dart';
 
 // ignore: must_be_immutable, camel_case_types
 class halamanArtikel extends StatefulWidget {
@@ -24,32 +26,10 @@ class _halamanArtikelState extends State<halamanArtikel> {
   @override
   void initState() {
     super.initState();
+    context.read<ArticleBloc>().add(ArticleRequested());
     // fetchData();
   }
 
-  Future<void> fetchData() async {
-    // Fetch data from the API
-    final response = await http.get(Uri.parse('http://127.0.0.1:8000/articles'));
-
-    if (response.statusCode == 200) {
-      // If the server returns a 200 OK response, parse the JSON
-      List<dynamic> jsonResponse = json.decode(response.body);
-      // print(jsonResponse);
-
-      // Convert each JSON object to an Article object
-      List<Article> parsedArticles = jsonResponse.map((articleJson) {
-        return Article.fromJson(articleJson);
-      }).toList();
-
-      // Update the state with the parsed articles
-      setState(() {
-        articles = parsedArticles;
-      });
-    } else {
-      // If the server did not return a 200 OK response, throw an error.
-      throw Exception('Failed to load articles');
-    }
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,54 +42,66 @@ class _halamanArtikelState extends State<halamanArtikel> {
         elevation: 10,
         shadowColor: Colors.white,
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Flex(
-            direction: Axis.vertical,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              _artikel1(),
-              Container(
-                height: 172,
-                margin: const EdgeInsets.only(left: 15, right: 10),
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) => _artikel1_Padding(),
-                  separatorBuilder: (context, index) => const SizedBox(
-                    width: 20.0,
+      body: BlocBuilder<ArticleBloc, ArticleState>(
+        builder: (context, state) {
+          if (state is ArticleLoading) {
+            return Center(child: CircularProgressIndicator());
+          } else if (state is ArticleLoaded) {
+            articles = state.articles;
+          } else if (state is ArticleFailure) {
+            return Center(child: Text('Error: ${state.error}'));
+          }
+          // Jika tidak ada state yang cocok, kembalikan Container kosong
+          return SafeArea(
+            child: SingleChildScrollView(
+              child: Flex(
+                direction: Axis.vertical,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  _artikel1(),
+                  Container(
+                    height: 172,
+                    margin: const EdgeInsets.only(left: 15, right: 10),
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) => _artikel1_Padding(),
+                      separatorBuilder: (context, index) => const SizedBox(
+                        width: 20.0,
+                      ),
+                      itemCount: 2,
+                    ),
                   ),
-                  itemCount: 2,
-                ),
-              ),
-              _artikel2(),
-              Container(
-                height: 172,
-                margin: const EdgeInsets.only(left: 15, right: 10),
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) => _artikel2_Padding(index),
-                  separatorBuilder: (context, index) => const SizedBox(
-                    width: 20.0,
+                  _artikel2(),
+                  Container(
+                    height: 172,
+                    margin: const EdgeInsets.only(left: 15, right: 10),
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) => _artikel2_Padding(index),
+                      separatorBuilder: (context, index) => const SizedBox(
+                        width: 20.0,
+                      ),
+                      itemCount: articles.length,
+                    ),
                   ),
-                  itemCount: articles.length,
-                ),
-              ),
-              _artikel3(),
-              Container(
-                height: 172,
-                margin: const EdgeInsets.only(left: 15, right: 10),
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) => _artikel3_Padding(),
-                  separatorBuilder: (context, index) => const SizedBox(
-                    width: 20.0,
+                  _artikel3(),
+                  Container(
+                    height: 172,
+                    margin: const EdgeInsets.only(left: 15, right: 10),
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) => _artikel3_Padding(),
+                      separatorBuilder: (context, index) => const SizedBox(
+                        width: 20.0,
+                      ),
+                      itemCount: 2,
+                    ),
                   ),
-                  itemCount: 2,
-                ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -117,8 +109,7 @@ class _halamanArtikelState extends State<halamanArtikel> {
   // ignore: non_constant_identifier_names
   GestureDetector _artikel1_Padding() {
     return GestureDetector(
-      onTap: () {
-      },
+      onTap: () {},
       child: Container(
         width: 360.0,
         height: 172.0,
@@ -156,7 +147,11 @@ class _halamanArtikelState extends State<halamanArtikel> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => detailArtikel2(articles: articles[index],judulpage: "Kesehatan",)),
+          MaterialPageRoute(
+              builder: (context) => detailArtikel2(
+                    articles: articles[index],
+                    judulpage: "Kesehatan",
+                  )),
         );
       },
       child: Container(

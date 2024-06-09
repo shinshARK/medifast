@@ -1,20 +1,18 @@
 import 'package:intl/intl.dart';
 
-class Article{
+class Article {
   String title;
   String photo;
   String content;
   DateTime createdat;
   DateTime updatedat;
 
-
-  Article({
-    required this.title,
-    required this.photo,
-    required this.content,
-    required this.createdat,
-    required this.updatedat
-  });
+  Article(
+      {required this.title,
+      required this.photo,
+      required this.content,
+      required this.createdat,
+      required this.updatedat});
 
   factory Article.fromJson(Map<String, dynamic> json) {
     DateFormat format = DateFormat('yyyy-MM-dd');
@@ -22,9 +20,18 @@ class Article{
       title: json['title'],
       photo: json['photo'],
       content: json['content'].toString().replaceAll('\\n', '\n'),
-      createdat: format.parse(json['createdat']),
-      updatedat: format.parse(json['updatedat']),
+      createdat: format.parse(json['created_at']),
+      updatedat: format.parse(json['updated_at']),
     );
+  }
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'photo': photo,
+      'content': content,
+      'createdat': createdat,
+      'updatedat': updatedat,
+    };
   }
 }
 
