@@ -27,3 +27,12 @@ class DoctorFailure extends DoctorState {
   @override
   List<Object> get props => [error];
 }
+
+class DoctorLoadedById extends DoctorState {
+  final DokterModel dokter;
+
+  DoctorLoadedById(this.dokter);
+
+  @override
+  List<Object> get props => [dokter];
+}

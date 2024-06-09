@@ -166,7 +166,7 @@ class _daftar_dokterState extends State<daftar_dokter> {
                 MaterialPageRoute(
                   builder: (context) => informasi_dokter(
                     key: ValueKey(data_dokter[posisi_data()[index]].name),
-                    dokter: data_dokter[posisi_data()[index]],
+                    id: data_dokter[posisi_data()[index]].id,
                   ),
                 ),
               );

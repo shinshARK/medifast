@@ -43,6 +43,9 @@ class DoctorRepository {
       }
     );
     if (response.statusCode == 200) {
+      // Map<String, dynamic> responseJson = json.decode(response.body);
+      
+      // print(responseJson);
       return DokterModel.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load doctor');

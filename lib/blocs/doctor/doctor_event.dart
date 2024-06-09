@@ -9,4 +9,11 @@ sealed class DoctorEvent extends Equatable {
 
 class DoctorRequested extends DoctorEvent {}
 
+class DoctorByIdRequested extends DoctorEvent {
+  final int id;
 
+  DoctorByIdRequested({required this.id});
+
+  @override
+  List<Object> get props => [id];
+}
