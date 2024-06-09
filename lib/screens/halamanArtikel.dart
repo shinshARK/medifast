@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rumah_sakit/blocs/article/article_bloc.dart';
 import 'package:rumah_sakit/components/bottomNavigasiBar.dart';
 import 'package:rumah_sakit/screens/detailArtikel2.dart';
 import 'dart:convert';
@@ -16,15 +18,18 @@ class halamanArtikel extends StatefulWidget {
   // ignore: library_private_types_in_public_api
   _halamanArtikelState createState() => _halamanArtikelState();
 }
-
+List<Article> articles = [];
 // ignore: camel_case_types
 class _halamanArtikelState extends State<halamanArtikel> {
-  List<Article> articles = [];
-
   @override
   void initState() {
     super.initState();
+<<<<<<< Updated upstream
     fetchData();
+=======
+    // fetchData();
+    context.read<ArticleBloc>().add(ArticleRequested());
+>>>>>>> Stashed changes
   }
 
   Future<void> fetchData() async {
@@ -62,7 +67,19 @@ class _halamanArtikelState extends State<halamanArtikel> {
         elevation: 10,
         shadowColor: Colors.white,
       ),
-      body: SafeArea(
+      body: BlocBuilder<ArticleBloc, ArticleState>(
+      builder: (context, state) {
+        if (state is ArticleLoading) {
+          return Center(child: CircularProgressIndicator());
+        } else if (state is ArticleLoaded) {
+          print("cek");
+          articles = state.data_article;
+        } else if (state is ArticleFailure) {
+          print(state.error);
+          return Center(child: Text('Error: ${state.error}'));
+        }
+        // If none of the above states match, return an empty container
+        return SafeArea(
         child: SingleChildScrollView(
           child: Flex(
             direction: Axis.vertical,
@@ -110,8 +127,10 @@ class _halamanArtikelState extends State<halamanArtikel> {
             ],
           ),
         ),
-      ),
-    );
+      );
+  }
+  )
+  );
   }
 
   // ignore: non_constant_identifier_names

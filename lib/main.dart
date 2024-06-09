@@ -1,9 +1,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rumah_sakit/blocs/article/article_bloc.dart';
 import 'package:rumah_sakit/blocs/auth/login/login_bloc.dart';
 import 'package:rumah_sakit/blocs/auth/registration/registration_bloc.dart';
 import 'package:rumah_sakit/repositories/auth_repository.dart';
+<<<<<<< Updated upstream
+=======
+import 'package:rumah_sakit/repositories/doctor_repository.dart';
+import 'package:rumah_sakit/repositories/article_repository.dart';
+>>>>>>> Stashed changes
 
 import 'package:rumah_sakit/routes.dart';
 import 'package:rumah_sakit/screens/splash_screen.dart';
@@ -11,6 +17,7 @@ import 'package:rumah_sakit/models/layar_screens.dart';
 import 'package:rumah_sakit/screens/test_fetch_article.dart';
 import 'package:rumah_sakit/screens/reservasi.dart';
 import 'package:rumah_sakit/models/dokter_model.dart';
+import 'package:rumah_sakit/models/artikel_models.dart';
 import 'package:rumah_sakit/screens/test_fetch_article.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,15 +27,38 @@ void main() async {
 
   final sharedPreferences = await SharedPreferences.getInstance();
   final authRepository = AuthRepository(sharedPreferences);
+<<<<<<< Updated upstream
 
   runApp(MyApp(sharedPreferences, authRepository));
+=======
+  final doctorRepository = DoctorRepository(sharedPreferences);
+  final articleRepository = ArticleRepository(sharedPreferences);
+
+  final user = sharedPreferences.getString('user');
+  final tokens = sharedPreferences.getString('tokens');
+
+  final isUserLoggedIn = user != null && tokens != null;
+
+  final initialRoute = isUserLoggedIn ? '/home' : '/login';
+
+  runApp(
+      MyApp(sharedPreferences, authRepository, initialRoute, doctorRepository, articleRepository));
+>>>>>>> Stashed changes
 }
 
 class MyApp extends StatelessWidget {
 
   final SharedPreferences sharedPreferences;
   final AuthRepository authRepository;
+<<<<<<< Updated upstream
   MyApp(this.sharedPreferences, this.authRepository);
+=======
+  final DoctorRepository doctorRepository;
+  final ArticleRepository articleRepository;
+  final String initialRoute;
+  MyApp(this.sharedPreferences, this.authRepository, this.initialRoute,
+      this.doctorRepository, this.articleRepository);
+>>>>>>> Stashed changes
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -39,6 +69,15 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => LoginBloc(sharedPreferences, authRepository)),
         BlocProvider(create: (context) => RegistrationBloc(authRepository)),
+<<<<<<< Updated upstream
+=======
+        BlocProvider(
+            create: (context) =>
+                DoctorBloc(sharedPreferences, doctorRepository)),
+                BlocProvider(
+            create: (context) =>
+                ArticleBloc(sharedPreferences, articleRepository)),
+>>>>>>> Stashed changes
       ],
       child: MaterialApp(
         title: 'MediFast',

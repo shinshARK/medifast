@@ -22,8 +22,8 @@ class Article{
       title: json['title'],
       photo: json['photo'],
       content: json['content'].toString().replaceAll('\\n', '\n'),
-      createdat: format.parse(json['createdat']),
-      updatedat: format.parse(json['updatedat']),
+      createdat: format.parse(json['created_at']),
+      updatedat: format.parse(json['updated_at']),
     );
   }
 }
