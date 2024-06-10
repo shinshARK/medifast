@@ -1,19 +1,30 @@
 import 'package:rumah_sakit/models/dokter_model.dart';
 import 'package:rumah_sakit/models/user_models.dart';
 import 'package:rumah_sakit/models/obat_model.dart';
-class RiwayatTransaksiModel{
-    DokterModel idDokter;
-    UserModel idUser;
-    ObatModel idObat;
+class ResepDigital {
+  final int idResepDigital;
+  final int idDoctor;
+  final int idPasien;
+  final int idObat;
 
+  ResepDigital({
+    required this.idResepDigital,
+    required this.idDoctor,
+    required this.idPasien,
+    required this.idObat,
+  });
 
-    RiwayatTransaksiModel({
-      required this.idDokter,
-      required this.idUser,
-      required this.idObat
-
-    });
+  factory ResepDigital.fromJson(Map<String, dynamic> json) {
+    return ResepDigital(
+      idResepDigital: json['id_resep_digital'],
+      idDoctor: json['id_doctor'],
+      idPasien: json['id_pasien'],
+      idObat: json['id_obat'],
+    );
+  }
 }
+
+
 
   // var data_resep_digital = [
   //   RiwayatTransaksiModel(idDokter: 1, idUser: 1, idObat: 1),
