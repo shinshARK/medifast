@@ -1,44 +1,59 @@
-class DokterModel {
-  int? id;
-  String? name;
-  String? photo;
-  String? specialty;
-  String? rating;
-  bool favorite;
-  int? experience;
-  String? about;
-  String? schedule;
 
-  DokterModel(
-      {
-        required this.name,
-        required this.photo,
-        required this.specialty,
-        required this.rating,
-        required this.favorite,
-        required this.experience,
-        required this.about,
-        required this.schedule
-      });
+import 'package:rumah_sakit/models/dokter_shift_model.dart';
+
+class DokterModel {
+  final int id;
+  final String name;
+  final String photo;
+  final String specialty;
+  final String rating;
+  bool favorite;
+  final int experience;
+  final String about;
+  final List<DokterShiftModel> doctor_shifts;
+
+   DokterModel({
+    required this.id,
+    required this.name,
+    required this.photo,
+    required this.specialty,
+    required this.rating,
+    required this.favorite,
+    required this.experience,
+    required this.about,
+    required this.doctor_shifts,
+  });
 
   void setTanda(bool newValue) {
-    favorite = newValue;
+    this.favorite = newValue;
   }
 
   factory DokterModel.fromJson(Map<String, dynamic> json) {
+    List<DokterShiftModel> doctorShiftList = [];
+    if (json.containsKey('doctor_shifts')) {
+      var list = json['doctor_shifts'] as List;
+      doctorShiftList = list.map((i) => DokterShiftModel.fromJson(i)).toList();
+    // print(json['doctor_shifts']);
+    }
+    if(json['id'] == null){
+      json = json['doctor'];
+    }
     return DokterModel(
-        name: json['name'],
-        photo: json['photo'],
-        specialty: json['specialty'],
-        rating: json['rating'],
-        favorite: json.containsKey('favorite') ? json['favorite'] : false,
-        experience: json['experience'],
-        about: json['about'],
-        schedule: json['schedule']);
+      id: json['id'],
+      name: json['name'],
+      photo: json['photo'],
+      specialty: json['specialty'],
+      rating: json['rating'],
+      favorite: json.containsKey('favorite') ? json['favorite'] : false,
+      experience: json['experience'],
+      about: json['about'],
+      doctor_shifts: doctorShiftList,
+    );
   }
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'name': name,
       'photo': photo,
       'specialty': specialty,
@@ -46,7 +61,7 @@ class DokterModel {
       'favorite': favorite,
       'experience': experience,
       'about': about,
-      'schedule': schedule
+      'doctor_shifts': doctor_shifts.map((e) => e.toJson()).toList(),
     };
   }
 }

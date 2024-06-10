@@ -1,68 +1,109 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rumah_sakit/blocs/doctor/doctor_bloc.dart';
 import 'package:rumah_sakit/models/dokter_model.dart';
+import 'package:rumah_sakit/models/dokter_shift_model.dart';
+import 'package:rumah_sakit/models/shift_model.dart';
 import 'package:rumah_sakit/screens/daftar_dokter.dart';
 import 'package:rumah_sakit/screens/reservasi.dart';
 
 class informasi_dokter extends StatefulWidget {
-  final DokterModel dokter;
+  final int id;
 
-  const informasi_dokter({required this.dokter, Key? key}) : super(key: key);
+  const informasi_dokter({required this.id, Key? key}) : super(key: key);
 
   @override
   _InformasiDokterState createState() => _InformasiDokterState();
 }
 
 class _InformasiDokterState extends State<informasi_dokter> {
+  DokterModel? dokter;
+  late Future<DokterModel> futureDoctor;
   int selecteddokter = 0;
 
-  List<int> posisi_data() {
-    List<int> hasil = [];
-
-    for (int i = 0; i < data_dokter.length; i++) {
-      if (selecteddokter == 0) {
-        hasil.add(i);
-      } else if (data_dokter[i]
-              .specialty
-              ?.toLowerCase()
-              .contains(dokter[selecteddokter].toLowerCase()) ==
-          true) {
-        hasil.add(i);
-      }
-    }
-
-    return hasil;
+  void initState() {
+    super.initState();
+    context.read<DoctorBloc>().add(DoctorByIdRequested(id: widget.id));
   }
+
+  // List<int> posisi_data() {
+  //   List<int> hasil = [];
+
+  //   for (int i = 0; i < data_dokter.length; i++) {
+  //     if (selecteddokter == 0) {
+  //       hasil.add(i);
+  //     } else if (data_dokter[i]
+  //             .specialty
+  //             ?.toLowerCase()
+  //             .contains(dokter[selecteddokter].toLowerCase()) ==
+  //         true) {
+  //       hasil.add(i);
+  //     }
+  //   }
+
+  //   return hasil;
+  // }
+
+
+  String CekShift(DokterModel data){
+    String temp = "";
+    for (var i = 0; i < data.doctor_shifts.length; i++) {
+       DokterShiftModel doctorShift = data.doctor_shifts[i];
+       ShiftModel shift = doctorShift.shift_type;
+       if (!temp.contains(shift.hari)) {
+         if(temp != ""){
+           temp += " ";
+         }
+         temp += shift.hari;
+       }
+    }
+    return temp;
+}
+
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<DoctorBloc, DoctorState>(
+  builder: (context, state) {
+    if (state is DoctorLoading) {
+       CircularProgressIndicator();
+    } else if (state is DoctorLoadedById) {
+      dokter = state.dokter;
+      print(dokter!.favorite);
+    } else if (state is DoctorFailure) {
+      Text('Error: ${state.error}');
+    } 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "${widget.dokter.name}",
+          "${dokter?.name}",
           style: const TextStyle(fontWeight: FontWeight.w700),
         ),
         elevation: 10,
         shadowColor: Colors.white,
         actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              data_dokter[posisi_data()[selecteddokter]].favorite
-                  ? Icons.favorite
-                  : Icons.favorite_border,
-              color: data_dokter[posisi_data()[selecteddokter]].favorite
-                  ? Colors.black
-                  : Colors.black,
-              size: 30,
-            ),
-            onPressed: () {
-              setState(() {
-                data_dokter[posisi_data()[selecteddokter]].favorite
-                    ? data_dokter[posisi_data()[selecteddokter]].setTanda(false)
-                    : data_dokter[posisi_data()[selecteddokter]].setTanda(true);
-              });
-            },
+        IconButton(
+          icon: Icon(
+            dokter != null && dokter!.favorite
+                ? Icons.favorite
+                : Icons.favorite_border,
+            color: dokter != null && dokter!.favorite
+                ? Colors.black
+                : Colors.black,
+            size: 30,
           ),
+          onPressed: () {
+            if (dokter != null) {
+              setState(() {
+                dokter!.favorite
+                    ? dokter?.setTanda(false)
+                    : dokter?.setTanda(true);
+              });
+            }
+          },
+        ),
         ],
+
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -76,13 +117,13 @@ class _InformasiDokterState extends State<informasi_dokter> {
                       EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
                   leading: CircleAvatar(
                     backgroundImage:
-                        AssetImage('assets/images/${widget.dokter.photo}'),
+                        AssetImage('assets/images/${dokter?.photo}'),
                     radius: 30.0,
                   ),
-                  title: Text('${widget.dokter.name}',
+                  title: Text('${dokter?.name}',
                       style: const TextStyle(
                           fontSize: 18, fontWeight: FontWeight.bold)),
-                  subtitle: Text('${widget.dokter.specialty}',
+                  subtitle: Text('${dokter?.specialty}',
                       style: const TextStyle(fontSize: 14)),
                 ),
               ),
@@ -96,7 +137,7 @@ class _InformasiDokterState extends State<informasi_dokter> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16.0, vertical: 8.0),
                         child: Column(children: [
-                          Text('${widget.dokter.experience} Tahun',
+                          Text('${dokter?.experience} Tahun',
                               style: TextStyle(
                                   fontSize: 14, color: Color(0xFF8DB9FE))),
                           const Text('Pengalaman',
@@ -117,7 +158,7 @@ class _InformasiDokterState extends State<informasi_dokter> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(Icons.star, color: Colors.yellow[600]),
-                              Text('${widget.dokter.rating}',
+                              Text('${dokter?.rating}',
                                   style: TextStyle(
                                       fontSize: 14, color: Color(0xFF8DB9FE)))
                             ],
@@ -142,7 +183,7 @@ class _InformasiDokterState extends State<informasi_dokter> {
                     SizedBox(height: 10),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text('${widget.dokter.about}',
+                      child: Text('${dokter?.about}',
                           style: const TextStyle(fontSize: 14)),
                     ),
                   ],
@@ -164,8 +205,11 @@ class _InformasiDokterState extends State<informasi_dokter> {
                         Expanded(
                           child: Align(
                             alignment: Alignment.centerLeft,
-                            child: Text('${widget.dokter.schedule}',
-                                style: const TextStyle(fontSize: 14)),
+                            child:Text(
+                              dokter != null ? CekShift(dokter!) : 'Loading...',
+                              style: const TextStyle(fontSize: 14),
+                            ),
+
                           ),
                         ),
                       ],
@@ -241,14 +285,16 @@ class _InformasiDokterState extends State<informasi_dokter> {
         color: Colors.white,
         child: GestureDetector(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Reservasi(
-                  dokter: widget.dokter,
+            if (dokter != null) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Reservasi(
+                    dokter: dokter!,
+                  ),
                 ),
-              ),
-            );
+              );
+            }
           },
           child: Container(
             width: 350,
@@ -277,5 +323,7 @@ class _InformasiDokterState extends State<informasi_dokter> {
         ),
       ),
     );
+  },
+);
   }
 }

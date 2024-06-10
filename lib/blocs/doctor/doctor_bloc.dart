@@ -12,6 +12,7 @@ class DoctorBloc extends Bloc<DoctorEvent, DoctorState> {
 
   DoctorBloc(this.sharedPreferences, this.doctorRepository) : super(DoctorInitial()) {
     on<DoctorRequested>(_onDoctorRequested);
+    on<DoctorByIdRequested>(_onDoctorByIdRequested);
   }
 
   Future<void> _onDoctorRequested(DoctorRequested event, Emitter<DoctorState> emit) async {
@@ -26,4 +27,18 @@ class DoctorBloc extends Bloc<DoctorEvent, DoctorState> {
       emit(DoctorFailure(e.toString()));
     }
   }
+
+  Future<void> _onDoctorByIdRequested(DoctorByIdRequested event, Emitter<DoctorState> emit) async {
+    emit(DoctorLoading());
+    
+    try {
+      final dokter = await doctorRepository.fetchDokterById(event.id);
+      
+      emit(DoctorLoadedById(dokter));
+    } catch (e) {
+      print("Failed to load doctor by id");
+      emit(DoctorFailure(e.toString()));
+    }
+  }
+
 }
