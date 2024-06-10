@@ -27,7 +27,7 @@ class _ReservasiState extends State<Reservasi> {
   ];
   
   Map<DateTime,List<int>> disabledIndices = {};
-  List<String> choices = [];
+  Map<String,List<String>> choices = {};
 
   void isidata(DokterModel data) {
     Map<DateTime,int> temp = {};
@@ -35,16 +35,25 @@ class _ReservasiState extends State<Reservasi> {
       for (var i = 0; i < widget.dokter.doctor_shifts.length; i++) {
         DokterShiftModel doctorShift = widget.dokter.doctor_shifts[i];
         ShiftModel shift = doctorShift.shift_type;
-        if (shift != null && shift.tipe_shift != null) {
-          choices.add(shift.tipe_shift);
+        List<String> sem = choices[shift.hari] ?? [];
+        if(!sem.contains(shift.tipe_shift)){
+          sem.add(shift.tipe_shift);
         }
+
+        choices[shift.hari] = sem;
+        
+        
         List<AntrianModel> antrian = doctorShift.antrian;
         for (var j = 0; j < antrian.length; j++){
           DateTime tanggal = DateTime.parse(antrian[j].tanggal); // asumsikan tanggal adalah variabel DateTime dalam AntrianModel
+          print(getDayOfWeekInIndonesian(tanggal));
+          print(shift.hari);
+          if(shift.hari == getDayOfWeekInIndonesian(tanggal)){
+          
           int maxAntrian = antrian[j].max_antrian; // asumsikan max_antrian adalah variabel int dalam AntrianModel
 
           int currentCount = temp[tanggal] ?? 0; // Gunakan null check operator ('??') untuk default ke 0 jika tanggal tidak ada
-
+          
           // Tambahkan nilai antrian
           currentCount += 1;
 
@@ -53,13 +62,14 @@ class _ReservasiState extends State<Reservasi> {
           if (currentCount >= maxAntrian) {
           // Dapatkan list yang ada atau buat list baru jika tidak ada
           List<int> dataTanggal = disabledIndices.putIfAbsent(tanggal, () => []);
-          
+          List<String> sem = choices[shift.hari] ?? [];
           // Periksa apakah shift.tipe_shift sudah ada dalam choices, lalu tambahkan jika belum
-          int shiftIndex = choices.indexWhere((choice) => choice == shift.tipe_shift);
+          int shiftIndex = sem.indexWhere((choice) => choice == shift.tipe_shift);
           if (!dataTanggal.contains(shiftIndex)) {
             dataTanggal.add(shiftIndex);
             disabledIndices[tanggal] = dataTanggal; // Memperbarui map dengan list yang baru
             print(shiftIndex);
+          }
           }
         }
         }
@@ -68,8 +78,18 @@ class _ReservasiState extends State<Reservasi> {
   }
 
 
-  
+  String getDayOfWeekInIndonesian(DateTime date) {
+    const daysOfWeekInIndonesian = [
+      'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'
+    ];
+    return daysOfWeekInIndonesian[date.weekday - 1];
+  }
 
+
+  bool cekhari(DateTime hari){
+    print(hari);
+    return choices.containsKey(getDayOfWeekInIndonesian(hari));
+  }
 
   Map<DateTime,int> selectedChoice = {};
   void initState() {
@@ -102,7 +122,11 @@ class _ReservasiState extends State<Reservasi> {
         }
       }
     }
-    
+    while(!cekhari(_selectedDay)){
+      print("test");
+      _selectedDay = _selectedDay.add(Duration(days: 1));
+      
+    }
   }
 
   int cekpilihan(){
@@ -119,6 +143,14 @@ class _ReservasiState extends State<Reservasi> {
   return false;
 }
 
+String printjadwal(int nomer){
+  DateTime _selectedDayWithoutTime = DateTime(_selectedDay.year, _selectedDay.month, _selectedDay.day);
+ 
+  List<String> temp = choices[getDayOfWeekInIndonesian(_selectedDayWithoutTime)] ?? [];
+  print(temp[nomer]);
+  return temp[nomer];
+}
+
 // Logika untuk menentukan warna teks
 Color getTextColor(int index) {
   if (isDisabled(index)) {
@@ -127,6 +159,17 @@ Color getTextColor(int index) {
     return Colors.white;
   } else {
     return Colors.black;
+  }
+}
+
+int cekpanjangjadwal(){
+  DateTime _selectedDayWithoutTime = DateTime(_selectedDay.year, _selectedDay.month, _selectedDay.day);
+  int panjang = choices[getDayOfWeekInIndonesian(_selectedDayWithoutTime)]?.length ?? 0;
+  print(getDayOfWeekInIndonesian(_selectedDayWithoutTime));
+  if(panjang == 0){
+    return 0;
+  }else{
+    return panjang % 3 == 0 ? 3 : panjang % 3;
   }
 }
   
@@ -217,7 +260,7 @@ Color getTextColor(int index) {
                 // Menentukan tanggal awal dan akhir kalender
                 firstDay: DateTime.now(), // Tanggal awal adalah hari ini
                 lastDay: DateTime(DateTime.now().year +
-                    10), // Tanggal akhir adalah 10 tahun dari sekarang
+                    1), // Tanggal akhir adalah 10 tahun dari sekarang
 
                 // Tanggal yang sedang difokuskan
                 focusedDay: _focusedDay,
@@ -240,6 +283,8 @@ Color getTextColor(int index) {
                   // Jika tanggal yang dipilih ada dalam list disabledDates, maka tidak melakukan apa-apa
                   if (disabledDates
                       .any((date) => isSameDay(date, selectedDay))) {
+                    return;
+                  }else if(!cekhari(selectedDay)){
                     return;
                   }
                   // Jika tidak, maka perbarui _selectedDay dan _focusedDay
@@ -286,6 +331,15 @@ Color getTextColor(int index) {
                         child: Text(
                           date.day.toString(),
                           style: const TextStyle(color: Colors.white),
+                        ),
+                      );
+                    }else if(!cekhari(date)){
+                       return Container(
+                        
+                        alignment: Alignment.center,
+                        child: Text(
+                          date.day.toString(),
+                          style: const TextStyle(color: Colors.grey),
                         ),
                       );
                     }
@@ -342,7 +396,7 @@ Color getTextColor(int index) {
                   // Loop untuk setiap tombol dalam baris
 
                   children: List.generate(
-                    choices.length % 3 == 0 ? 3 : choices.length % 3,
+                    cekpanjangjadwal(),
                     (j) =>  Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SizedBox(
@@ -382,7 +436,7 @@ Color getTextColor(int index) {
                                 vertical: 10, horizontal: 5),
                             child: Text(
                               // Menampilkan pilihan pada tombol
-                              choices[i * 3 + j],
+                              printjadwal(i * 3 + j),
                               // Mengatur warna dan ukuran teks
                               style: TextStyle(
                                 // Mengubah warna teks berdasarkan pilihan yang dipilih atau tidak bisa diklik
