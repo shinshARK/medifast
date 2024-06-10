@@ -1,13 +1,20 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:rumah_sakit/blocs/riwayat/riwayat_bloc.dart';
+import 'package:rumah_sakit/blocs/riwayat/riwayat_event.dart';
+import 'package:rumah_sakit/blocs/riwayat/riwayat_state.dart';
 import 'package:rumah_sakit/components/bottomNavigasiBar.dart';
+import 'package:rumah_sakit/models/user_models.dart';
+import 'package:rumah_sakit/repositories/auth_repository.dart';
 import 'package:rumah_sakit/screens/catatan_dan_resep_dokter.dart';
 import 'package:rumah_sakit/screens/rating.dart';
 import 'package:rumah_sakit/models/riwayat_transaksi_model.dart';
 import 'package:rumah_sakit/screens/detail_pertemuan.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 // ignore: must_be_immutable, camel_case_types
@@ -21,7 +28,21 @@ class riwayatTransaksi extends StatefulWidget {
 
 // ignore: camel_case_types
 class _riwayatTransaksiState extends State<riwayatTransaksi> {
-  
+  List<RiwayatTransaksiModel> riwayattransaksi = [];
+  UserModel? user;
+  void initState() {
+    super.initState();
+    _fetchUser();
+    context.read<TransactionBloc>().add(TransactionRequested(userId: 1));// untuk sementara datanya akan saya masukan 1 dulu untuk yang dinamis bisa gunakan code ini user?.id ?? 0
+  }
+
+  Future<void> _fetchUser() async {
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final AuthRepository authRepository = AuthRepository(sharedPreferences);
+    setState(() {
+      user = authRepository.getUser();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,15 +58,28 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
         
       ),
       bottomNavigationBar: const BottomNavigasiBar( inputan: 1),
-      body: SingleChildScrollView(
+      body: BlocBuilder<TransactionBloc, TransactionState>(
+        builder: (context, state) {
+          if (state is TransactionLoading) {
+            Center(child: CircularProgressIndicator());
+          } else if (state is TransactionLoaded) {
+            riwayattransaksi = state.transactions;
+          } else if (state is TransactionFailure) {
+            Center(child: Text('Failed to load transactions: ${state.error}'));
+          } else {
+            Center(child: Text('Press the button to load transactions'));
+          }
+          return SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(top: 10),
           child: Column(
-            // children: List.generate(riwayattransaksi.length, (index) {
-            //   return _riwayat(riwayattransaksi[index]);
-            // }),
+            children: List.generate(riwayattransaksi.length, (index) {
+              return _riwayat(riwayattransaksi[index]);
+            }),
           ),
         ),
+      );
+        },
       ),
     );
   }
@@ -131,7 +165,7 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
                           ),
                           FutureBuilder<String>(
                             future: formatTanggalDanWaktu(
-                                data.tanggal,
+                                data.antrian.tanggal,
                                 data.jam), // panggil fungsi Anda di sini
                             builder: (BuildContext context,
                                 AsyncSnapshot<String> snapshot) {

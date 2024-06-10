@@ -4,9 +4,11 @@ import 'package:rumah_sakit/blocs/article/article_bloc.dart';
 import 'package:rumah_sakit/blocs/auth/login/login_bloc.dart';
 import 'package:rumah_sakit/blocs/auth/registration/registration_bloc.dart';
 import 'package:rumah_sakit/blocs/doctor/doctor_bloc.dart';
+import 'package:rumah_sakit/blocs/riwayat/riwayat_bloc.dart';
 import 'package:rumah_sakit/repositories/article_repository.dart';
 import 'package:rumah_sakit/repositories/auth_repository.dart';
 import 'package:rumah_sakit/repositories/doctor_repository.dart';
+import 'package:rumah_sakit/repositories/transaction_repository.dart';
 
 import 'package:rumah_sakit/routes.dart';
 import 'package:rumah_sakit/screens/splash_screen.dart';
@@ -23,6 +25,7 @@ void main() async {
   final sharedPreferences = await SharedPreferences.getInstance();
   final authRepository = AuthRepository(sharedPreferences);
   final doctorRepository = DoctorRepository(sharedPreferences);
+  final transactionRepository = TransactionRepository(sharedPreferences);
 
   final user = sharedPreferences.getString('user');
   final tokens = sharedPreferences.getString('tokens');
@@ -32,7 +35,7 @@ void main() async {
   final initialRoute = isUserLoggedIn ? '/home' : '/login';
 
   runApp(
-      MyApp(sharedPreferences, authRepository, initialRoute, doctorRepository));
+      MyApp(sharedPreferences, authRepository, initialRoute, doctorRepository,transactionRepository));
 }
 
 class MyApp extends StatelessWidget {
@@ -40,8 +43,9 @@ class MyApp extends StatelessWidget {
   final AuthRepository authRepository;
   final DoctorRepository doctorRepository;
   final String initialRoute;
+   final TransactionRepository transactionRepository;
   MyApp(this.sharedPreferences, this.authRepository, this.initialRoute,
-      this.doctorRepository);
+      this.doctorRepository, this.transactionRepository);
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -59,6 +63,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) =>
               ArticleBloc(ArticleRepository(sharedPreferences)),
+        ),
+        BlocProvider(
+          create: (context) => TransactionBloc(sharedPreferences, transactionRepository),
         ),
       ],
       child: MaterialApp(

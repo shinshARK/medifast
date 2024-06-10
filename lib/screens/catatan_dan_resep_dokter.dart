@@ -82,7 +82,7 @@ class _catatan_dan_resep_dokterState extends State<catatan_dan_resep_dokter> {
                           ),
                           SizedBox(height: 8),
                           Text(
-                            ((catatan[0].diagnosis).isEmpty ? "Belum ada Diagnosa" : catatan[0].diagnosis), // Display Diagnosis body
+                            ((catatan[0].diagnosa).isEmpty ? "Belum ada Diagnosa" : catatan[0].diagnosa), // Display Diagnosis body
                             style: TextStyle(
                               fontSize: 16,
                             ),
