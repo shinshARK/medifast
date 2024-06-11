@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:rumah_sakit/repositories/auth_repository.dart';
 import '../models/user_models.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 // ignore: must_be_immutable, camel_case_types
 class HalamanProfil extends StatefulWidget {
@@ -19,10 +21,10 @@ class HalamanProfil extends StatefulWidget {
 class _HalamanProfilstate extends State<HalamanProfil> {
   // Define variables to hold user profile information
   final _formKey = GlobalKey<FormState>();
-  final _firstnameController = TextEditingController();
-  final _lastnameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _nomortelponController = TextEditingController();
+  TextEditingController _firstnameController = TextEditingController();
+  TextEditingController _lastnameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _nomortelponController = TextEditingController();
   bool isEditing = false;
   FocusNode myFocusNode1 = FocusNode();
   UserModel? user;
@@ -37,9 +39,13 @@ class _HalamanProfilstate extends State<HalamanProfil> {
     final SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
     final AuthRepository authRepository = AuthRepository(sharedPreferences);
-    setState(() {
-      user = authRepository.getUser();
-    });
+    user = authRepository.getUser();
+
+    // Set the initial values of the controllers
+    _firstnameController.text = user?.firstname ?? '';
+    _lastnameController.text = user?.lastname ?? '';
+    _emailController.text = user?.email ?? '';
+    _nomortelponController.text = user?.telephone ?? '';
   }
 
   @override
@@ -89,19 +95,15 @@ class _HalamanProfilstate extends State<HalamanProfil> {
               _profil(context),
               _formFirstname(
                 labelText: "Nama Depan",
-                initialValue: user?.firstname ?? 'John',
               ),
               _formLastname(
                 labelText: "Nama Belakang",
-                initialValue: user?.lastname ?? 'Doe',
               ),
               _formemail(
                 labelText: "Email",
-                initialValue: user?.email ?? 'example@gmail.com',
               ),
               _formNomerTelepon(
                 labelText: "Nomor Telpon",
-                initialValue: user?.telephone ?? '1234567890',
               ),
             ],
           ),
@@ -110,35 +112,67 @@ class _HalamanProfilstate extends State<HalamanProfil> {
     );
   }
 
-  void _saveForm() {
+  void _saveForm() async {
     if (_formKey.currentState!.validate()) {
       // Simpan data di sini
       _formKey.currentState!.save();
+
       // Misalnya, kita menyimpan data ke dalam variabel
       String firstname = _firstnameController.text;
       String lastname = _lastnameController.text;
       String email = _emailController.text;
       String nomorTelepon = _nomortelponController.text;
-      // Variabel jenisKelamin sudah diperbarui di dalam _buildDropdownButtonFormField
 
       // Ubah status isEditing menjadi false
       setState(() {
         isEditing = false;
       });
 
-      // Tampilkan pesan sukses atau lakukan aksi lainnya setelah data disimpan
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Data berhasil disimpan!')),
+      // Update data pengguna
+      UserModel updatedUser = UserModel(
+        id: user?.id,
+        firstname: firstname,
+        lastname: lastname,
+        email: email,
+        telephone: nomorTelepon,
       );
+
+      // Simpan data pengguna yang diperbarui ke SharedPreferences
+      final SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      final AuthRepository authRepository = AuthRepository(sharedPreferences);
+      await authRepository.saveUser(updatedUser);
+
+      // Perbarui data pengguna di backend
+      final response = await http.post(
+        Uri.parse(
+            'http://localhost:8000/auth/update'), // Ganti dengan URL endpoint API Anda
+        body: jsonEncode(updatedUser.toJson()),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        // Jika permintaan berhasil, perbarui state user
+        setState(() {
+          user = updatedUser;
+        });
+
+        // Tampilkan pesan sukses atau lakukan aksi lainnya setelah data disimpan
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Data berhasil disimpan!')),
+        );
+      } else {
+        // Jika permintaan gagal, tampilkan pesan error
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Gagal menyimpan data!')),
+        );
+      }
     }
   }
 
   Container _formFirstname({
     required String labelText,
-    required String initialValue,
   }) {
-    final TextEditingController _firstnameController =
-        TextEditingController(text: initialValue);
     return Container(
       width: 370,
       margin: const EdgeInsets.only(top: 10),
@@ -166,10 +200,7 @@ class _HalamanProfilstate extends State<HalamanProfil> {
 
   Container _formLastname({
     required String labelText,
-    required String initialValue,
   }) {
-    final TextEditingController _lastnameController =
-        TextEditingController(text: initialValue);
     return Container(
       width: 370,
       margin: const EdgeInsets.only(top: 10),
@@ -197,10 +228,7 @@ class _HalamanProfilstate extends State<HalamanProfil> {
 
   Container _formemail({
     required String labelText,
-    required String initialValue,
   }) {
-    final TextEditingController _emailController =
-        TextEditingController(text: initialValue);
     return Container(
       width: 370,
       margin: const EdgeInsets.only(top: 10),
@@ -228,16 +256,13 @@ class _HalamanProfilstate extends State<HalamanProfil> {
 
   Container _formNomerTelepon({
     required String labelText,
-    required String initialValue,
   }) {
-    final TextEditingController _formNomerTelepon =
-        TextEditingController(text: initialValue);
     return Container(
       width: 370,
       margin: const EdgeInsets.only(top: 10),
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
-        controller: _formNomerTelepon,
+        controller: _nomortelponController,
         textInputAction: TextInputAction.next,
         onFieldSubmitted: (value) {
           // Ketika tombol enter ditekan, pindah ke TextFormField berikutnya
