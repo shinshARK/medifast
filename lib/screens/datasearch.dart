@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rumah_sakit/models/dokter_model.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:rumah_sakit/screens/informasi_dokter.dart';
 
 
 
@@ -65,7 +66,7 @@ class DataSearch extends SearchDelegate<String> {
 
         return ListView.separated(
             itemBuilder: (context, index) {
-              return listdokter(suggestionList, index, setState);
+              return listdokter(suggestionList, index, setState,context);
             },
             itemCount: suggestionList.length,
             separatorBuilder: (BuildContext context, int index) {
@@ -78,110 +79,123 @@ class DataSearch extends SearchDelegate<String> {
   }
 
   Padding listdokter(
-      List<DokterModel> suggestionList, int index, StateSetter setState) {
+      List<DokterModel> suggestionList, int index, StateSetter setState,BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Material(
-        elevation: 5.0, // Nilai elevasi
-        borderRadius: BorderRadius.circular(20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 10,horizontal: 5),
-              child: CircleAvatar(
-                radius: 52,
-                backgroundColor: Colors.white.withOpacity(0.0),
+      child: GestureDetector(
+        onTap: (){
+          Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => informasi_dokter(
+                    key: ValueKey(suggestionList[index].name),
+                    id: suggestionList[index].id,
+                  ),
+                ),
+              );
+        },
+        child: Material(
+          elevation: 5.0, // Nilai elevasi
+          borderRadius: BorderRadius.circular(20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 10,horizontal: 5),
                 child: CircleAvatar(
-                  radius: 40,
-                  backgroundImage: AssetImage(
-                      'assets/images/${suggestionList[index].photo}'),
+                  radius: 52,
+                  backgroundColor: Colors.white.withOpacity(0.0),
+                  child: CircleAvatar(
+                    radius: 40,
+                    backgroundImage: AssetImage(
+                        'assets/images/${suggestionList[index].photo}'),
+                  ),
                 ),
               ),
-            ),
-            
-            Container(
               
-              margin: const EdgeInsets.only(top: 23,left: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    suggestionList[index].name ?? '',
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    suggestionList[index].specialty ?? '',
-                    style: const TextStyle(
-                      fontSize: 14,
+              Container(
+                
+                margin: const EdgeInsets.only(top: 23,left: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      suggestionList[index].name ?? '',
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      RatingBar.builder(
-                        initialRating:
-                            double.parse(suggestionList[index].rating ?? ''),
-                        minRating: 1,
-                        direction: Axis.horizontal,
-                        allowHalfRating: true,
-                        itemCount: 5,
-                        itemSize: 20,
-                        //itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                        itemBuilder: (context, _) => const Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                          size: 1.0,
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      suggestionList[index].specialty ?? '',
+                      style: const TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        RatingBar.builder(
+                          initialRating:
+                              double.parse(suggestionList[index].rating ?? ''),
+                          minRating: 1,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          itemSize: 20,
+                          //itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                          itemBuilder: (context, _) => const Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                            size: 1.0,
+                          ),
+                          // ignore: avoid_types_as_parameter_names
+                          onRatingUpdate: (rating) {},
+                          ignoreGestures: true,
                         ),
-                        // ignore: avoid_types_as_parameter_names
-                        onRatingUpdate: (rating) {},
-                        ignoreGestures: true,
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Text(
-                        suggestionList[index].rating ?? '',
-                        style: const TextStyle(
-                          fontSize: 14,
+                        const SizedBox(
+                          width: 15,
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-           
-            Expanded(
-              child: Container(
-                alignment: Alignment.topRight,
-                child: IconButton(
-                  icon: Icon(
-                    suggestionList[index].favorite
-                        ? Icons.favorite
-                        : Icons.favorite_border,
-                    color:
-                        suggestionList[index].favorite ? Colors.black : Colors.black,
-                    size: 30,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      suggestionList[index].favorite
-                          ? suggestionList[index].setTanda(false)
-                          : suggestionList[index].setTanda(true);
-                    });
-                  },
+                        Text(
+                          suggestionList[index].rating ?? '',
+                          style: const TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-            )
-          ],
+             
+              Expanded(
+                child: Container(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    icon: Icon(
+                      suggestionList[index].favorite
+                          ? Icons.favorite
+                          : Icons.favorite_border,
+                      color:
+                          suggestionList[index].favorite ? Colors.black : Colors.black,
+                      size: 30,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        suggestionList[index].favorite
+                            ? suggestionList[index].setTanda(false)
+                            : suggestionList[index].setTanda(true);
+                      });
+                    },
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -16,12 +16,12 @@ class RiwayatTransaksiModel {
   final int idUser;
   final int? idResepDigital; // Perbarui tipe data menjadi nullable
   final int? idCatatanDokter; // Perbarui tipe data menjadi nullable
-  final DokterModel dokter;
-  final UserModel user;
+  final DokterModel? dokter;
+  final UserModel? user;
   final ResepDigital? resepDigital; // Perbarui tipe data menjadi nullable
   final CatatanDokterModel? catatanDokter; // Perbarui tipe data menjadi nullable
-  final PasienModel pasien;
-  final AntrianModel antrian;
+  final PasienModel? pasien;
+  final AntrianModel? antrian;
 
   RiwayatTransaksiModel({
     required this.id,
@@ -44,6 +44,7 @@ class RiwayatTransaksiModel {
   });
 
   factory RiwayatTransaksiModel.fromJson(Map<String, dynamic> json) {
+    
     return RiwayatTransaksiModel(
       id: json['transaction']['id_riwayat_transaksi'],
       status: json['transaction']['status'],
@@ -54,8 +55,8 @@ class RiwayatTransaksiModel {
       tipePembayaran: json['transaction']['tipe_pembayaran'],
       jumlahPembayaran: json['transaction']['jumlah_pembayaran'],
       idUser: json['transaction']['id_user'],
-      idResepDigital: json['transaction']['id_resep_digital'] ?? null,
-      idCatatanDokter: json['transaction']['id_catatan_dokter'] ?? null,
+      idResepDigital: json['transaction']['id_resep_digital'],
+      idCatatanDokter: json['transaction']['id_catatan_dokter'],
       dokter: DokterModel.fromJson(json['transaction_details']['doctor']),
       user: UserModel.fromJson(json['transaction_details']['user']),
       resepDigital: json['transaction_details']['resep_digital'] != null

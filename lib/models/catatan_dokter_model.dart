@@ -20,6 +20,6 @@ class CatatanDokterModel{
   }
 }
 
-var data_catatan = [
-  CatatanDokterModel(idCatatanDoctor: 1,gejala: "Anak tubuh panas melebihi 37°C, batuk pilek dan flu, muntah berkepanjangan, jarang buang air kecil, tidak mengeluarkan air mata saat menangis, dan lemas.", diagnosa: "Mengalami Demam")
-];
+// var data_catatan = [
+//   CatatanDokterModel(idCatatanDoctor: 1,gejala: "Anak tubuh panas melebihi 37°C, batuk pilek dan flu, muntah berkepanjangan, jarang buang air kecil, tidak mengeluarkan air mata saat menangis, dan lemas.", diagnosa: "Mengalami Demam")
+// ];

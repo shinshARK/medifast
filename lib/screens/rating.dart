@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:rumah_sakit/models/dokter_model.dart';
 
 // ignore: camel_case_types
 class rating extends StatefulWidget {
-  const rating({super.key});
+  DokterModel? dokter;
+  rating({super.key , required this.dokter});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -44,7 +46,7 @@ class _ratingState extends State<rating> {
                         height: 100,
                         child: ClipOval(
                           child: Image.asset(
-                            'assets/images/dokter_4.png',
+                            'assets/images/${widget.dokter?.photo}',
                             fit: BoxFit
                                 .cover, 
                           ),
@@ -53,20 +55,20 @@ class _ratingState extends State<rating> {
                       const SizedBox(
                           width:
                               10), 
-                      const Column(
+                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            "Dr. Eki Rakhmah Z., Sp.A",
-                            style: TextStyle(
+                            widget.dokter!.name,
+                            style: const TextStyle(
                               color: Colors.black,
                               fontSize: 18,
                               fontWeight: FontWeight.bold, 
                             ),
                           ),
                           Text(
-                            "Dokter Spesialis Anak",
+                            widget.dokter!.specialty,
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 16,

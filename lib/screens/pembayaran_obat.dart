@@ -192,10 +192,10 @@ class _pembayaran_obatState extends State<pembayaran_obat> {
       color: Colors.white,
       child: GestureDetector(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const Pilihan_Pembayaran()),
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) =>  Pilihan_Pembayaran()),
+          // );
         },
         child: Container(
           width: 350,

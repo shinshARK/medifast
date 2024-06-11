@@ -1,14 +1,14 @@
 import 'package:equatable/equatable.dart';
 import 'package:rumah_sakit/models/riwayat_transaksi_model.dart';
 
-sealed class TransactionState extends Equatable {
+abstract class TransactionState extends Equatable {
   const TransactionState();
   
   @override
   List<Object> get props => [];
 }
 
-final class TransactionInitial extends TransactionState {}
+class TransactionInitial extends TransactionState {}
 
 class TransactionLoading extends TransactionState {}
 
@@ -38,6 +38,17 @@ class PostTransactionFailure extends TransactionState {
   final String error;
 
   const PostTransactionFailure(this.error);
+
+  @override
+  List<Object> get props => [error];
+}
+
+class UpdateTransactionSuccess extends TransactionState {}
+
+class UpdateTransactionFailure extends TransactionState {
+  final String error;
+
+  const UpdateTransactionFailure(this.error);
 
   @override
   List<Object> get props => [error];
