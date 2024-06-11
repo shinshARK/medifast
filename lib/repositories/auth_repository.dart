@@ -6,12 +6,12 @@ import 'package:rumah_sakit/models/user_models.dart';
 import 'package:rumah_sakit/models/token.dart';
 
 class AuthRepository {
-
   final SharedPreferences sharedPreferences;
 
   AuthRepository(this.sharedPreferences);
 
-  Future<bool> register(String namaDepan, String namaBelakang, String email, String telpon, String password) async {
+  Future<bool> register(String namaDepan, String namaBelakang, String email,
+      String telpon, String password) async {
     final response = await http.post(
       Uri.parse('http://localhost:8000/auth/register'),
       body: jsonEncode({
@@ -30,10 +30,7 @@ class AuthRepository {
   Future<Map<String, dynamic>?> login(String email, String password) async {
     final response = await http.post(
       Uri.parse('http://localhost:8000/auth/login'),
-      body: jsonEncode({
-        'email': email,
-        'password': password
-      }),
+      body: jsonEncode({'email': email, 'password': password}),
       headers: {'Content-Type': 'application/json'},
     );
 
@@ -41,10 +38,20 @@ class AuthRepository {
 
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
-      return body;  // Assuming the response contains user data and Token
+      return body; // Assuming the response contains user data and Token
     } else {
       return null;
     }
+  }
+
+  Future<bool> updateUser(UserModel user) async {
+    final response = await http.put(
+      Uri.parse('http://localhost:8000/auth/update'),
+      body: jsonEncode(user.toJson()),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    return response.statusCode == 200;
   }
 
   Future<void> logout() async {
@@ -65,13 +72,12 @@ class AuthRepository {
     }
     return null;
   }
-  
 
   Future<void> saveUser(UserModel user) async {
     await sharedPreferences.setString('user', jsonEncode(user.toJson()));
   }
 
-  UserModel? getUser()  {
+  UserModel? getUser() {
     final userDataString = sharedPreferences.getString('user');
     if (userDataString != null) {
       final userData = jsonDecode(userDataString);
