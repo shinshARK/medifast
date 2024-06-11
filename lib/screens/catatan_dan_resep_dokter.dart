@@ -26,7 +26,7 @@ class _catatan_dan_resep_dokterState extends State<catatan_dan_resep_dokter> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Catatan Dokter & Resep',
+          'Catatan Dokter & Resep Digital',
           style: TextStyle(fontWeight: FontWeight.w700),
         ),
         elevation: 10,
