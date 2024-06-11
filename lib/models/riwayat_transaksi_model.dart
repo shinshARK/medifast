@@ -14,12 +14,12 @@ class RiwayatTransaksiModel {
   final String tipePembayaran;
   final String jumlahPembayaran;
   final int idUser;
-  final int idResepDigital;
-  final int idCatatanDokter;
+  final int? idResepDigital; // Perbarui tipe data menjadi nullable
+  final int? idCatatanDokter; // Perbarui tipe data menjadi nullable
   final DokterModel dokter;
   final UserModel user;
-  final ResepDigital resepDigital;
-  final CatatanDokterModel catatanDokter;
+  final ResepDigital? resepDigital; // Perbarui tipe data menjadi nullable
+  final CatatanDokterModel? catatanDokter; // Perbarui tipe data menjadi nullable
   final PasienModel pasien;
   final AntrianModel antrian;
 
@@ -33,12 +33,12 @@ class RiwayatTransaksiModel {
     required this.tipePembayaran,
     required this.jumlahPembayaran,
     required this.idUser,
-    required this.idResepDigital,
-    required this.idCatatanDokter,
+    this.idResepDigital, // Tambahkan tanda tanya (?) di sini
+    this.idCatatanDokter, // Tambahkan tanda tanya (?) di sini
     required this.dokter,
     required this.user,
-    required this.resepDigital,
-    required this.catatanDokter,
+    this.resepDigital, // Tambahkan tanda tanya (?) di sini
+    this.catatanDokter, // Tambahkan tanda tanya (?) di sini
     required this.pasien,
     required this.antrian,
   });
@@ -54,17 +54,22 @@ class RiwayatTransaksiModel {
       tipePembayaran: json['transaction']['tipe_pembayaran'],
       jumlahPembayaran: json['transaction']['jumlah_pembayaran'],
       idUser: json['transaction']['id_user'],
-      idResepDigital: json['transaction']['id_resep_digital'],
-      idCatatanDokter: json['transaction']['id_catatan_dokter'],
+      idResepDigital: json['transaction']['id_resep_digital'] ?? null,
+      idCatatanDokter: json['transaction']['id_catatan_dokter'] ?? null,
       dokter: DokterModel.fromJson(json['transaction_details']['doctor']),
       user: UserModel.fromJson(json['transaction_details']['user']),
-      resepDigital: ResepDigital.fromJson(json['transaction_details']['resep_digital']),
-      catatanDokter: CatatanDokterModel.fromJson(json['transaction_details']['catatan_dokter']),
+      resepDigital: json['transaction_details']['resep_digital'] != null
+        ? ResepDigital.fromJson(json['transaction_details']['resep_digital'])
+        : null,
+      catatanDokter: json['transaction_details']['catatan_dokter'] != null
+        ? CatatanDokterModel.fromJson(json['transaction_details']['catatan_dokter'])
+        : null,
       pasien: PasienModel.fromJson(json['transaction_details']['pasien']),
       antrian: AntrianModel.fromJson(json['transaction_details']['antrian']),
     );
   }
 }
+
 
 
 

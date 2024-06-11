@@ -30,19 +30,31 @@ class riwayatTransaksi extends StatefulWidget {
 class _riwayatTransaksiState extends State<riwayatTransaksi> {
   List<RiwayatTransaksiModel> riwayattransaksi = [];
   UserModel? user;
-  void initState() {
-    super.initState();
-    _fetchUser();
-    context.read<TransactionBloc>().add(TransactionRequested(userId: 1));// untuk sementara datanya akan saya masukan 1 dulu untuk yang dinamis bisa gunakan code ini user?.id ?? 0
-  }
 
-  Future<void> _fetchUser() async {
+Future<void> _fetchUser() async {
     final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     final AuthRepository authRepository = AuthRepository(sharedPreferences);
-    setState(() {
+     
+  
+    
       user = authRepository.getUser();
-    });
+    
   }
+
+  void initState() {
+    super.initState();
+     _initialize();
+    
+  }
+
+  Future<void> _initialize() async {
+    await _fetchUser();
+    print(user?.id);
+    print(user?.firstname);
+    context.read<TransactionBloc>().add(TransactionRequested(userId: user?.id ?? 0));// untuk sementara datanya akan saya masukan 1 dulu untuk yang dinamis bisa gunakan code ini user?.id ?? 0
+  }
+
+ 
 
   @override
   Widget build(BuildContext context) {

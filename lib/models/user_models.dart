@@ -15,6 +15,8 @@
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
+
+    print(json['telephone']);
     return UserModel(
       id: json['id'],
       firstname: json['firstname'],

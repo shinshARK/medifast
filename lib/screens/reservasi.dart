@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rumah_sakit/blocs/riwayat/riwayat_bloc.dart';
+import 'package:rumah_sakit/blocs/riwayat/riwayat_event.dart';
 import 'package:rumah_sakit/models/antrian_model.dart';
 import 'package:rumah_sakit/models/dokter_shift_model.dart';
 import 'package:rumah_sakit/models/shift_model.dart';
+import 'package:rumah_sakit/models/user_models.dart';
+import 'package:rumah_sakit/repositories/auth_repository.dart';
 
-import 'package:rumah_sakit/screens/Pilihan_Pembayaran.dart';
-import 'package:rumah_sakit/screens/daftar_dokter.dart';
+import 'package:rumah_sakit/screens/riwayatTransaksi.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:rumah_sakit/models/dokter_model.dart';
 
 class Reservasi extends StatefulWidget {
   final DokterModel dokter;
 
-  const Reservasi({Key? key, required this.dokter}) : super(key: key);
+  const Reservasi({super.key, required this.dokter});
   @override
   // ignore: library_private_types_in_public_api
   _ReservasiState createState() => _ReservasiState();
@@ -21,6 +26,7 @@ class _ReservasiState extends State<Reservasi> {
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.month;
+  UserModel? user;
   // List berisi tanggal yang tidak bisa dipilih
   List<DateTime> disabledDates = [
     
@@ -46,8 +52,7 @@ class _ReservasiState extends State<Reservasi> {
         List<AntrianModel> antrian = doctorShift.antrian;
         for (var j = 0; j < antrian.length; j++){
           DateTime tanggal = DateTime.parse(antrian[j].tanggal); // asumsikan tanggal adalah variabel DateTime dalam AntrianModel
-          print(getDayOfWeekInIndonesian(tanggal));
-          print(shift.hari);
+          
           if(shift.hari == getDayOfWeekInIndonesian(tanggal)){
           
           int maxAntrian = antrian[j].max_antrian; // asumsikan max_antrian adalah variabel int dalam AntrianModel
@@ -68,13 +73,42 @@ class _ReservasiState extends State<Reservasi> {
           if (!dataTanggal.contains(shiftIndex)) {
             dataTanggal.add(shiftIndex);
             disabledIndices[tanggal] = dataTanggal; // Memperbarui map dengan list yang baru
-            print(shiftIndex);
+            // print(shiftIndex);
           }
           }
         }
         }
       }
     }
+  }
+
+  int cariantrian(String hari,String jam){
+    bool ketemu = false;
+    int hasil = 0;
+    // print(hari);
+    // print(jam);
+    for (var i = 0; i < widget.dokter.doctor_shifts.length; i++){
+       DokterShiftModel doctorShift = widget.dokter.doctor_shifts[i];
+       ShiftModel shift = doctorShift.shift_type;
+       if(ketemu == false && shift.tipe_shift == jam && hari == shift.hari){
+        List<AntrianModel> antrian = doctorShift.antrian;
+        int index = 0;
+        while (index < antrian.length) {
+          if(antrian[index].current_antrian == 0){
+            hasil = antrian[index].id_antrian;
+            ketemu = true;
+            break;
+          }
+
+          // Lakukan sesuatu dengan model
+
+          index++;
+        }
+
+        
+       }
+    }
+    return hasil;
   }
 
 
@@ -87,20 +121,30 @@ class _ReservasiState extends State<Reservasi> {
 
 
   bool cekhari(DateTime hari){
-    print(hari);
+    // print(hari);
     return choices.containsKey(getDayOfWeekInIndonesian(hari));
   }
 
+  Future<void> _fetchUser() async {
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final AuthRepository authRepository = AuthRepository(sharedPreferences);
+    setState(() {
+      user = authRepository.getUser();
+    });
+  }
+
   Map<DateTime,int> selectedChoice = {};
+  @override
   void initState() {
     super.initState();
+     _fetchUser();
     isidata(widget.dokter);
     Iterator<DateTime> iterator = disabledIndices.keys.iterator;
     
     while (iterator.moveNext()) {
       DateTime date = iterator.current;
       List<int> indices = disabledIndices[date] ?? [];
-      print(date);
+      // print(date);
       if(choices.length > indices.length){
         int i = 0;
         while (i < choices.length) {
@@ -114,24 +158,24 @@ class _ReservasiState extends State<Reservasi> {
       }else{
         
         disabledDates.add(date);
-        print(date);
-        print(_selectedDay);
-        DateTime _selectedDayWithoutTime = DateTime(_selectedDay.year, _selectedDay.month, _selectedDay.day);
-        if(date == _selectedDayWithoutTime){
-          _selectedDay = _selectedDay.add(Duration(days: 1));
+        // print(date);
+        // print(_selectedDay);
+        DateTime selectedDayWithoutTime = DateTime(_selectedDay.year, _selectedDay.month, _selectedDay.day);
+        if(date == selectedDayWithoutTime){
+          _selectedDay = _selectedDay.add(const Duration(days: 1));
         }
       }
     }
     while(!cekhari(_selectedDay)){
-      print("test");
-      _selectedDay = _selectedDay.add(Duration(days: 1));
+      // print("test");
+      _selectedDay = _selectedDay.add(const Duration(days: 1));
       
     }
   }
 
   int cekpilihan(){
-    DateTime _selectedDayWithoutTime = DateTime(_selectedDay.year, _selectedDay.month, _selectedDay.day);
-    return selectedChoice[_selectedDayWithoutTime] ?? 0;
+    DateTime selectedDayWithoutTime = DateTime(_selectedDay.year, _selectedDay.month, _selectedDay.day);
+    return selectedChoice[selectedDayWithoutTime] ?? 0;
   }
 
   bool isDisabled(int index) {
@@ -144,10 +188,10 @@ class _ReservasiState extends State<Reservasi> {
 }
 
 String printjadwal(int nomer){
-  DateTime _selectedDayWithoutTime = DateTime(_selectedDay.year, _selectedDay.month, _selectedDay.day);
+  DateTime selectedDayWithoutTime = DateTime(_selectedDay.year, _selectedDay.month, _selectedDay.day);
  
-  List<String> temp = choices[getDayOfWeekInIndonesian(_selectedDayWithoutTime)] ?? [];
-  print(temp[nomer]);
+  List<String> temp = choices[getDayOfWeekInIndonesian(selectedDayWithoutTime)] ?? [];
+  // print(temp[nomer]);
   return temp[nomer];
 }
 
@@ -163,15 +207,32 @@ Color getTextColor(int index) {
 }
 
 int cekpanjangjadwal(){
-  DateTime _selectedDayWithoutTime = DateTime(_selectedDay.year, _selectedDay.month, _selectedDay.day);
-  int panjang = choices[getDayOfWeekInIndonesian(_selectedDayWithoutTime)]?.length ?? 0;
-  print(getDayOfWeekInIndonesian(_selectedDayWithoutTime));
+  DateTime selectedDayWithoutTime = DateTime(_selectedDay.year, _selectedDay.month, _selectedDay.day);
+  int panjang = choices[getDayOfWeekInIndonesian(selectedDayWithoutTime)]?.length ?? 0;
+  // print(getDayOfWeekInIndonesian(selectedDayWithoutTime));
   if(panjang == 0){
     return 0;
   }else{
     return panjang % 3 == 0 ? 3 : panjang % 3;
   }
 }
+
+
+
+ final Map<String, String> _transactionData = {
+  'id_doctor': '1',
+  'id_antrian': '1',
+  'jumlah_pembayaran': '0',
+  'id_user': '1',
+  'status': 'Segera',
+  'id_pasien': '1',
+  'tipe_pembayaran': 'default',
+  };
+
+void _submitTransaction() {
+    context.read<TransactionBloc>().add(PostTransactionRequested(transactionData: _transactionData));
+    
+  }
   
   final _formKey = GlobalKey<FormState>();
   int _gender = 0;
@@ -194,7 +255,7 @@ int cekpanjangjadwal(){
           ),
         ),
       ),
-      bottomNavigationBar: _BottomNavigasiBar(context),
+      bottomNavigationBar: _BottomNavigasiBar(context,dokter),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -415,17 +476,17 @@ int cekpanjangjadwal(){
                           // Mengatur aksi ketika tombol ditekan
                           onPressed: () {
                             int buttonIndex = i * 3 + j; // Calculate the button index
-                            DateTime _selectedDayWithoutTime = DateTime(_selectedDay.year, _selectedDay.month, _selectedDay.day);
+                            DateTime selectedDayWithoutTime = DateTime(_selectedDay.year, _selectedDay.month, _selectedDay.day);
 
                             // Check if the button index is disabled for the current date
-                            if (disabledIndices[_selectedDayWithoutTime]?.contains(buttonIndex) ?? true && disabledIndices[_selectedDayWithoutTime] != null) {
+                            if (disabledIndices[selectedDayWithoutTime]?.contains(buttonIndex) ?? true && disabledIndices[selectedDayWithoutTime] != null) {
                               // Button is disabled, do nothing
-                              print(disabledIndices[_selectedDayWithoutTime]);
+                              // print(disabledIndices[_selectedDayWithoutTime]);
                             } else {
                               // Button is enabled, update selectedChoice
-                              print("test");
+                            
                               setState(() {
-                                selectedChoice[_selectedDayWithoutTime] = i * 3 + j;
+                                selectedChoice[selectedDayWithoutTime] = i * 3 + j;
                               });
                             }
                           },
@@ -601,14 +662,27 @@ int cekpanjangjadwal(){
     );
   }
 
-  BottomAppBar _BottomNavigasiBar(BuildContext context) {
+  // ignore: non_constant_identifier_names
+  BottomAppBar _BottomNavigasiBar(BuildContext context, DokterModel dokter) {
     return BottomAppBar(
       color: Colors.white,
       child: GestureDetector(
         onTap: () {
-          Navigator.push(
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => const Pilihan_Pembayaran()),
+          // );
+         
+          _transactionData["id_doctor"] = '${dokter.id}';
+          _transactionData["id_antrian"] = '${cariantrian(getDayOfWeekInIndonesian(_selectedDay),printjadwal(cekpilihan()))}';
+
+          _transactionData["id_user"] = '${user?.id}';
+         print(_transactionData);
+          
+          _submitTransaction();
+          Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const Pilihan_Pembayaran()),
+            MaterialPageRoute(builder: (context) => const riwayatTransaksi()),
           );
         },
         child: Container(
