@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:rumah_sakit/models/riwayat_transaksi_model.dart';
 
 sealed class TransactionEvent extends Equatable {
   const TransactionEvent();
@@ -15,4 +14,13 @@ class TransactionRequested extends TransactionEvent {
 
   @override
   List<Object> get props => [userId];
+}
+
+class PostTransactionRequested extends TransactionEvent {
+  final Map<String, dynamic> transactionData;
+
+  PostTransactionRequested({required this.transactionData});
+
+  @override
+  List<Object> get props => [transactionData];
 }
