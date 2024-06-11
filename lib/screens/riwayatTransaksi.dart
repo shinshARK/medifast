@@ -50,8 +50,7 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
     print(user?.id);
     print(user?.firstname);
     context.read<TransactionBloc>().add(TransactionRequested(
-        userId:
-            9)); // untuk sementara datanya akan saya masukan 1 dulu untuk yang dinamis bisa gunakan code ini user?.id ?? 0
+        userId:user?.id ?? 0)); // untuk sementara datanya akan saya masukan 1 dulu untuk yang dinamis bisa gunakan code ini user?.id ?? 0
   }
 
   @override
