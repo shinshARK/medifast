@@ -173,8 +173,8 @@ class _catatan_dan_resep_dokterState extends State<catatan_dan_resep_dokter> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('${data_obat[resepDigital!.idObat]}'),
-                        Text('1 per tube'),
+                        Text('${data_obat[resepDigital!.idObat].namaobat}'),
+                        Text('1 per ${data_obat[resepDigital!.idObat].tipe}'),
                       ],
                     ),
                     SizedBox(height: 8),
