@@ -3,6 +3,11 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rumah_sakit/components/bottomNavigasiBar.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:rumah_sakit/repositories/auth_repository.dart';
+import '../models/user_models.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 // ignore: must_be_immutable, camel_case_types
 class HalamanProfil extends StatefulWidget {
@@ -16,18 +21,37 @@ class HalamanProfil extends StatefulWidget {
 class _HalamanProfilstate extends State<HalamanProfil> {
   // Define variables to hold user profile information
   final _formKey = GlobalKey<FormState>();
-  final _namaController = TextEditingController();
-  final _tanggallahirController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _nomortelponController = TextEditingController();
+  TextEditingController _firstnameController = TextEditingController();
+  TextEditingController _lastnameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _nomortelponController = TextEditingController();
   bool isEditing = false;
   FocusNode myFocusNode1 = FocusNode();
-  String jenisKelamin = "Laki - Laki";
+  UserModel? user;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUser();
+  }
+
+  Future<void> _fetchUser() async {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    final AuthRepository authRepository = AuthRepository(sharedPreferences);
+    user = authRepository.getUser();
+
+    // Set the initial values of the controllers
+    _firstnameController.text = user?.firstname ?? '';
+    _lastnameController.text = user?.lastname ?? '';
+    _emailController.text = user?.email ?? '';
+    _nomortelponController.text = user?.telephone ?? '';
+  }
 
   @override
   void dispose() {
-    _namaController.dispose();
-    _tanggallahirController.dispose();
+    _firstnameController.dispose();
+    _lastnameController.dispose();
     _emailController.dispose();
     _nomortelponController.dispose();
     super.dispose();
@@ -48,16 +72,17 @@ class _HalamanProfilstate extends State<HalamanProfil> {
         backgroundColor: Colors.white,
         actions: <Widget>[
           TextButton(
-            onPressed: 
-            isEditing ? _saveForm :
-            () {
-              setState(() {
-                isEditing = !isEditing;
-              });
-            },
+            onPressed: isEditing
+                ? _saveForm
+                : () {
+                    setState(() {
+                      isEditing = !isEditing;
+                    });
+                  },
             child: Text(
               isEditing ? 'Simpan' : 'Edit',
-              style: GoogleFonts.inter(fontWeight: FontWeight.w500, color: Colors.black),
+              style: GoogleFonts.inter(
+                  fontWeight: FontWeight.w500, color: Colors.black),
             ),
           ),
         ],
@@ -68,25 +93,17 @@ class _HalamanProfilstate extends State<HalamanProfil> {
           child: Column(
             children: [
               _profil(context),
-              _formNama(
-                labelText: "Nama Lengkap",
-                initialValue: "Ilham Akbar",
+              _formFirstname(
+                labelText: "Nama Depan",
               ),
-              _formttl(
-                labelText: "Tanggal Lahir",
-                controller: _tanggallahirController,
+              _formLastname(
+                labelText: "Nama Belakang",
               ),
               _formemail(
                 labelText: "Email",
-                initialValue: "IlhamAkbar@gmail.com",
               ),
               _formNomerTelepon(
                 labelText: "Nomor Telpon",
-                initialValue: "089123712873",
-              ),
-              _buildDropdownButtonFormField(
-                labelText: "jenis Kelamin",
-                initialValue: "laki laki",
               ),
             ],
           ),
@@ -95,43 +112,73 @@ class _HalamanProfilstate extends State<HalamanProfil> {
     );
   }
 
-  void _saveForm() {
-  if (_formKey.currentState!.validate()) {
+  void _saveForm() async {
+    if (_formKey.currentState!.validate()) {
       // Simpan data di sini
       _formKey.currentState!.save();
+
       // Misalnya, kita menyimpan data ke dalam variabel
-      String nama = _namaController.text;
-      String tanggalLahir = _tanggallahirController.text;
+      String firstname = _firstnameController.text;
+      String lastname = _lastnameController.text;
       String email = _emailController.text;
       String nomorTelepon = _nomortelponController.text;
-      // Variabel jenisKelamin sudah diperbarui di dalam _buildDropdownButtonFormField
-
-
-
 
       // Ubah status isEditing menjadi false
       setState(() {
         isEditing = false;
       });
 
-      // Tampilkan pesan sukses atau lakukan aksi lainnya setelah data disimpan
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Data berhasil disimpan!')),
+      // Update data pengguna
+      UserModel updatedUser = UserModel(
+        id: user?.id,
+        firstname: firstname,
+        lastname: lastname,
+        email: email,
+        telephone: nomorTelepon,
       );
-  }
+
+      // Simpan data pengguna yang diperbarui ke SharedPreferences
+      final SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      final AuthRepository authRepository = AuthRepository(sharedPreferences);
+      await authRepository.saveUser(updatedUser);
+
+      // Perbarui data pengguna di backend
+      final response = await http.post(
+        Uri.parse(
+            'http://localhost:8000/auth/update'), // Ganti dengan URL endpoint API Anda
+        body: jsonEncode(updatedUser.toJson()),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        // Jika permintaan berhasil, perbarui state user
+        setState(() {
+          user = updatedUser;
+        });
+
+        // Tampilkan pesan sukses atau lakukan aksi lainnya setelah data disimpan
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Data berhasil disimpan!')),
+        );
+      } else {
+        // Jika permintaan gagal, tampilkan pesan error
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Gagal menyimpan data!')),
+        );
+      }
+    }
   }
 
-  Container _formNama({
+  Container _formFirstname({
     required String labelText,
-    required String initialValue,
   }) {
-    final TextEditingController _namaController = TextEditingController(text: initialValue);
     return Container(
       width: 370,
       margin: const EdgeInsets.only(top: 10),
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
-        controller: _namaController,
+        controller: _firstnameController,
         textInputAction: TextInputAction.next,
         onFieldSubmitted: (value) {
           // Ketika tombol enter ditekan, pindah ke TextFormField berikutnya
@@ -151,55 +198,37 @@ class _HalamanProfilstate extends State<HalamanProfil> {
     );
   }
 
-  Container _formttl({
-      required String labelText,
-      required TextEditingController controller,
-    }) {
-      //final TextEditingController _tanggallahirController = TextEditingController(text: initialValue);
-      return Container(
-        width: 370,
-        margin: const EdgeInsets.only(top: 10),
-        padding: const EdgeInsets.all(8.0),
-        child: TextFormField(
-          controller: controller,
-          textInputAction: TextInputAction.next,
-          onFieldSubmitted: (value) {
-            // Ketika tombol enter ditekan, pindah ke TextFormField berikutnya
-            FocusScope.of(context).requestFocus(myFocusNode1);
-          },
-          decoration: InputDecoration(
-            border: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-                borderSide: BorderSide.none),
-            filled: true,
-            fillColor: Colors.black.withOpacity(0.10),
-            labelText: labelText,
-            hintStyle: const TextStyle(fontSize: 16),
-            suffixIcon: const Icon(Icons.date_range),
-          ),
-          onTap: () async {
-            FocusScope.of(context).requestFocus(new FocusNode()); // to prevent opening default keyboard
-            DateTime? pickedDate = await showDatePicker(
-              context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime(1900),
-              lastDate: DateTime(2100),
-            );
-            if (pickedDate != null) {
-              String formattedDate = DateFormat('dd - MMMM - yyyy').format(pickedDate); // format the date to desired format
-              controller.text = formattedDate;
-            }
-          },
-          enabled: isEditing,
+  Container _formLastname({
+    required String labelText,
+  }) {
+    return Container(
+      width: 370,
+      margin: const EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.all(8.0),
+      child: TextFormField(
+        controller: _lastnameController,
+        textInputAction: TextInputAction.next,
+        onFieldSubmitted: (value) {
+          // Ketika tombol enter ditekan, pindah ke TextFormField berikutnya
+          FocusScope.of(context).requestFocus(myFocusNode1);
+        },
+        decoration: InputDecoration(
+          border: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              borderSide: BorderSide.none),
+          filled: true,
+          fillColor: Colors.black.withOpacity(0.10),
+          labelText: labelText,
+          hintStyle: const TextStyle(fontSize: 16),
         ),
-      );
-    }
+        enabled: isEditing,
+      ),
+    );
+  }
 
   Container _formemail({
     required String labelText,
-    required String initialValue,
   }) {
-    final TextEditingController _emailController = TextEditingController(text: initialValue);
     return Container(
       width: 370,
       margin: const EdgeInsets.only(top: 10),
@@ -227,15 +256,13 @@ class _HalamanProfilstate extends State<HalamanProfil> {
 
   Container _formNomerTelepon({
     required String labelText,
-    required String initialValue,
   }) {
-    final TextEditingController _formNomerTelepon = TextEditingController(text: initialValue);
     return Container(
       width: 370,
       margin: const EdgeInsets.only(top: 10),
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
-        controller: _formNomerTelepon,
+        controller: _nomortelponController,
         textInputAction: TextInputAction.next,
         onFieldSubmitted: (value) {
           // Ketika tombol enter ditekan, pindah ke TextFormField berikutnya
@@ -255,44 +282,6 @@ class _HalamanProfilstate extends State<HalamanProfil> {
     );
   }
 
-  Widget _buildDropdownButtonFormField({
-  required String labelText,
-  required String initialValue,
-  }) {
-  return Container(
-      width: 370,
-      margin: const EdgeInsets.only(top: 10),
-      padding: const EdgeInsets.all(8.0),
-      child: DropdownButtonFormField<String>(
-        decoration: InputDecoration(
-          border: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            borderSide: BorderSide.none,
-          ),
-          filled: true,
-          fillColor: Colors.black.withOpacity(0.10),
-          labelText: labelText,
-          hintStyle: const TextStyle(fontSize: 16),
-        ),
-        hint: Text(
-          initialValue,
-          style: const TextStyle(
-            fontSize: 16,
-            color: Colors.black,
-          ),
-        ),
-        items: isEditing ? ['Laki-Laki', 'Perempuan'].map((gender) => DropdownMenuItem<String>(
-          value: gender,
-          child: Text(
-            gender,
-            style: const TextStyle(fontSize: 16),
-          ),
-        )).toList() : null, // Gunakan items jika isEditing adalah true
-        onChanged: isEditing ? (value) => setState(() => jenisKelamin = value!) : null, // Gunakan onChanged jika isEditing adalah true
-      ),
-  );
-  }
-
   Stack _profil(BuildContext context) {
     return Stack(
       children: [
@@ -309,7 +298,8 @@ class _HalamanProfilstate extends State<HalamanProfil> {
                   children: [
                     CircleAvatar(
                       radius: 60,
-                      backgroundImage: AssetImage('assets/images/profile_picture_2.png'),
+                      backgroundImage:
+                          AssetImage('assets/images/profile_picture_2.png'),
                     ),
                     Positioned(
                       bottom: 10,
