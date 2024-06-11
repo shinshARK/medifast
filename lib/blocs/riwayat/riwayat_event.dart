@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-sealed class TransactionEvent extends Equatable {
+abstract class TransactionEvent extends Equatable {
   const TransactionEvent();
 
   @override
@@ -18,9 +18,20 @@ class TransactionRequested extends TransactionEvent {
 
 class PostTransactionRequested extends TransactionEvent {
   final Map<String, dynamic> transactionData;
+  final Map<String, dynamic> pasien;
 
-  PostTransactionRequested({required this.transactionData});
+  PostTransactionRequested({required this.transactionData, required this.pasien});
 
   @override
-  List<Object> get props => [transactionData];
+  List<Object> get props => [transactionData, pasien];
+}
+
+class TransactionUpdateRequested extends TransactionEvent {
+  final int transactionId;
+  final Map<String, dynamic> updatedData;
+
+  TransactionUpdateRequested({required this.transactionId, required this.updatedData});
+
+  @override
+  List<Object> get props => [transactionId, updatedData];
 }

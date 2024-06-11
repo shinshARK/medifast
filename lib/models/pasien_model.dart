@@ -3,7 +3,6 @@ class PasienModel{
   final String namaPasien;
   final int umur;
   final String jenisKelamin;
-  final String keluhan;
   final String alamat;
 
 
@@ -12,7 +11,6 @@ class PasienModel{
     required this.namaPasien,
     required this.umur,
     required this.jenisKelamin,
-    required this.keluhan,
     required this.alamat,
   });
 
@@ -22,7 +20,6 @@ class PasienModel{
       namaPasien: json['nama_pasien'],
       umur: json['umur'],
       jenisKelamin: json['jenis_kelamin'],
-      keluhan: json['keluhan'],
       alamat: json['alamat'],
     );
   }

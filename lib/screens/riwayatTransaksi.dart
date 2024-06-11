@@ -8,14 +8,15 @@ import 'package:rumah_sakit/blocs/riwayat/riwayat_bloc.dart';
 import 'package:rumah_sakit/blocs/riwayat/riwayat_event.dart';
 import 'package:rumah_sakit/blocs/riwayat/riwayat_state.dart';
 import 'package:rumah_sakit/components/bottomNavigasiBar.dart';
+import 'package:rumah_sakit/components/popupcustom.dart';
 import 'package:rumah_sakit/models/user_models.dart';
 import 'package:rumah_sakit/repositories/auth_repository.dart';
 import 'package:rumah_sakit/screens/catatan_dan_resep_dokter.dart';
+import 'package:rumah_sakit/screens/informasi_dokter.dart';
 import 'package:rumah_sakit/screens/rating.dart';
 import 'package:rumah_sakit/models/riwayat_transaksi_model.dart';
 import 'package:rumah_sakit/screens/detail_pertemuan.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 // ignore: must_be_immutable, camel_case_types
 class riwayatTransaksi extends StatefulWidget {
@@ -31,87 +32,96 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
   List<RiwayatTransaksiModel> riwayattransaksi = [];
   UserModel? user;
 
-Future<void> _fetchUser() async {
-    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  Future<void> _fetchUser() async {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
     final AuthRepository authRepository = AuthRepository(sharedPreferences);
-     
-  
-    
-      user = authRepository.getUser();
-    
+
+    user = authRepository.getUser();
   }
 
   void initState() {
     super.initState();
-     _initialize();
-    
+    _initialize();
   }
 
   Future<void> _initialize() async {
     await _fetchUser();
     print(user?.id);
     print(user?.firstname);
-    context.read<TransactionBloc>().add(TransactionRequested(userId: user?.id ?? 0));// untuk sementara datanya akan saya masukan 1 dulu untuk yang dinamis bisa gunakan code ini user?.id ?? 0
+    context.read<TransactionBloc>().add(TransactionRequested(
+        userId:
+            9)); // untuk sementara datanya akan saya masukan 1 dulu untuk yang dinamis bisa gunakan code ini user?.id ?? 0
   }
-
- 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Riwayat Transaksi',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Colors.white,
-        elevation: 10,
-        shadowColor: Colors.white,
-        
-      ),
-      bottomNavigationBar: const BottomNavigasiBar( inputan: 1),
-      body: BlocBuilder<TransactionBloc, TransactionState>(
-        builder: (context, state) {
-          if (state is TransactionLoading) {
-            Center(child: CircularProgressIndicator());
-          } else if (state is TransactionLoaded) {
-            riwayattransaksi = state.transactions;
-          } else if (state is TransactionFailure) {
-            Center(child: Text('Failed to load transactions: ${state.error}'));
-          } else {
-            Center(child: Text('Press the button to load transactions'));
-          }
-          return SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 10),
-          child: Column(
-            children: List.generate(riwayattransaksi.length, (index) {
-              return _riwayat(riwayattransaksi[index]);
-            }),
+        appBar: AppBar(
+          title: const Text(
+            'Riwayat Transaksi',
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
+          backgroundColor: Colors.white,
+          elevation: 10,
+          shadowColor: Colors.white,
         ),
-      );
-        },
-      ),
-    );
+        bottomNavigationBar: const BottomNavigasiBar(inputan: 1),
+        body: BlocListener<TransactionBloc, TransactionState>(
+          listener: (context, state) {
+            if (state is UpdateTransactionSuccess) {
+              Navigator.of(context).pushReplacementNamed('/riwayat-transaksi');
+            } else if (state is UpdateTransactionFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('gagal menghapus data')),
+              );
+            }
+          },
+          child: BlocBuilder<TransactionBloc, TransactionState>(
+            builder: (context, state) {
+              if (state is TransactionLoading) {
+                Center(child: CircularProgressIndicator());
+
+                print("data");
+              } else if (state is TransactionLoaded) {
+                riwayattransaksi = state.transactions;
+                print(riwayattransaksi.length);
+              } else if (state is TransactionFailure) {
+                return Center(child: Text('Error: ${state.error}'));
+              }
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Column(
+                    children: List.generate(riwayattransaksi.length, (index) {
+                      int reverseIndex = riwayattransaksi.length - 1 - index;
+                      return _riwayat(riwayattransaksi[reverseIndex]);
+                    }),
+                  ),
+                ),
+              );
+            },
+          ),
+        ));
   }
 
   Padding _riwayat(RiwayatTransaksiModel data) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Material(
         elevation: 5.0, // Nilai elevasi
         borderRadius: BorderRadius.circular(20),
         child: Container(
           padding: const EdgeInsets.only(bottom: 15),
-          decoration:
-              BoxDecoration(borderRadius: BorderRadius.circular(20), boxShadow: [
-            BoxShadow(
-              color: Colors.white.withOpacity(0.7),
-              blurRadius: 2.0,
-              offset: const Offset(0, 4), // changes position of shadow
-            ),
-          ]),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.white.withOpacity(0.7),
+                  blurRadius: 2.0,
+                  offset: const Offset(0, 4), // changes position of shadow
+                ),
+              ]),
           child: Column(
             children: [
               Padding(
@@ -120,64 +130,56 @@ Future<void> _fetchUser() async {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     CircleAvatar(
-                      radius: 52,
-                      backgroundColor: Colors.white.withOpacity(0.0),
-                      child:
-                          CircleAvatar(
-                              radius: 40,
-                              backgroundImage: AssetImage(
-                                  "assets/images/${data.dokter.photo}"),
-                            )
-                          
-                    ),
+                        radius: 52,
+                        backgroundColor: Colors.white.withOpacity(0.0),
+                        child: CircleAvatar(
+                          radius: 40,
+                          backgroundImage:
+                              AssetImage("assets/images/${data.dokter?.photo}"),
+                        )),
                     Padding(
                       padding: const EdgeInsets.only(left: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(data.dokter.name ?? '',     
-                              style: const TextStyle(fontWeight: FontWeight.bold)),
+                          Text(data.dokter?.name ?? '',
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)),
                           const SizedBox(
                             height: 7,
                           ),
-                            Row(
-                              children: [
-                                Text(data.dokter.specialty ?? ''),
-                                const Text(" |"),
-                                Container(
-                                  width: 60,
-                                  decoration: BoxDecoration(
-                                      color: data.status ==
-                                              "Segera"
-                                          ? Colors.yellow.withOpacity(0.1)
-                                          : data.status ==
-                                                  "Selesai"
-                                              ? Colors.green.withOpacity(0.1)
-                                              : Colors.red.withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child: Text(
-                                    data.status,
-                                    style: TextStyle(
-                                      color: data.status ==
-                                              "Segera"
-                                          ? Colors.yellow
-                                          : data.status ==
-                                                  "Selesai"
-                                              ? Colors.green
-                                              : Colors.red,
-                                    ),
-                                    textAlign: TextAlign.center,
+                          Row(
+                            children: [
+                              Text(data.dokter?.specialty ?? ''),
+                              const Text(" |"),
+                              Container(
+                                width: 60,
+                                decoration: BoxDecoration(
+                                    color: data.status == "Segera"
+                                        ? Colors.yellow.withOpacity(0.1)
+                                        : data.status == "Selesai"
+                                            ? Colors.green.withOpacity(0.1)
+                                            : Colors.red.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Text(
+                                  data.status,
+                                  style: TextStyle(
+                                    color: data.status == "Segera"
+                                        ? Colors.yellow
+                                        : data.status == "Selesai"
+                                            ? Colors.green
+                                            : Colors.red,
                                   ),
-                                )
-                              ],
-                            )
-                          ,
+                                  textAlign: TextAlign.center,
+                                ),
+                              )
+                            ],
+                          ),
                           const SizedBox(
                             height: 7,
                           ),
                           FutureBuilder<String>(
-                            future: formatTanggalDanWaktu(
-                                data.antrian.tanggal,
+                            future: formatTanggalDanWaktu(data.antrian!.tanggal,
                                 data.jam), // panggil fungsi Anda di sini
                             builder: (BuildContext context,
                                 AsyncSnapshot<String> snapshot) {
@@ -208,34 +210,52 @@ Future<void> _fetchUser() async {
                 child: data.status != "Batal"
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children:<Widget> [
+                        children: <Widget>[
                           Expanded(
                             child: GestureDetector(
                               onTap: () {
                                 switch (data.status) {
                                   case 'Segera':
-                                    
+                                    final Map<String, String> transactionData =
+                                        {
+                                      'jam': '',
+                                      'id_doctor': '',
+                                      'id_antrian': '',
+                                      'jumlah_pembayaran': '',
+                                      'id_user': '',
+                                      'status': 'Batal',
+                                      'id_pasien': '',
+                                      'tipe_pembayaran': '',
+                                      'id_resep_digital': '',
+                                      'id_catatan_dokter': '',
+                                    };
+
+                                    context.read<TransactionBloc>().add(
+                                        TransactionUpdateRequested(
+                                            transactionId: data.id,
+                                            updatedData: transactionData));
                                     break;
                                   case 'Selesai':
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => const rating()),
+                                      MaterialPageRoute(
+                                          builder: (context) => rating(dokter: data.dokter,)),
                                     );
-                                    
-                                //     break;
-                                //   tambahkan kasus lainnya sesuai kebutuhan
-                                //   default:
-                                //     Navigator.push(
-                                //       context,
-                                //       MaterialPageRoute(builder: (context) => HomePage()),
-                                //     );
+
+                                  //     break;
+                                  //   tambahkan kasus lainnya sesuai kebutuhan
+                                  //   default:
+                                  //     Navigator.push(
+                                  //       context,
+                                  //       MaterialPageRoute(builder: (context) => HomePage()),
+                                  //     );
                                 }
                               },
                               child: Container(
-                                
                                 height: 40,
                                 alignment: AlignmentDirectional.center,
-                                margin: const EdgeInsets.only(right: 20, top: 20),
+                                margin:
+                                    const EdgeInsets.only(right: 20, top: 20),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     border: Border.all(
@@ -244,12 +264,12 @@ Future<void> _fetchUser() async {
                                       width: 3.0, // Ketebalan border
                                     )),
                                 child: Text(
-                                  data.status ==
-                                          "Segera"
+                                  data.status == "Segera"
                                       ? "Batalkan Booking"
                                       : "Nilai",
                                   style: const TextStyle(
-                                      color: Color.fromARGB(255, 135, 203, 198)),
+                                      color:
+                                          Color.fromARGB(255, 135, 203, 198)),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -264,15 +284,23 @@ Future<void> _fetchUser() async {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const DetailPertemuan()),
+                                             DetailPertemuan(data: data,currentStep: 0,)),
                                     );
-                                    
+
                                     break;
-                                  //case 'Selesai':
-                                    
-                                  //break;
+                                  case 'Selesai':
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => informasi_dokter(
+                                          key: ValueKey(data.dokter?.name),
+                                          id: data.dokter!.id,
+                                        ),
+                                      ),
+                                    );
+                                  break;
                                   // tambahkan kasus lainnya sesuai kebutuhan
-                                  //default:
+                                  // default:
                                   //   Navigator.push(
                                   //     context,
                                   //     MaterialPageRoute(builder: (context) => HomePage()),
@@ -280,16 +308,15 @@ Future<void> _fetchUser() async {
                                 }
                               },
                               child: Container(
-                                
                                 height: 40,
                                 alignment: AlignmentDirectional.center,
                                 margin: const EdgeInsets.only(top: 20),
                                 decoration: BoxDecoration(
-                                    color: const Color.fromARGB(255, 135, 203, 198),
+                                    color: const Color.fromARGB(
+                                        255, 135, 203, 198),
                                     borderRadius: BorderRadius.circular(20)),
                                 child: Text(
-                                  data.status ==
-                                          "Segera"
+                                  data.status == "Segera"
                                       ? "Detail"
                                       : "Jadwalkan Kembali",
                                   style: const TextStyle(color: Colors.white),
@@ -302,10 +329,17 @@ Future<void> _fetchUser() async {
                       )
                     : GestureDetector(
                         onTap: () {
-                          
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => informasi_dokter(
+                                key: ValueKey(data.dokter?.name),
+                                id: data.dokter!.id,
+                              ),
+                            ),
+                          );
                         },
                         child: Container(
-                          
                           height: 40,
                           alignment: AlignmentDirectional.center,
                           margin: const EdgeInsets.only(top: 20),
@@ -320,31 +354,32 @@ Future<void> _fetchUser() async {
                         ),
                       ),
               ),
-              data.status == "Selesai" ?
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            const catatan_dan_resep_dokter()),
-                  );
-                },
-                child: Container(
-                  
-                  height: 40,
-                  alignment: AlignmentDirectional.center,
-                  margin: const EdgeInsets.only(top: 20,left: 25,right: 25),
-                  decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 135, 203, 198),
-                      borderRadius: BorderRadius.circular(20)),
-                  child: const Text(
-                    "Catatan Dokter & Resep",
-                    style: TextStyle(color: Colors.white),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ) : const SizedBox()
+              data.status == "Selesai"
+                  ? GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  catatan_dan_resep_dokter(data: data, buttom: 0,)),
+                        );
+                      },
+                      child: Container(
+                        height: 40,
+                        alignment: AlignmentDirectional.center,
+                        margin:
+                            const EdgeInsets.only(top: 20, left: 25, right: 25),
+                        decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 135, 203, 198),
+                            borderRadius: BorderRadius.circular(20)),
+                        child: const Text(
+                          "Catatan Dokter & Resep",
+                          style: TextStyle(color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    )
+                  : const SizedBox()
             ],
           ),
         ),
