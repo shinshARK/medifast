@@ -144,9 +144,8 @@ class _HalamanProfilstate extends State<HalamanProfil> {
       await authRepository.saveUser(updatedUser);
 
       // Perbarui data pengguna di backend
-      final response = await http.post(
-        Uri.parse(
-            'http://localhost:8000/auth/update'), // Ganti dengan URL endpoint API Anda
+      final response = await http.put(
+        Uri.parse('http://localhost:8000/auth/update'),
         body: jsonEncode(updatedUser.toJson()),
         headers: {'Content-Type': 'application/json'},
       );
