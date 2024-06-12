@@ -97,7 +97,7 @@ class _ReservasiState extends State<Reservasi> {
         int index = 0;
         while (index < antrian.length) {
           DateTime dateFromString = DateTime.parse(antrian[index].tanggal);
-          if (antrian[index].current_antrian == 0 &&
+          if (
               _selectedDay.day == dateFromString.day &&
               _selectedDay.month == dateFromString.month) {
             hasil = antrian[index].id_antrian;
@@ -375,7 +375,7 @@ class _ReservasiState extends State<Reservasi> {
                                 Text(
                                   dokter.name,
                                   style: const TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.w700),
                                 ),
                                 Text(

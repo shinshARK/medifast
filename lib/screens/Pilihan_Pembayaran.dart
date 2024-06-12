@@ -169,7 +169,7 @@ class _Pilihan_PembayaranState extends State<Pilihan_Pembayaran> {
               'jam': '',
               'id_doctor': '',
               'id_antrian': '',
-              'jumlah_pembayaran': '',
+              'jumlah_pembayaran': '0',
               'id_user': '',
               'status': 'Selesai',
               'id_pasien': '',
