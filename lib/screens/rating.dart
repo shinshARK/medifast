@@ -61,7 +61,7 @@ class _ratingState extends State<rating> {
                             "Dr. Eki Rakhmah Z., Sp.A",
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 18,
+                              fontSize: 16,
                               fontWeight: FontWeight.bold, 
                             ),
                           ),

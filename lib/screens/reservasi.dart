@@ -289,6 +289,63 @@ class _ReservasiState extends State<Reservasi> {
                               ),
                             ),
                           ),
+<<<<<<< Updated upstream
+=======
+                          Padding(
+                            padding: const EdgeInsets.only(right: 40),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  dokter.name,
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                Text(
+                                  dokter.specialty,
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
+                      child: Text(
+                        "Pilih Tanggal",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 10),
+                      decoration: BoxDecoration(
+                          color: const Color(0xFFCCCCCC),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: TableCalendar(
+                        // Menentukan tanggal awal dan akhir kalender
+                        firstDay:
+                            DateTime.now(), // Tanggal awal adalah hari ini
+                        lastDay: DateTime(DateTime.now().year +
+                            1), // Tanggal akhir adalah 10 tahun dari sekarang
+
+                        // Tanggal yang sedang difokuskan
+                        focusedDay: _focusedDay,
+
+                        // Gaya header kalender
+                        headerStyle: const HeaderStyle(
+                          formatButtonVisible:
+                              false, // Menyembunyikan tombol format
+                          titleCentered:
+                              true, // Menempatkan judul (nama bulan) di tengah
+>>>>>>> Stashed changes
                         ),
                       ),
                     ),
