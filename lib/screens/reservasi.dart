@@ -37,56 +37,52 @@ class _ReservasiState extends State<Reservasi> {
 
   void isidata(DokterModel data) {
     Map<DateTime, int> temp = {};
-    if (widget.dokter != null && widget.dokter.doctor_shifts != null) {
-      for (var i = 0; i < widget.dokter.doctor_shifts.length; i++) {
-        DokterShiftModel doctorShift = widget.dokter.doctor_shifts[i];
-        ShiftModel shift = doctorShift.shift_type;
-        List<String> sem = choices[shift.hari] ?? [];
-        if (!sem.contains(shift.tipe_shift)) {
-          sem.add(shift.tipe_shift);
-        }
+    for (var i = 0; i < widget.dokter.doctor_shifts.length; i++) {
+      DokterShiftModel doctorShift = widget.dokter.doctor_shifts[i];
+      ShiftModel shift = doctorShift.shift_type;
+      List<String> sem = choices[shift.hari] ?? [];
+      if (!sem.contains(shift.tipe_shift)) {
+        sem.add(shift.tipe_shift);
+      }
 
-        choices[shift.hari] = sem;
+      choices[shift.hari] = sem;
 
-        List<AntrianModel> antrian = doctorShift.antrian;
-        for (var j = 0; j < antrian.length; j++) {
-          DateTime tanggal = DateTime.parse(antrian[j]
-              .tanggal); // asumsikan tanggal adalah variabel DateTime dalam AntrianModel
+      List<AntrianModel> antrian = doctorShift.antrian;
+      for (var j = 0; j < antrian.length; j++) {
+        DateTime tanggal = DateTime.parse(antrian[j]
+            .tanggal); // asumsikan tanggal adalah variabel DateTime dalam AntrianModel
 
-          if (shift.hari == getDayOfWeekInIndonesian(tanggal)) {
-            int maxAntrian = antrian[j]
-                .max_antrian; // asumsikan max_antrian adalah variabel int dalam AntrianModel
+        if (shift.hari == getDayOfWeekInIndonesian(tanggal)) {
+          int maxAntrian = antrian[j]
+              .max_antrian; // asumsikan max_antrian adalah variabel int dalam AntrianModel
 
-            int currentCount = temp[tanggal] ??
-                0; // Gunakan null check operator ('??') untuk default ke 0 jika tanggal tidak ada
+          int currentCount = temp[tanggal] ??
+              0; // Gunakan null check operator ('??') untuk default ke 0 jika tanggal tidak ada
 
-            // Tambahkan nilai antrian
-            currentCount += antrian[j].current_antrian;
+          // Tambahkan nilai antrian
+          currentCount += antrian[j].current_antrian;
 
-            // Perbarui temp dengan nilai yang dihitung
-            temp[tanggal] = currentCount;
-            print(currentCount);
-            print(maxAntrian);
-            if (currentCount >= maxAntrian) {
-              // Dapatkan list yang ada atau buat list baru jika tidak ada
-              List<int> dataTanggal =
-                  disabledIndices.putIfAbsent(tanggal, () => []);
-              List<String> sem = choices[shift.hari] ?? [];
-              // Periksa apakah shift.tipe_shift sudah ada dalam choices, lalu tambahkan jika belum
-              int shiftIndex =
-                  sem.indexWhere((choice) => choice == shift.tipe_shift);
-              if (!dataTanggal.contains(shiftIndex)) {
-                dataTanggal.add(shiftIndex);
-                disabledIndices[tanggal] =
-                    dataTanggal; // Memperbarui map dengan list yang baru
-                // print(shiftIndex);
-              }
+          // Perbarui temp dengan nilai yang dihitung
+          temp[tanggal] = currentCount;
+          if (currentCount >= maxAntrian) {
+            // Dapatkan list yang ada atau buat list baru jika tidak ada
+            List<int> dataTanggal =
+                disabledIndices.putIfAbsent(tanggal, () => []);
+            List<String> sem = choices[shift.hari] ?? [];
+            // Periksa apakah shift.tipe_shift sudah ada dalam choices, lalu tambahkan jika belum
+            int shiftIndex =
+                sem.indexWhere((choice) => choice == shift.tipe_shift);
+            if (!dataTanggal.contains(shiftIndex)) {
+              dataTanggal.add(shiftIndex);
+              disabledIndices[tanggal] =
+                  dataTanggal; // Memperbarui map dengan list yang baru
+              // print(shiftIndex);
             }
           }
         }
       }
     }
-  }
+    }
 
   int cariantrian(String hari, String jam) {
     bool ketemu = false;
@@ -262,18 +258,16 @@ class _ReservasiState extends State<Reservasi> {
   void _submitTransaction() {
     if (_formKey.currentState!.validate()) {
       final Map<String, String> PasienData = {
-        'nama_pasien': '${namaPasienController.text}',
-        'umur': '${umurController.text}',
-        'jenis_kelamin': '${_gender == 0 ? 'Laki-laki' : 'Perempuan'}',
-        'alamat': '${alamatController.text}',
+        'nama_pasien': namaPasienController.text,
+        'umur': umurController.text,
+        'jenis_kelamin': _gender == 0 ? 'Laki-laki' : 'Perempuan',
+        'alamat': alamatController.text,
       };
-      print("test");
       context.read<TransactionBloc>().add(PostTransactionRequested(
             transactionData: _transactionData,
             pasien: PasienData,
           ));
     } else {
-      print("salah");
     }
   }
 
@@ -284,7 +278,7 @@ class _ReservasiState extends State<Reservasi> {
         appBar: AppBar(
           title: Center(
             child: Text(
-              dokter.name ?? '',
+              dokter.name,
               style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 19),
             ),
           ),
@@ -379,13 +373,13 @@ class _ReservasiState extends State<Reservasi> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  dokter.name ?? '',
+                                  dokter.name,
                                   style: const TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w700),
                                 ),
                                 Text(
-                                  dokter.specialty ?? '',
+                                  dokter.specialty,
                                   style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500),
@@ -799,11 +793,10 @@ class _ReservasiState extends State<Reservasi> {
           int sem = cariantrian(getDayOfWeekInIndonesian(_selectedDay),
               printjadwal(cekpilihan()));
           if (sem != 0) {
-            _transactionData["id_antrian"] = '${sem}';
+            _transactionData["id_antrian"] = '$sem';
           }
 
           _transactionData["id_user"] = '${user?.id}';
-          print(_transactionData);
 
           _submitTransaction();
         },

@@ -69,7 +69,7 @@ class _ratingState extends State<rating> {
                           ),
                           Text(
                             widget.dokter!.specialty,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.black,
                               fontSize: 16,
                             ),

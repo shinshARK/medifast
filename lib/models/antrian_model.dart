@@ -1,5 +1,3 @@
-import 'package:rumah_sakit/models/dokter_shift_model.dart';
-
 class AntrianModel{
    final int current_antrian;
   final String tanggal;

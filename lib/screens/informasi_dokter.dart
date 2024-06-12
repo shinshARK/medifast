@@ -4,13 +4,12 @@ import 'package:rumah_sakit/blocs/doctor/doctor_bloc.dart';
 import 'package:rumah_sakit/models/dokter_model.dart';
 import 'package:rumah_sakit/models/dokter_shift_model.dart';
 import 'package:rumah_sakit/models/shift_model.dart';
-import 'package:rumah_sakit/screens/daftar_dokter.dart';
 import 'package:rumah_sakit/screens/reservasi.dart';
 
 class informasi_dokter extends StatefulWidget {
   final int id;
 
-  const informasi_dokter({required this.id, Key? key}) : super(key: key);
+  const informasi_dokter({required this.id, super.key});
 
   @override
   _InformasiDokterState createState() => _InformasiDokterState();
@@ -21,6 +20,7 @@ class _InformasiDokterState extends State<informasi_dokter> {
   late Future<DokterModel> futureDoctor;
   int selecteddokter = 0;
 
+  @override
   void initState() {
     super.initState();
     context.read<DoctorBloc>().add(DoctorByIdRequested(id: widget.id));
@@ -66,10 +66,9 @@ class _InformasiDokterState extends State<informasi_dokter> {
     return BlocBuilder<DoctorBloc, DoctorState>(
   builder: (context, state) {
     if (state is DoctorLoading) {
-       CircularProgressIndicator();
+       const CircularProgressIndicator();
     } else if (state is DoctorLoadedById) {
       dokter = state.dokter;
-      print(dokter!.favorite);
     } else if (state is DoctorFailure) {
       Text('Error: ${state.error}');
     } 
@@ -111,10 +110,10 @@ class _InformasiDokterState extends State<informasi_dokter> {
           child: Column(
             children: <Widget>[
               Card(
-                color: Color(0xFFCCEEEE),
+                color: const Color(0xFFCCEEEE),
                 child: ListTile(
                   contentPadding:
-                      EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                      const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
                   leading: CircleAvatar(
                     backgroundImage:
                         AssetImage('assets/images/${dokter?.photo}'),
@@ -138,7 +137,7 @@ class _InformasiDokterState extends State<informasi_dokter> {
                             horizontal: 16.0, vertical: 8.0),
                         child: Column(children: [
                           Text('${dokter?.experience} Tahun',
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 14, color: Color(0xFF8DB9FE))),
                           const Text('Pengalaman',
                               style:
@@ -159,7 +158,7 @@ class _InformasiDokterState extends State<informasi_dokter> {
                             children: [
                               Icon(Icons.star, color: Colors.yellow[600]),
                               Text('${dokter?.rating}',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 14, color: Color(0xFF8DB9FE)))
                             ],
                           ),
@@ -177,10 +176,10 @@ class _InformasiDokterState extends State<informasi_dokter> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Tentang',
-                        style: const TextStyle(
+                    const Text('Tentang',
+                        style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text('${dokter?.about}',
@@ -194,14 +193,14 @@ class _InformasiDokterState extends State<informasi_dokter> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Informasi Jam',
-                        style: const TextStyle(
+                    const Text('Informasi Jam',
+                        style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       children: <Widget>[
-                        Icon(Icons.calendar_month_outlined),
-                        SizedBox(width: 10),
+                        const Icon(Icons.calendar_month_outlined),
+                        const SizedBox(width: 10),
                         Expanded(
                           child: Align(
                             alignment: Alignment.centerLeft,
@@ -225,13 +224,13 @@ class _InformasiDokterState extends State<informasi_dokter> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Testimoni',
-                            style: const TextStyle(
+                        const Text('Testimoni',
+                            style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold)),
                         TextButton(
                           onPressed: () {},
-                          child: Text('lihat semua',
-                              style: const TextStyle(
+                          child: const Text('lihat semua',
+                              style: TextStyle(
                                   fontSize: 14, color: Colors.blue)),
                         ),
                       ],
@@ -244,29 +243,29 @@ class _InformasiDokterState extends State<informasi_dokter> {
                       children: [
                         Row(
                           children: [
-                            CircleAvatar(
+                            const CircleAvatar(
                               backgroundImage: AssetImage(
                                   'assets/images/profile_picture.png'),
                             ),
-                            SizedBox(width: 10),
-                            Expanded(
+                            const SizedBox(width: 10),
+                            const Expanded(
                               child: Text('Asep Sutarnan'),
                             ),
                             Icon(Icons.star, color: Colors.yellow[600]),
-                            Text('4.8',
+                            const Text('4.8',
                                 style: TextStyle(
                                     fontSize: 14, color: Colors.black)),
                           ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 10),
                           child: Text(
                             'sangat beruntung bisa berobat dengan Dr. Eki Rakhmah Zakiyyah, Sp.A. Sejak pertemuan pertama, beliau selalu memberikan penjelasan yang jelas dan mudah dimengerti tentang kondisi kesehatan saya. Beliau selalu sabar menjawab semua pertanyaan saya dan orang tua saya, dan membuat kami merasa diperhatikan dan dipahami. Pengobatan yang diberikan selalu efektif dan saya merasa lebih baik setelah setiap kunjungan.',
                             style: TextStyle(fontSize: 14, color: Colors.black),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 10),
                           child: Text(
                             'Saya sangat menghargai dedikasi dan profesionalisme Dr. Eki Rakhmah Zakiyyah. Beliau benar-benar peduli dengan pasiennya dan selalu berusaha memberikan perawatan terbaik. Saya sangat merekomendasikan Dr. Eki Rakhmah Zakiyyah kepada semua anak-anak yang membutuhkan perawatan medis berkualitas tinggi. Terima kasih, Dokter!',
                             style: TextStyle(fontSize: 12, color: Colors.black),

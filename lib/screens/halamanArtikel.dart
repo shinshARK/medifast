@@ -3,9 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rumah_sakit/components/bottomNavigasiBar.dart';
 import 'package:rumah_sakit/screens/detailArtikel2.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart'; // Import DateFormat
 import 'package:rumah_sakit/models/artikel_models.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rumah_sakit/blocs/article/article_bloc.dart';
@@ -45,7 +42,7 @@ class _halamanArtikelState extends State<halamanArtikel> {
       body: BlocBuilder<ArticleBloc, ArticleState>(
         builder: (context, state) {
           if (state is ArticleLoading) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (state is ArticleLoaded) {
             articles = state.articles;
           } else if (state is ArticleFailure) {

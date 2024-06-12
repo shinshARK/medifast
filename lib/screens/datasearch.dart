@@ -60,7 +60,7 @@ class DataSearch extends SearchDelegate<String> {
         final suggestionList = query.isEmpty
     ? data
     : data
-        .where((p) => p.name != null && p.name!.toLowerCase().contains(query.toLowerCase()))
+        .where((p) => p.name.toLowerCase().contains(query.toLowerCase()))
         .toList();
 
 
@@ -121,7 +121,7 @@ class DataSearch extends SearchDelegate<String> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      suggestionList[index].name ?? '',
+                      suggestionList[index].name,
                       style: const TextStyle(
                           fontSize: 16, fontWeight: FontWeight.bold),
                     ),
@@ -129,7 +129,7 @@ class DataSearch extends SearchDelegate<String> {
                       height: 10,
                     ),
                     Text(
-                      suggestionList[index].specialty ?? '',
+                      suggestionList[index].specialty,
                       style: const TextStyle(
                         fontSize: 14,
                       ),
@@ -141,7 +141,7 @@ class DataSearch extends SearchDelegate<String> {
                       children: [
                         RatingBar.builder(
                           initialRating:
-                              double.parse(suggestionList[index].rating ?? ''),
+                              double.parse(suggestionList[index].rating),
                           minRating: 1,
                           direction: Axis.horizontal,
                           allowHalfRating: true,
@@ -161,7 +161,7 @@ class DataSearch extends SearchDelegate<String> {
                           width: 15,
                         ),
                         Text(
-                          suggestionList[index].rating ?? '',
+                          suggestionList[index].rating,
                           style: const TextStyle(
                             fontSize: 14,
                           ),

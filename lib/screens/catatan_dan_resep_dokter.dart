@@ -1,14 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:rumah_sakit/components/popupcustom.dart';
 import 'package:rumah_sakit/models/dokter_model.dart';
 import 'package:rumah_sakit/models/obat_model.dart';
 import 'package:rumah_sakit/models/pasien_model.dart';
 import 'package:rumah_sakit/models/resep_digital.dart';
 import 'package:rumah_sakit/models/riwayat_transaksi_model.dart';
 import 'package:rumah_sakit/screens/Pilihan_Pembayaran.dart';
-import 'package:rumah_sakit/screens/pembayaran_obat.dart';
 import 'package:rumah_sakit/models/catatan_dokter_model.dart';
 import 'package:rumah_sakit/components/toggleText.dart';
 // ignore: camel_case_types
@@ -32,6 +30,7 @@ class _catatan_dan_resep_dokterState extends State<catatan_dan_resep_dokter> {
   PasienModel ?pasien;
   DokterModel ?dokter;
 
+  @override
   void initState() {
     super.initState();
     catatanDokter = widget.data?.catatanDokter;
@@ -173,7 +172,7 @@ class _catatan_dan_resep_dokterState extends State<catatan_dan_resep_dokter> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('${data_obat[resepDigital!.idObat].namaobat}'),
+                        Text(data_obat[resepDigital!.idObat].namaobat),
                         Text('1 per ${data_obat[resepDigital!.idObat].tipe}'),
                       ],
                     ),

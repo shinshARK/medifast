@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import 'package:rumah_sakit/models/token.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:rumah_sakit/models/user_models.dart';
-import 'package:rumah_sakit/models/token.dart';
 
 class AuthRepository {
   final SharedPreferences sharedPreferences;
@@ -34,7 +33,6 @@ class AuthRepository {
       headers: {'Content-Type': 'application/json'},
     );
 
-    print(response.body);
 
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);

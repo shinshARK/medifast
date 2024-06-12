@@ -1,6 +1,3 @@
-import 'package:rumah_sakit/models/dokter_model.dart';
-import 'package:rumah_sakit/models/user_models.dart';
-import 'package:rumah_sakit/models/obat_model.dart';
 class ResepDigital {
   final int idResepDigital;
   final int idDoctor;

@@ -1,5 +1,4 @@
 import 'package:rumah_sakit/models/antrian_model.dart';
-import 'package:rumah_sakit/models/dokter_model.dart';
 import 'package:rumah_sakit/models/shift_model.dart';
 
 class DokterShiftModel{
