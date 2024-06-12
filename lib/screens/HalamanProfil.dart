@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rumah_sakit/components/bottomNavigasiBar.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:rumah_sakit/repositories/auth_repository.dart';
 import '../models/user_models.dart';
@@ -21,10 +20,10 @@ class HalamanProfil extends StatefulWidget {
 class _HalamanProfilstate extends State<HalamanProfil> {
   // Define variables to hold user profile information
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _firstnameController = TextEditingController();
-  TextEditingController _lastnameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _nomortelponController = TextEditingController();
+  final TextEditingController _firstnameController = TextEditingController();
+  final TextEditingController _lastnameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _nomortelponController = TextEditingController();
   bool isEditing = false;
   FocusNode myFocusNode1 = FocusNode();
   UserModel? user;

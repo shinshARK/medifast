@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:rumah_sakit/models/pasien_model.dart';
 import 'package:rumah_sakit/models/riwayat_transaksi_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -58,11 +57,10 @@ Future<void> postTransaction(Map<String, dynamic> transactionData, Map<String, d
         transactionData["id_pasien"] = responseData["id_pasien"];
       }
     } else {
-      print('Error: ${response2.body}');
       throw Exception('Failed to handle pasien');
     }
 
-    print('Posting transaction data: $transactionData'); // Debugging line
+    // Debugging line
 
     final response = await http.post(
       Uri.parse('http://127.0.0.1:8000/transaction/'),
@@ -74,11 +72,9 @@ Future<void> postTransaction(Map<String, dynamic> transactionData, Map<String, d
     );
 
     if (response.statusCode != 200) {
-      print('Error: ${response.body}');
       throw Exception('Failed to post transaction');
     }
   } catch (e) {
-    print('Exception: $e');
     throw Exception('An error occurred during the transaction process');
   }
 }
@@ -100,7 +96,6 @@ Future<void> updateTransaction(int transactionId, Map<String, dynamic> updatedDa
     );
 
     if (response.statusCode != 200) {
-      print('Error: ${response.body}');
       throw Exception('Failed to update transaction');
     }
   }

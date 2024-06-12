@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rumah_sakit/blocs/riwayat/riwayat_bloc.dart';
 import 'package:rumah_sakit/blocs/riwayat/riwayat_event.dart';
@@ -78,7 +77,6 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
           if(_currentStep < 5){
             _currentStep++;
           }
-          print(_currentStep);
           if (_currentStep >= 5) {
             timer.cancel();
           }
@@ -95,6 +93,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
     });
   }
 
+  @override
   void dispose() {
     _timer?.cancel();
     super.dispose();
@@ -127,7 +126,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
               _profil(context,dokter!.photo),
                Text(
                 dokter!.name,
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
                Text(dokter!.specialty),
               const SizedBox(height: 20), // Menambahkan ruang kosong
@@ -159,7 +158,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
     );
   }
 
-  Widget _buildStepContent(int nomer_atrian) {
+  Widget _buildStepContent(int nomerAtrian) {
     switch (_currentStep) {
       case 0:
         return const Text(
@@ -172,14 +171,14 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text("Mohon bersabar menunggu urutan Anda:"),
-            Text("Nomor Antrian Anda:"),
+            const Text("Mohon bersabar menunggu urutan Anda:"),
+            const Text("Nomor Antrian Anda:"),
             Text(
-              "${nomer_atrian}",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              "$nomerAtrian",
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            Text("Lokasi:"),
-            Text(
+            const Text("Lokasi:"),
+            const Text(
               "Gedung A, Lantai: Ruangan 305",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
@@ -219,12 +218,12 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                           )),
                 );
               },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+              ),
               child: const Text(
                 'Lihat Hasil',
                 style: TextStyle(color: Colors.black),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 255, 255, 255),
               ),
             ),
           ],
@@ -247,7 +246,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
     }
   }
 
-  Widget _successMessage(int nomer_atrian) {
+  Widget _successMessage(int nomerAtrian) {
     return Column(
       children: [
         const Text(
@@ -308,7 +307,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                   color: const Color(0xFF87CBC6),
                   borderRadius: BorderRadius.circular(15.0),
                 ),
-                child: _buildStepContent(nomer_atrian),
+                child: _buildStepContent(nomerAtrian),
               ),
           ],
         )

@@ -1,7 +1,6 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart';
 import 'package:rumah_sakit/blocs/doctor/doctor_bloc.dart';
 import 'package:rumah_sakit/components/bottomNavigasiBar.dart';
 import 'package:rumah_sakit/models/dokter_model.dart';
@@ -43,7 +42,7 @@ class _daftar_dokterState extends State<daftar_dokter> {
       for (int i = 0; i < data_dokter.length; i++) {
         if (data_dokter[i]
                 .specialty
-                ?.toLowerCase()
+                .toLowerCase()
                 .contains(dokter[selecteddokter].toLowerCase()) ==
             true) {
           hasil.add(i);
@@ -55,7 +54,7 @@ class _daftar_dokterState extends State<daftar_dokter> {
           hasil.add(i);
         } else if (data_dokter[i]
                 .specialty
-                ?.toLowerCase()
+                .toLowerCase()
                 .contains(dokter[selecteddokter].toLowerCase()) ==
             true) {
           hasil.add(i);
@@ -69,7 +68,7 @@ class _daftar_dokterState extends State<daftar_dokter> {
   List<String> daftarnama() {
     List<String> sem = [];
     for (DokterModel temp in data_dokter) {
-      sem.add(temp.name ?? '');
+      sem.add(temp.name);
     }
     return sem;
   }
@@ -80,7 +79,7 @@ class _daftar_dokterState extends State<daftar_dokter> {
       for (int i = 0; i < data_dokter.length; i++) {
         if (data_dokter[i]
                 .specialty
-                ?.toLowerCase()
+                .toLowerCase()
                 .contains(dokter[selecteddokter].toLowerCase()) ==
             true) {
           temp.add(data_dokter[i]);
@@ -104,12 +103,10 @@ class _daftar_dokterState extends State<daftar_dokter> {
     body: BlocBuilder<DoctorBloc, DoctorState>(
       builder: (context, state) {
         if (state is DoctorLoading) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (state is DoctorLoaded) {
-          print("cek");
           data_dokter = state.data_dokter;
         } else if (state is DoctorFailure) {
-          print(state.error);
           return Center(child: Text('Error: ${state.error}'));
         }
         // If none of the above states match, return an empty container
@@ -194,7 +191,7 @@ class _daftar_dokterState extends State<daftar_dokter> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        data_dokter[posisi_data()[index]].name ?? '',
+                        data_dokter[posisi_data()[index]].name,
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),
@@ -202,7 +199,7 @@ class _daftar_dokterState extends State<daftar_dokter> {
                         height: 3,
                       ),
                       Text(
-                        data_dokter[posisi_data()[index]].specialty ?? '',
+                        data_dokter[posisi_data()[index]].specialty,
                         style: const TextStyle(
                           fontSize: 14,
                         ),
@@ -214,7 +211,7 @@ class _daftar_dokterState extends State<daftar_dokter> {
                         children: [
                           RatingBar.builder(
                             initialRating: double.parse(
-                                data_dokter[posisi_data()[index]].rating ?? '0'),
+                                data_dokter[posisi_data()[index]].rating),
                             minRating: 1,
                             direction: Axis.horizontal,
                             allowHalfRating: true,
@@ -234,7 +231,7 @@ class _daftar_dokterState extends State<daftar_dokter> {
                             width: 15,
                           ),
                           Text(
-                            data_dokter[posisi_data()[index]].rating ?? '0',
+                            data_dokter[posisi_data()[index]].rating,
                             style: const TextStyle(
                               fontSize: 14,
                             ),

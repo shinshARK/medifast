@@ -9,14 +9,9 @@ import 'package:rumah_sakit/repositories/article_repository.dart';
 import 'package:rumah_sakit/repositories/auth_repository.dart';
 import 'package:rumah_sakit/repositories/doctor_repository.dart';
 import 'package:rumah_sakit/repositories/transaction_repository.dart';
-
 import 'package:rumah_sakit/routes.dart';
 import 'package:rumah_sakit/screens/splash_screen.dart';
 import 'package:rumah_sakit/models/layar_screens.dart';
-import 'package:rumah_sakit/screens/test_fetch_article.dart';
-import 'package:rumah_sakit/screens/reservasi.dart';
-import 'package:rumah_sakit/models/dokter_model.dart';
-import 'package:rumah_sakit/screens/test_fetch_article.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {

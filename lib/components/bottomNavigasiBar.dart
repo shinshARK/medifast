@@ -1,9 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:rumah_sakit/screens/halamanArtikel.dart';
-import 'package:rumah_sakit/screens/HalamanProfil.dart';
-import 'package:rumah_sakit/screens/riwayatTransaksi.dart';
-import 'package:rumah_sakit/screens/home_screen.dart';
-import 'package:rumah_sakit/screens/daftar_dokter.dart';
 
 class BottomNavigasiBar extends StatefulWidget {
   

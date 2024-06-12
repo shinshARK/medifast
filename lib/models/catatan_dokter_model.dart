@@ -1,4 +1,3 @@
-import 'package:rumah_sakit/models/resep_digital.dart';
 class CatatanDokterModel{
   final int idCatatanDoctor;
   final String gejala;

@@ -8,7 +8,6 @@ import 'package:rumah_sakit/blocs/riwayat/riwayat_bloc.dart';
 import 'package:rumah_sakit/blocs/riwayat/riwayat_event.dart';
 import 'package:rumah_sakit/blocs/riwayat/riwayat_state.dart';
 import 'package:rumah_sakit/components/bottomNavigasiBar.dart';
-import 'package:rumah_sakit/components/popupcustom.dart';
 import 'package:rumah_sakit/models/user_models.dart';
 import 'package:rumah_sakit/repositories/auth_repository.dart';
 import 'package:rumah_sakit/screens/catatan_dan_resep_dokter.dart';
@@ -40,6 +39,7 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
     user = authRepository.getUser();
   }
 
+  @override
   void initState() {
     super.initState();
     _initialize();
@@ -47,8 +47,6 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
 
   Future<void> _initialize() async {
     await _fetchUser();
-    print(user?.id);
-    print(user?.firstname);
     context.read<TransactionBloc>().add(TransactionRequested(
         userId:user?.id ?? 0)); // untuk sementara datanya akan saya masukan 1 dulu untuk yang dinamis bisa gunakan code ini user?.id ?? 0
   }
@@ -79,12 +77,10 @@ class _riwayatTransaksiState extends State<riwayatTransaksi> {
           child: BlocBuilder<TransactionBloc, TransactionState>(
             builder: (context, state) {
               if (state is TransactionLoading) {
-                Center(child: CircularProgressIndicator());
+                const Center(child: CircularProgressIndicator());
 
-                print("data");
               } else if (state is TransactionLoaded) {
                 riwayattransaksi = state.transactions;
-                print(riwayattransaksi.length);
               } else if (state is TransactionFailure) {
                 return Center(child: Text('Error: ${state.error}'));
               }

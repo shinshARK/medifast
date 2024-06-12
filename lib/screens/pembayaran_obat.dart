@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:rumah_sakit/screens/Pilihan_Pembayaran.dart';
 import 'package:rumah_sakit/components/toggleText.dart';
 
 // ignore: camel_case_types
@@ -122,21 +121,21 @@ class _pembayaran_obatState extends State<pembayaran_obat> {
                   color: Colors.grey.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Column(
+                child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           'Ibuprofen 400 mg',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const Text(
+                        Text(
                           'Rp1.000',
                           style: TextStyle(
                             fontSize: 16,
@@ -144,31 +143,31 @@ class _pembayaran_obatState extends State<pembayaran_obat> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
-                    const Text(
+                    SizedBox(height: 8),
+                    Text(
                       'Per Strip',
                       style: TextStyle(
                         fontSize: 14,
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    const Divider(
+                    SizedBox(height: 8),
+                    Divider(
                       color: Colors.black,
                       height: 1,
                       thickness: 1,
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           'Total',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const Text(
+                        Text(
                           'Rp1.000',
                           style: TextStyle(
                             fontSize: 16,

@@ -76,80 +76,77 @@ class _Pilihan_PembayaranState extends State<Pilihan_Pembayaran> {
         padding: const EdgeInsets.only(left: 25, right: 25, top: 20, bottom: 20),
         child: Column(
           children: [
-            Text("Silahkan pilih metode pembayaran yang akan anda gunakan"),
+            const Text("Silahkan pilih metode pembayaran yang akan anda gunakan"),
             SizedBox(height: 16),
             Container(
               decoration: BoxDecoration(
-                color: Color.fromRGBO(242, 244, 247, 100),
+                color: const Color.fromRGBO(242, 244, 247, 100),
                 borderRadius: BorderRadius.circular(15)
               ),
               child: ListTile(
                 leading: Image.asset('assets/images/bca_logo.png'),
-                title: Text("BCA Virtual Account", style: TextStyle(
+                title: const Text("BCA Virtual Account", style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14
                 ),),
                 trailing: Radio<int>(
-                  activeColor: Color.fromRGBO(128, 211, 211, 100),
-                  hoverColor: Color.fromRGBO(128, 211, 211, 100),
+                  activeColor: const Color.fromRGBO(128, 211, 211, 100),
+                  hoverColor: const Color.fromRGBO(128, 211, 211, 100),
                   value: 1,
                   groupValue: pilihOpsi,
                   onChanged: (value) {
                     setState(() {
                       pilihOpsi = value!;
-                      print("Button value: $value");
                     });
                   },
                 ),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Container(
               decoration: BoxDecoration(
-                color: Color.fromRGBO(242, 244, 247, 100),
+                color: const Color.fromRGBO(242, 244, 247, 100),
                 borderRadius: BorderRadius.circular(15)
               ),
               child: ListTile(
                 leading: Image.asset('assets/images/bni_logo.png'),
-                title: Text("BNI Virtual Account",style: TextStyle(
+                title: const Text("BNI Virtual Account",style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14
                 ),),
                 trailing: Radio<int>(
-                  activeColor: Color.fromRGBO(128, 211, 211, 100),
-                  hoverColor: Color.fromRGBO(128, 211, 211, 100),
+                  activeColor: const Color.fromRGBO(128, 211, 211, 100),
+                  hoverColor: const Color.fromRGBO(128, 211, 211, 100),
                   value: 2,
                   groupValue: pilihOpsi,
                   onChanged: (value) {
                     setState(() {
                       pilihOpsi = value!;
-                      print("Button value: $value");
                     });
                   },
                 ),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Container(
               decoration: BoxDecoration(
-                color: Color.fromRGBO(242, 244, 247, 100),
+                color: const Color.fromRGBO(242, 244, 247, 100),
                 borderRadius: BorderRadius.circular(15)
               ),
               child: ListTile(
                 leading: Image.asset('assets/images/cod_logo.png'),
-                title: Text("Bayar Di Tempat", style: TextStyle(
+                title: const Text("Bayar Di Tempat", style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14
                 ),),
                 trailing: Radio<int>(
-                  activeColor: Color.fromRGBO(128, 211, 211, 100),
-                  hoverColor: Color.fromRGBO(128, 211, 211, 100),
+                  activeColor: const Color.fromRGBO(128, 211, 211, 100),
+                  hoverColor: const Color.fromRGBO(128, 211, 211, 100),
                   value: 3,
                   groupValue: pilihOpsi,
                   onChanged: (value) {
                     setState(() {
                       pilihOpsi = value!;
-                      print("Button value: $value");
                     });
                   },
                 ),
