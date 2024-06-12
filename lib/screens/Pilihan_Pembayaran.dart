@@ -18,6 +18,23 @@ class Pilihan_Pembayaran extends StatefulWidget {
 class _Pilihan_PembayaranState extends State<Pilihan_Pembayaran> {
   int pilihOpsi = 1;
   List<String> Opsi = ["BCA Virtual Account","BNI Virtual Account","Bayar Di Tempat"];
+  String formatWithThousandSeparator(int number) {
+  // Mengubah angka ke string
+  String numberStr = number.toString();
+
+  // Membuat buffer untuk hasil
+  StringBuffer buffer = StringBuffer();
+
+  // Menambahkan titik setiap 3 digit dari belakang
+  for (int i = 0; i < numberStr.length; i++) {
+    if (i > 0 && (numberStr.length - i) % 3 == 0) {
+      buffer.write('.');
+    }
+    buffer.write(numberStr[i]);
+  }
+
+  return buffer.toString();
+}
   @override
   Widget build(BuildContext context) {
     return BlocListener<TransactionBloc, TransactionState>(listener: (context, state) {
@@ -75,83 +92,95 @@ class _Pilihan_PembayaranState extends State<Pilihan_Pembayaran> {
       body: Padding(
         padding: const EdgeInsets.only(left: 25, right: 25, top: 20, bottom: 20),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text("Silahkan pilih metode pembayaran yang akan anda gunakan"),
-            SizedBox(height: 16),
-            Container(
-              decoration: BoxDecoration(
-                color: const Color.fromRGBO(242, 244, 247, 100),
-                borderRadius: BorderRadius.circular(15)
-              ),
-              child: ListTile(
-                leading: Image.asset('assets/images/bca_logo.png'),
-                title: const Text("BCA Virtual Account", style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14
-                ),),
-                trailing: Radio<int>(
-                  activeColor: const Color.fromRGBO(128, 211, 211, 100),
-                  hoverColor: const Color.fromRGBO(128, 211, 211, 100),
-                  value: 1,
-                  groupValue: pilihOpsi,
-                  onChanged: (value) {
-                    setState(() {
-                      pilihOpsi = value!;
-                    });
-                  },
+            Column(
+              children: [
+                const Text("Silahkan pilih metode pembayaran yang akan anda gunakan"),
+                SizedBox(height: 16),
+                Container(
+                  decoration: BoxDecoration(
+                    color: const Color.fromRGBO(242, 244, 247, 100),
+                    borderRadius: BorderRadius.circular(15)
+                  ),
+                  child: ListTile(
+                    leading: Image.asset('assets/images/bca_logo.png'),
+                    title: const Text("BCA Virtual Account", style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14
+                    ),),
+                    trailing: Radio<int>(
+                      activeColor: const Color.fromRGBO(128, 211, 211, 100),
+                      hoverColor: const Color.fromRGBO(128, 211, 211, 100),
+                      value: 1,
+                      groupValue: pilihOpsi,
+                      onChanged: (value) {
+                        setState(() {
+                          pilihOpsi = value!;
+                        });
+                      },
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Container(
-              decoration: BoxDecoration(
-                color: const Color.fromRGBO(242, 244, 247, 100),
-                borderRadius: BorderRadius.circular(15)
-              ),
-              child: ListTile(
-                leading: Image.asset('assets/images/bni_logo.png'),
-                title: const Text("BNI Virtual Account",style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14
-                ),),
-                trailing: Radio<int>(
-                  activeColor: const Color.fromRGBO(128, 211, 211, 100),
-                  hoverColor: const Color.fromRGBO(128, 211, 211, 100),
-                  value: 2,
-                  groupValue: pilihOpsi,
-                  onChanged: (value) {
-                    setState(() {
-                      pilihOpsi = value!;
-                    });
-                  },
+                const SizedBox(height: 16),
+                Container(
+                  decoration: BoxDecoration(
+                    color: const Color.fromRGBO(242, 244, 247, 100),
+                    borderRadius: BorderRadius.circular(15)
+                  ),
+                  child: ListTile(
+                    leading: Image.asset('assets/images/bni_logo.png'),
+                    title: const Text("BNI Virtual Account",style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14
+                    ),),
+                    trailing: Radio<int>(
+                      activeColor: const Color.fromRGBO(128, 211, 211, 100),
+                      hoverColor: const Color.fromRGBO(128, 211, 211, 100),
+                      value: 2,
+                      groupValue: pilihOpsi,
+                      onChanged: (value) {
+                        setState(() {
+                          pilihOpsi = value!;
+                        });
+                      },
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Container(
-              decoration: BoxDecoration(
-                color: const Color.fromRGBO(242, 244, 247, 100),
-                borderRadius: BorderRadius.circular(15)
-              ),
-              child: ListTile(
-                leading: Image.asset('assets/images/cod_logo.png'),
-                title: const Text("Bayar Di Tempat", style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14
-                ),),
-                trailing: Radio<int>(
-                  activeColor: const Color.fromRGBO(128, 211, 211, 100),
-                  hoverColor: const Color.fromRGBO(128, 211, 211, 100),
-                  value: 3,
-                  groupValue: pilihOpsi,
-                  onChanged: (value) {
-                    setState(() {
-                      pilihOpsi = value!;
-                    });
-                  },
+                const SizedBox(height: 16),
+                Container(
+                  decoration: BoxDecoration(
+                    color: const Color.fromRGBO(242, 244, 247, 100),
+                    borderRadius: BorderRadius.circular(15)
+                  ),
+                  child: ListTile(
+                    leading: Image.asset('assets/images/cod_logo.png'),
+                    title: const Text("Bayar Di Tempat", style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14
+                    ),),
+                    trailing: Radio<int>(
+                      activeColor: const Color.fromRGBO(128, 211, 211, 100),
+                      hoverColor: const Color.fromRGBO(128, 211, 211, 100),
+                      value: 3,
+                      groupValue: pilihOpsi,
+                      onChanged: (value) {
+                        setState(() {
+                          pilihOpsi = value!;
+                        });
+                      },
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
+            Row(
+              mainAxisAlignment:MainAxisAlignment.spaceAround,
+              children: [
+                Text("Total Pembayaran :"),
+                Text("Rp. ${formatWithThousandSeparator(int.parse(widget.data!.jumlahPembayaran))}")
+              ],
+            )
           ],
         ),
       ),

@@ -62,7 +62,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
               'jam': '',
               'id_doctor': '',
               'id_antrian': '',
-              'jumlah_pembayaran': '',
+              'jumlah_pembayaran': '0',
               'id_user': '',
               'status': '',
               'id_pasien': '',

@@ -248,7 +248,7 @@ class _ReservasiState extends State<Reservasi> {
   final Map<String, String> _transactionData = {
     'id_doctor': '1',
     'id_antrian': '',
-    'jumlah_pembayaran': '0',
+    'jumlah_pembayaran': '',
     'id_user': '1',
     'status': 'Segera',
     'id_pasien': '1',
